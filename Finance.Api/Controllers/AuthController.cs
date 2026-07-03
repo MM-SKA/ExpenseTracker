@@ -4,6 +4,8 @@ using Finance.Api.DTOs.Auth;
 using Finance.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Finance.Api.Controllers;
 
@@ -73,4 +75,27 @@ public class AuthController : ControllerBase{
             token = token
         });
     }
+//----------------------------------------------------------------------------------------    
+    //checking authorized endpoint
+    [Authorize]
+    [HttpGet("me")]
+
+    public IActionResult Me()
+    {
+        return Ok(new
+        {
+            UserId = User.FindFirst(
+                ClaimTypes.NameIdentifier
+            )?.Value,
+
+            Name = User.FindFirst(
+                ClaimTypes.Name
+            )?.Value,
+
+            Email = User.FindFirst(
+                ClaimTypes.Email
+            )?.Value
+        });
+    }
+
 }
