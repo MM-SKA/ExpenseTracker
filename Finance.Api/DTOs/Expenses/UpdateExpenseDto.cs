@@ -7,11 +7,11 @@ public class UpdateExpenseDto
 {
     [Required]
     public string Notes { get; set; } = null!;
-    
+
     [Required]
     [JsonPropertyName("Amount")]
     public decimal Amount { get; set; }
-    
+
     [Required]
     public int CategoryId { get; set; }
 

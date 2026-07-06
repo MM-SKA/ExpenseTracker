@@ -22,20 +22,23 @@ public class CategoriesController : ControllerBase
         _context = context;
     }
 
-//------------------------------------------------------------------------------------------------------------------------------------
-//create category endpoint
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //create category endpoint
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCategory(CreateCategoryDto request){
+    public async Task<IActionResult> CreateCategory(CreateCategoryDto request)
+    {
         var userId = User.GetUserId();
-        
+
         // Check if category with same name already exists for this user
         var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower());
-        if(existingCategory != null){
+        if (existingCategory != null)
+        {
             return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
         }
-        
-        var category = new Category{
+
+        var category = new Category
+        {
             Name = request.Name,
             UserId = userId
         };
@@ -45,30 +48,34 @@ public class CategoriesController : ControllerBase
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return CreatedAtAction(nameof(CreateCategory), response);
     }
-//------------------------------------------------------------------------------------------------------------------------------------
-//get all categories for the user
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //get all categories for the user
 
     [HttpGet("get")]
-    public async Task<IActionResult> GetCategories(){
+    public async Task<IActionResult> GetCategories()
+    {
         var userId = User.GetUserId();
         var categories = await _context.Categories.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
         var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList();
         return Ok(categoryDtos);
     }
-//------------------------------------------------------------------------------------------------------------------------------------
-//update category endpoint
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //update category endpoint
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request){
+    public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request)
+    {
         var userId = User.GetUserId();
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
-        if(category == null){
+        if (category == null)
+        {
             return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
         }
 
         // Check if new name is duplicate (case-insensitive, excluding current category)
         var isDuplicate = await _context.Categories.AnyAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower() && c.Id != id);
-        if(isDuplicate){
+        if (isDuplicate)
+        {
             return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
         }
 
@@ -80,14 +87,16 @@ public class CategoriesController : ControllerBase
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
         return Ok(response);
     }
-//------------------------------------------------------------------------------------------------------------------------------------
-//delete category endpoint
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //delete category endpoint
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteCategory(int id){
+    public async Task<IActionResult> DeleteCategory(int id)
+    {
         var userId = User.GetUserId();
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
-        if(category == null){
+        if (category == null)
+        {
             return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
         }
         _context.Categories.Remove(category);
