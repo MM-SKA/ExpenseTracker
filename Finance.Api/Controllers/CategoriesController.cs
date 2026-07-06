@@ -1,6 +1,8 @@
 using Finance.Api.DTOs.Category;
 using Finance.Api.Models;
 using Finance.Api.Data;
+using Finance.Api.DTOs.Common;
+using Finance.Api.Helpers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,32 +24,65 @@ public class CategoriesController : ControllerBase
 
     [HttpPost]
     public async Task<IActionResult> CreateCategory(CreateCategoryDto request){
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = User.GetUserId();
+        
+        // Check if category with same name already exists for this user
+        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower());
+        if(existingCategory != null){
+            return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
+        }
+        
         var category = new Category{
             Name = request.Name,
             UserId = userId
         };
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
-        return Ok(category);
+        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name };
+        var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
+        return CreatedAtAction(nameof(CreateCategory), response);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetCategories(){
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        var categories = await _context.Categories.Where(c => c.UserId == userId).ToListAsync();
-        return Ok(categories);
+        var userId = User.GetUserId();
+        var categories = await _context.Categories.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
+        var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList();
+        return Ok(categoryDtos);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request){
+        var userId = User.GetUserId();
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        if(category == null){
+            return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
+        }
+
+        // Check if new name is duplicate (case-insensitive, excluding current category)
+        var isDuplicate = await _context.Categories.AnyAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower() && c.Id != id);
+        if(isDuplicate){
+            return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
+        }
+
+        category.Name = request.Name;
+        _context.Categories.Update(category);
+        await _context.SaveChangesAsync();
+
+        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name };
+        var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
+        return Ok(response);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id){
-        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        var userId = User.GetUserId();
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
         if(category == null){
-            return NotFound();
+            return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
         }
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();
-        return NoContent(); 
+        return Ok(new ApiResponse { Success = true, Message = "Category deleted successfully" });
     }
 }
