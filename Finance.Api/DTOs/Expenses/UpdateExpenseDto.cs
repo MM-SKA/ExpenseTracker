@@ -6,8 +6,6 @@ namespace Finance.Api.DTOs.Expenses;
 public class UpdateExpenseDto
 {
     [Required]
-    [MaxLength(200)]
-    [JsonPropertyName("Note")]
     public string Notes { get; set; } = null!;
     
     [Required]

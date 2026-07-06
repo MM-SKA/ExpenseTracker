@@ -7,11 +7,11 @@ public class CreateExpenseDto
 {
     [Required]
     [MaxLength(200)]
-    [JsonPropertyName("Note")]
+    // [JsonPropertyName("Notes")]
     public string Notes { get; set; } = null!;
     
     [Required]
-    [JsonPropertyName("Amount")]
+    [Range(0.01, double.MaxValue, ErrorMessage = "Amount is required and must be a positive value.")]
     public decimal Amount { get; set; }
     
     [Required]

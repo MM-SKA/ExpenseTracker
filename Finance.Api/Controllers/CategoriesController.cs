@@ -22,7 +22,10 @@ public class CategoriesController : ControllerBase
         _context = context;
     }
 
-    [HttpPost]
+//------------------------------------------------------------------------------------------------------------------------------------
+//create category endpoint
+
+    [HttpPost("create")]
     public async Task<IActionResult> CreateCategory(CreateCategoryDto request){
         var userId = User.GetUserId();
         
@@ -42,16 +45,20 @@ public class CategoriesController : ControllerBase
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return CreatedAtAction(nameof(CreateCategory), response);
     }
+//------------------------------------------------------------------------------------------------------------------------------------
+//get all categories for the user
 
-    [HttpGet]
+    [HttpGet("get")]
     public async Task<IActionResult> GetCategories(){
         var userId = User.GetUserId();
         var categories = await _context.Categories.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
         var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList();
         return Ok(categoryDtos);
     }
+//------------------------------------------------------------------------------------------------------------------------------------
+//update category endpoint
 
-    [HttpPut("{id}")]
+    [HttpPut("update/{id}")]
     public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request){
         var userId = User.GetUserId();
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
@@ -73,8 +80,10 @@ public class CategoriesController : ControllerBase
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
         return Ok(response);
     }
+//------------------------------------------------------------------------------------------------------------------------------------
+//delete category endpoint
 
-    [HttpDelete("{id}")]
+    [HttpDelete("delete/{id}")]
     public async Task<IActionResult> DeleteCategory(int id){
         var userId = User.GetUserId();
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
