@@ -8,6 +8,8 @@ A modern, RESTful API for managing personal finances built with ASP.NET Core, En
 - **User Authentication** - JWT-based authentication with registration and login
 - **Category Management** - Create, read, update, delete expense categories
 - **Expense Tracking** - Full CRUD operations for expenses
+- **Filtered Expenses** - Filter expenses by category, date range, amount, month, year, and notes
+- **Analytics on Filtered Results** - Optional analytics summary when filtering expenses
 - **User-Isolated Data** - Data is isolated per user for security
 - **Structured API Responses** - Consistent response format across all endpoints
 - **DTOs** - Complete separation between API contracts and database models
@@ -110,8 +112,9 @@ DELETE /api/categories/{id}    - Delete category
 ```
 POST   /api/expense/create             - Create expense
 GET    /api/expense/get                - List user's expenses
-PUT    /api/expense/{id}               - Update expense
+PUT    /api/expense/update/{id}        - Update expense
 DELETE /api/expense/delete/{id}        - Delete expense
+POST   /api/expense/filter             - Filter expenses and optionally return analytics
 ```
 
 ### Analytics (Planned)
@@ -217,13 +220,31 @@ Create `appsettings.Development.json`:
 ## 📝 Next Steps
 
 1. **Implement Global Exception Handling** - Create middleware for centralized error handling
-2. **Build Service Layer** - Extract business logic to services
-3. **Add Analytics Endpoints** - Implement summary and trend calculations
+2. **Build Service Layer** - Extract business logic to services beyond analytics
+3. **Add Analytics Endpoints** - Implement summary and trend calculations for dashboard views
 4. **Add Swagger Documentation** - Auto-generate API docs
 5. **Implement Unit Tests** - Test services and controllers
 6. **Add Logging** - Structured logging with Serilog
 7. **Input Validation** - Use FluentValidation
 8. **API Versioning** - Prepare for v2
+
+---
+
+## 🔧 Functionalities to Add
+
+- **Dashboard Endpoint** - One call returning current week/month/year/category analytics and top expenses
+- **Budgets** - Set per-category budgets and track budget utilization
+- **Recurring Expenses** - Scheduled recurring transactions
+- **Export/Import** - CSV export and import of expense data
+- **Notifications** - Alerts for threshold breaches or budget overspend
+
+## 🛠️ Functionalities to Refurbish
+
+- **Service Layer Expansion** - Move controllers to rely on services for all domain logic
+- **Global Error Handling** - Add middleware to standardize API errors
+- **Validation** - Replace inline validation with a central validation pipeline
+- **Route Consistency** - Standardize endpoint naming across resources
+- **Performance** - Add pagination, caching, and query optimization for large histories
 
 ---
 

@@ -11,14 +11,17 @@ using Finance.Api.Helpers;
 namespace Finance.Api.Controllers;
 
 [ApiController]
-[Route("api/expense")]
+[Route("api/[controller]")]
 [Authorize]
 public class ExpensesController : ControllerBase
 {
     private readonly FinanceDbContext _context;
-    public ExpensesController(FinanceDbContext context)
+    private readonly IExpenseAnalyticsService _analyticsService;
+
+    public ExpensesController(FinanceDbContext context, IExpenseAnalyticsService analyticsService)
     {
         _context = context;
+        _analyticsService = analyticsService;
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
@@ -132,53 +135,12 @@ public class ExpensesController : ControllerBase
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //filter expense endpoint
+
     [HttpPost("filter")]
     public async Task<IActionResult> FilterExpense(FilterExpenseDto request)
     {
         var userId = User.GetUserId();
-        var query = _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).AsQueryable();
-        if (request.categoryId.HasValue)
-        {
-            query = query.Where(e => e.CategoryId == request.categoryId.Value);
-        }
-        if (request.StartDate.HasValue)
-        {
-            query = query.Where(e => e.ExpenseDate >= request.StartDate.Value);
-        }
-        if (request.EndDate.HasValue)
-        {
-            query = query.Where(e => e.ExpenseDate <= request.EndDate.Value);
-        }
-        if (request.MinAmount.HasValue)
-        {
-            query = query.Where(e => e.Amount >= request.MinAmount.Value);
-        }
-        if (request.MaxAmount.HasValue)
-        {
-            query = query.Where(e => e.Amount <= request.MaxAmount.Value);
-        }
-        if (request.Month.HasValue)
-        {
-            query = query.Where(e => e.ExpenseDate.Month == request.Month.Value);
-        }
-        if (request.Year.HasValue)
-        {
-            query = query.Where(e => e.ExpenseDate.Year == request.Year.Value);
-        }
-        if (!string.IsNullOrEmpty(request.Notes))
-        {
-            query = query.Where(e => e.Notes.Contains(request.Notes));
-        }
-
-        var filteredExpenses = await query.ToListAsync();
-        var expenseDtos = filteredExpenses.Select(e => new ExpenseDto
-        {
-            Id = e.Id,
-            Description = e.Notes,
-            Amount = e.Amount,
-            Date = e.ExpenseDate,
-            CategoryId = e.CategoryId
-        }).ToList();
-        return Ok(new ApiResponse<List<ExpenseDto>> { Success = true, Message = "Expense filtered successfully", Data = expenseDtos });
+        var response = await _analyticsService.FilterExpensesWithAnalyticsAsync(userId, request);
+        return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
     }
 }

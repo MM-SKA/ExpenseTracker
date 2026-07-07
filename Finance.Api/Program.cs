@@ -23,6 +23,8 @@ builder.Services.AddScoped<
     IJWTService,
     JWTService>();
 
+builder.Services.AddScoped<IExpenseAnalyticsService, ExpenseAnalyticsService>();
+
 builder.Services
     .AddAuthentication(
         JwtBearerDefaults.AuthenticationScheme)

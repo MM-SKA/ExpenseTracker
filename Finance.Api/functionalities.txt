@@ -1,0 +1,16 @@
+Expense Tracker Functionalities
+
+need to do : store jwt in httpscookies
+
+Added
+- login / register
+- add categories
+- add expense
+- update category (cascading)
+- filter expense
+> category wise , date wise , month wise , year wise , range wise , note wise , min amount wise
+
+Future AddOns
+- login using mobile number -> otp
+- update user profile
+- password reset

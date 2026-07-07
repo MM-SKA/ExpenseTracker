@@ -39,7 +39,7 @@ public class AuthController : ControllerBase{
         };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        var authDto = new AuthDto { Id = user.Id, FullName = user.FullName, Email = user.Email };
+        var authDto = new AuthDto { Id = user.Id, FullName = user.FullName, Email = user.Email, PhoneNumber = user.PhoneNumber };
         var response = new ApiResponse<AuthDto> { Success = true, Message = "User registered successfully", Data = authDto };
         return CreatedAtAction(nameof(Register), response);
     }
@@ -51,7 +51,8 @@ public class AuthController : ControllerBase{
         {
             Id = u.Id,
             FullName = u.FullName,
-            Email = u.Email
+            Email = u.Email,
+            PhoneNumber = u.PhoneNumber
         }).ToList();
         return Ok(userDtos);
     }
@@ -68,7 +69,7 @@ public class AuthController : ControllerBase{
         }
         
         var token =_jwtService.GenerateToken(user);
-        var authDto = new AuthDto { Id = user.Id, FullName = user.FullName, Email = user.Email };
+        var authDto = new AuthDto { Id = user.Id, FullName = user.FullName, Email = user.Email, PhoneNumber = user.PhoneNumber };
         var response = new ApiResponse<object> { Success = true, Message = "Login successful", Data = new { user = authDto, token } };
 
         return Ok(response);
@@ -82,8 +83,8 @@ public class AuthController : ControllerBase{
         var userId = User.GetUserId();
         var name = User.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
         var email = User.FindFirst(ClaimTypes.Email)?.Value ?? string.Empty;
-        
-        var authDto = new AuthDto { Id = userId, FullName = name, Email = email };
+        var phoneNumber = User.FindFirst(ClaimTypes.MobilePhone)?.Value ?? string.Empty;
+        var authDto = new AuthDto { Id = userId, FullName = name, Email = email, PhoneNumber = phoneNumber};
         return Ok(authDto);
     }
 

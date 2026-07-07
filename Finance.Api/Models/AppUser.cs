@@ -18,6 +18,11 @@ public class AppUser{
     [Required]
     public string PasswordHash { get; set; } = String.Empty;
 
+    [Required]
+    [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Phone number must contain exactly 10 digits")]
+
+    public string PhoneNumber { get; set; } = String.Empty;
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [JsonIgnore]
