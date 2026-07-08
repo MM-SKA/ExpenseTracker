@@ -1,6 +1,6 @@
 Expense Tracker Functionalities
 
-need to do : store jwt in httpscookies
+need to do : store jwt in httpscookies , expense was online or offline
 
 Added
 - login / register

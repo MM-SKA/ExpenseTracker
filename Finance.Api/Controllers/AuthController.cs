@@ -88,4 +88,59 @@ public class AuthController : ControllerBase{
         return Ok(authDto);
     }
 
+//---------------------------------------------------------------------------------------- 
+    //update user endpoint
+    [Authorize]
+    [HttpPatch("update")]
+    public async Task<IActionResult> UpdateUser(UpdateUserDto request){
+        //get the userId from the token
+        var userId = User.GetUserId();
+        //get the user from the database
+        var user = _context.Users.FirstOrDefault(u=>u.Id==userId);
+        if(user==null){
+            return NotFound(new ApiResponse{Success=false , Message = "User Not Found"});
+        }
+        //user found , update the user details
+        //create full name
+        user.FullName = request.FullName ?? user.FullName;
+        //update email if provided
+        user.Email = request.Email ?? user.Email;
+        // //update password if provided
+        // if(!string.IsNullOrEmpty(request.Password)){
+        //     user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        // }
+        //update phone number if provided
+        user.PhoneNumber = request.PhoneNumber ?? user.PhoneNumber;
+        //push the changes to db
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();  
+        var authDto = new AuthDto { Id = user.Id, FullName = user.FullName, Email = user.Email, PhoneNumber = user.PhoneNumber };
+        return Ok(new ApiResponse<AuthDto>{Success=true , Message = "User Updated Successfully", Data = authDto});
+    }
+//---------------------------------------------------------------------------------------- 
+    //change password endpoint
+    [Authorize]
+    [HttpPatch("change-password")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordDto request){
+        //get the userId
+        var userId = User.GetUserId();
+        //fetch the user from database
+        var user = _context.Users.FirstOrDefault(u=>u.Id==userId);
+        if(user==null){
+            return NotFound(new ApiResponse{Success=false , Message = "User Not Found"});
+        }
+        //verify the entered currentpassword is correct
+        if(!BCrypt.Net.BCrypt.Verify(request.CurrentPassword,user.PasswordHash)){
+            return Unauthorized(new ApiResponse{Success=false,Message="Enter the Correct Password"});
+        }
+        //check if new password is not same as currentpassword
+        if(request.CurrentPassword==request.NewPassword){
+            return BadRequest(new ApiResponse{Success=false,Message="New Password must be different from Current Password"});
+        }
+        //update the user table
+        _context.Users.Update(user);
+        //sync and save the changes
+        await _context.SaveChangesAsync();
+        return Ok(new ApiResponse{Success=true,Message="Password Updated Successfuly"});
+    }
 }
