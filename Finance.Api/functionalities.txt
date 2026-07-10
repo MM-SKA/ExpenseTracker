@@ -19,3 +19,9 @@ Future AddOns
 - login using mobile number -> otp
 - update user profile
 - password reset
+
+things done - 
+
+added a field in db
+refactor controllers
+generate excel for expenses

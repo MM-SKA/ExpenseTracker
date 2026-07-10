@@ -24,7 +24,7 @@ public class ExpenseAnalyticsService : IExpenseAnalyticsService
             Expenses = filteredExpenses.Select(e => new ExpenseDto
             {
                 Id = e.Id,
-                Description = e.Notes,
+                Description = e.Notes??string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
                 CategoryId = e.CategoryId
@@ -70,7 +70,7 @@ public class ExpenseAnalyticsService : IExpenseAnalyticsService
             query = query.Where(e => e.ExpenseDate.Year == filters.year.Value);
 
         if (!string.IsNullOrEmpty(filters.notes))
-            query = query.Where(e => e.Notes.Contains(filters.notes));
+            query = query.Where(e => e.Notes != null && e.Notes.Contains(filters.notes));
 
         return query;
     }

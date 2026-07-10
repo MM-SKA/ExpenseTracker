@@ -1,8 +1,8 @@
 public class FilteredAnalyticsDto
 {
-    public SummaryDto Summary { get; set; }
-    public List<CategorySpendDto> ByCategory { get; set; }
-    public DateDistributionDto DateDistribution { get; set; }
+    public SummaryDto Summary { get; set; } = new();
+    public List<CategorySpendDto> ByCategory { get; set; } = new();
+    public DateDistributionDto DateDistribution { get; set; } = new();
 }
 
 public class SummaryDto

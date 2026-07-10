@@ -9,7 +9,7 @@ public class Expense{
     [Required]
     public int CategoryId{get;set;}
 
-    public Category Category {get;set;}
+    public Category Category {get;set;} = null!;
 
     
     [Column(TypeName = "decimal(18,2)")]

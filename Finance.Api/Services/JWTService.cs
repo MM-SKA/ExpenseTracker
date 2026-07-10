@@ -21,15 +21,21 @@ public class JWTService : IJWTService {
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var key = _config["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key configuration is required.");
+        var issuer = _config["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer configuration is required.");
+        var audience = _config["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience configuration is required.");
+        var expiryMinutesText = _config["Jwt:ExpiryMinutes"] ?? throw new InvalidOperationException("Jwt:ExpiryMinutes configuration is required.");
+        var expiryMinutes = int.Parse(expiryMinutesText);
+
+        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(
-            issuer:_config["Jwt:Issuer"],
-            audience:_config["Jwt:Audience"],
-            claims:claims,
-            expires:DateTime.UtcNow.AddMinutes(int.Parse(_config["Jwt:ExpiryMinutes"])),
-            signingCredentials:creds
+            issuer: issuer,
+            audience: audience,
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(expiryMinutes),
+            signingCredentials: creds
         );
 
         return new JwtSecurityTokenHandler().WriteToken(token);
