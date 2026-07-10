@@ -8,12 +8,14 @@ public class Category{
 
     [Required]
     [MaxLength(50)]
-    public string Name {get; set;} = String.Empty;
+    public required string Name {get; set;}
 
     [JsonIgnore]
     public ICollection<Expense> Expenses {get; set;} = new List<Expense>();
 
-    public int UserId { get; set; }
+    public int? UserId { get; set; }
+
+    public bool IsSystemCategory {get;set;}
 
     [JsonIgnore]
     public AppUser? User { get; set; }

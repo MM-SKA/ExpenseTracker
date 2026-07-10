@@ -49,7 +49,7 @@ public class ExpenseAnalyticsService : IExpenseAnalyticsService
         var query = _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).AsQueryable();
 
         if (filters.categoryId.HasValue)
-            query = query.Where(e => e.CategoryId == filters.categoryId.Value);
+            query = query.Where(e => e.CategoryId == filters.categoryId.Value );
 
         if (filters.startDate.HasValue)
             query = query.Where(e => e.ExpenseDate >= filters.startDate.Value.Date);

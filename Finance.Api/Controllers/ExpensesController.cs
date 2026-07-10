@@ -30,7 +30,7 @@ public class ExpensesController : ControllerBase
     {
         var userId = User.GetUserId();
         //verify category belongs to user
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && c.UserId == userId);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory||c.UserId == userId));
         if (category == null)
         {
             return BadRequest(new ApiResponse { Success = false, Message = "Invalid category" });

@@ -31,7 +31,7 @@ public class CategoriesController : ControllerBase
         var userId = User.GetUserId();
 
         // Check if category with same name already exists for this user
-        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower());
+        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && (c.IsSystemCategory||c.UserId==userId));
         if (existingCategory != null)
         {
             return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
@@ -39,12 +39,13 @@ public class CategoriesController : ControllerBase
 
         var category = new Category
         {
-            Name = request.Name,
-            UserId = userId
+            Name = request.Name.Trim(),
+            UserId = userId,
+            IsSystemCategory = false
         };
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
-        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name };
+        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return CreatedAtAction(nameof(CreateCategory), response);
     }
@@ -55,8 +56,8 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetCategories()
     {
         var userId = User.GetUserId();
-        var categories = await _context.Categories.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
-        var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name }).ToList();
+        var categories = await _context.Categories.AsNoTracking().Where(c => (c.IsSystemCategory||c.UserId==userId)).ToListAsync();
+        var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name, IsSystemCategory = c.IsSystemCategory }).ToList();
         return Ok(categoryDtos);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
@@ -66,14 +67,20 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request)
     {
         var userId = User.GetUserId();
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory||c.UserId == userId));
         if (category == null)
         {
             return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
         }
 
+        //check if category is system category
+        if (category.IsSystemCategory)
+        {
+            return BadRequest("Can not update pre-defined categories");
+        }
+
         // Check if new name is duplicate (case-insensitive, excluding current category)
-        var isDuplicate = await _context.Categories.AnyAsync(c => c.UserId == userId && c.Name.ToLower() == request.Name.ToLower() && c.Id != id);
+        var isDuplicate = await _context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && c.Id != id);
         if (isDuplicate)
         {
             return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
@@ -83,7 +90,7 @@ public class CategoriesController : ControllerBase
         _context.Categories.Update(category);
         await _context.SaveChangesAsync();
 
-        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name };
+        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory=category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
         return Ok(response);
     }
@@ -94,10 +101,15 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var userId = User.GetUserId();
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory||c.UserId == userId));
         if (category == null)
         {
             return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
+        }
+        //check if category is not system category
+        if (category.IsSystemCategory)
+        {
+            return BadRequest("Can not delete pre-defined categories");
         }
         _context.Categories.Remove(category);
         await _context.SaveChangesAsync();

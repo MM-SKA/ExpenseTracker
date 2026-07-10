@@ -3,5 +3,7 @@ namespace Finance.Api.DTOs.Category;
 public class CategoryDto
 {
     public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public required string Name { get; set; }
+
+    public bool IsSystemCategory {get;set;}
 }

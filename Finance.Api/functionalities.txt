@@ -1,6 +1,11 @@
-Expense Tracker Functionalities
+changes to make since we added common category field in category table
+- user can not update common category
+- update fetch expenses controller endpoint on the basis of category
+- update get categories controller endpoint
+- update create category controller endpoint
+- update delete category controller endpoint
 
-need to do : store jwt in httpscookies , expense was online or offline
+need to do : store jwt in httpscookies , expense was online or offline , excel sheet , upload receipt
 
 Added
 - login / register
