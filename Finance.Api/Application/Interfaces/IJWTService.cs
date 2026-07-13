@@ -1,6 +1,6 @@
 using Finance.Api.Models;
 
-namespace Finance.Api.Services;
+namespace Finance.Api.Application.Interfaces;
 
 public interface IJWTService
 {

@@ -5,6 +5,8 @@ changes to make since we added common category field in category table
 - update create category controller endpoint
 - update delete category controller endpoint
 
+- update logging part
+
 need to do : store jwt in httpscookies , expense was online or offline , excel sheet , upload receipt
 
 Added

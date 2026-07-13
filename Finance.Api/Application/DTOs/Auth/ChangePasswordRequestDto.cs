@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Finance.Api.DTOs.Auth;
+namespace Finance.Api.Application.DTOs.Auth;
 
 public class ChangePasswordDto{
     [Required]

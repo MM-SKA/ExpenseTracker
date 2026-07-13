@@ -2,9 +2,10 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Finance.Api.Models;
+using Finance.Api.Application.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Finance.Api.Services;
+namespace Finance.Api.Infrastructure.Services;
 
 public class JWTService : IJWTService {
     private readonly IConfiguration _config;

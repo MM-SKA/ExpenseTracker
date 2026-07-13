@@ -1,4 +1,4 @@
-namespace Finance.Api.DTOs.Auth;
+namespace Finance.Api.Application.DTOs.Auth;
 
 public class AuthDto
 {

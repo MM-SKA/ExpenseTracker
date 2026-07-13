@@ -1,6 +1,8 @@
 using Finance.Api.Data;
 using Microsoft.EntityFrameworkCore;
-using Finance.Api.Services;
+using Finance.Api.Application.Interfaces;
+using Finance.Api.Application.Services;
+using Finance.Api.Infrastructure.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -23,9 +25,9 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpLogging(options =>{});
 
 
-builder.Services.AddScoped<
-    IJWTService,
-    JWTService>();
+builder.Services.AddScoped<IJWTService,JWTService>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IExpenseAnalyticsService, ExpenseAnalyticsService>();
 

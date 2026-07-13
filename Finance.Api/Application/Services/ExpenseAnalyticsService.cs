@@ -3,7 +3,7 @@ using Finance.Api.DTOs.Expenses;
 using Finance.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Finance.Api.Services;
+namespace Finance.Api.Application.Services;
 
 public class ExpenseAnalyticsService : IExpenseAnalyticsService
 {
