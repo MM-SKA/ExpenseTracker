@@ -1,4 +1,4 @@
-namespace Finance.Api.DTOs.Common;
+namespace Finance.Api.Application.DTOs.Common;
 
 public class ApiResponse<T>
 {

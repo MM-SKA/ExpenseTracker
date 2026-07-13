@@ -1,5 +1,5 @@
 using Finance.Api.Application.DTOs.Auth;
-using Finance.Api.DTOs.Common;
+using Finance.Api.Application.DTOs.Common;
 
 namespace Finance.Api.Application.Interfaces;
 public interface IAuthService

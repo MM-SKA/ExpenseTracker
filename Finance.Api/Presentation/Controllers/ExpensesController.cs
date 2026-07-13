@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Finance.Api.DTOs.Expenses;
-using Finance.Api.DTOs.Common;
+using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Models;
 using Finance.Api.Data;
 using Finance.Api.Helpers;

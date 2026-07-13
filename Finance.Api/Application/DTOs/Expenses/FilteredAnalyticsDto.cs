@@ -1,3 +1,5 @@
+using Finance.Api.Application.DTOs.Category;
+
 public class FilteredAnalyticsDto
 {
     public SummaryDto Summary { get; set; } = new();

@@ -1,7 +1,7 @@
-using Finance.Api.DTOs.Category;
+using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Models;
 using Finance.Api.Data;
-using Finance.Api.DTOs.Common;
+using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Helpers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
