@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using Finance.Api.Models;
+using Finance.Api.Presentation.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -130,7 +131,10 @@ using(var scope = app.Services.CreateScope())
 
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseHttpLogging();
+// app.UseHttpLogging();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

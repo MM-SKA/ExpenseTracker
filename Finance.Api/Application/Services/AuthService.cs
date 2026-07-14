@@ -32,6 +32,11 @@ public class AuthService : IAuthService
 
         if (emailExists)
         {
+            
+            _logger.LogWarning(
+                "Duplicate email registration attempt {Email}",
+                request.Email);
+
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -44,6 +49,10 @@ public class AuthService : IAuthService
 
         if (phoneExists)
         {
+            _logger.LogWarning(
+                "Duplicate Phone Number registration attempt {PhoneNumber}",
+                request.PhoneNumber);
+
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -70,6 +79,10 @@ public class AuthService : IAuthService
             Email = user.Email,
             PhoneNumber = user.PhoneNumber
         };
+
+        _logger.LogInformation(
+                "User {Email} registered",
+                request.Email);
 
         return new ApiResponse<AuthDto>
         {
@@ -99,6 +112,9 @@ public class AuthService : IAuthService
 
         if (!isPasswordValid)
         {
+            _logger.LogWarning(
+                "Invalid Password for : {Email}",
+                request.Email);
             return new ApiResponse<LoginResponseDto>
             {
                 Success = false,
@@ -115,6 +131,12 @@ public class AuthService : IAuthService
             Email = user.Email,
             PhoneNumber = user.PhoneNumber
         };
+
+        
+        _logger.LogInformation(
+            "User {Email} logged in",
+            user.Email);
+
 
         var loginResponse = new LoginResponseDto
         {
@@ -143,6 +165,9 @@ public class AuthService : IAuthService
             })
             .ToListAsync();
 
+        _logger.LogInformation(
+                "Returned the list of registered users");
+
         return new ApiResponse<List<AuthDto>>
         {
             Success = true,
@@ -159,6 +184,10 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
+            _logger.LogWarning(
+                "UserId - {userId} : Not Found",
+                userId);
+            
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -173,6 +202,10 @@ public class AuthService : IAuthService
             Email = user.Email,
             PhoneNumber = user.PhoneNumber
         };
+
+        _logger.LogInformation(
+                "User Data Displayed for userId : {userId}",
+                userId);
 
         return new ApiResponse<AuthDto>
         {
@@ -191,6 +224,10 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
+            _logger.LogWarning(
+                "UserId - {userId} : Not Found",
+                userId);
+            
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -270,6 +307,10 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
+            _logger.LogWarning(
+                "UserId - {userId} : Not Found",
+                userId);
+
             return new ApiResponse
             {
                 Success = false,
@@ -283,6 +324,8 @@ public class AuthService : IAuthService
 
         if (!isCurrentPasswordValid)
         {
+            _logger.LogInformation("userId : {userId} did not enter the original password",userId);
+            
             return new ApiResponse
             {
                 Success = false,
@@ -292,6 +335,7 @@ public class AuthService : IAuthService
 
         if (request.CurrentPassword == request.NewPassword)
         {
+            _logger.LogInformation("userId : {userId} enter new password same as original password",userId);
             return new ApiResponse
             {
                 Success = false,
