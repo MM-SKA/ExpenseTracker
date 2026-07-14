@@ -1,5 +1,7 @@
-using Finance.Api.DTOs.Expenses;
+using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Models;
+
+namespace Finance.Api.Application.Interfaces;
 
 public interface IExpenseAnalyticsService
 {

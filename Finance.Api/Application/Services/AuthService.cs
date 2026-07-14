@@ -4,6 +4,8 @@ using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+
 
 namespace Finance.Api.Application.Services;
 
@@ -11,13 +13,16 @@ public class AuthService : IAuthService
 {
     private readonly FinanceDbContext _context;
     private readonly IJWTService _jwtService;
+    private readonly ILogger<AuthService> _logger;
 
     public AuthService(
         FinanceDbContext context,
-        IJWTService jwtService)
+        IJWTService jwtService,
+        ILogger<AuthService> logger)
     {
         _context = context;
         _jwtService = jwtService;
+        _logger = logger;
     }
 
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)

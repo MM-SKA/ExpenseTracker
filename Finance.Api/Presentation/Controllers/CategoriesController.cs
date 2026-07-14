@@ -7,6 +7,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Finance.Api.Application.Interfaces;
 
 namespace Finance.Api.Controllers;
 
@@ -16,10 +17,12 @@ namespace Finance.Api.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly FinanceDbContext _context;
+    private readonly ICategoryService _categoryService;
 
-    public CategoriesController(FinanceDbContext context)
+    public CategoriesController(FinanceDbContext context , ICategoryService categoryService)
     {
         _context = context;
+        _categoryService=categoryService;
     }
 
     //------------------------------------------------------------------------------------------------------------------------------------
@@ -29,25 +32,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> CreateCategory(CreateCategoryDto request)
     {
         var userId = User.GetUserId();
-
-        // Check if category with same name already exists for this user
-        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && (c.IsSystemCategory||c.UserId==userId));
-        if (existingCategory != null)
-        {
-            return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
-        }
-
-        var category = new Category
-        {
-            Name = request.Name.Trim(),
-            UserId = userId,
-            IsSystemCategory = false
-        };
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync();
-        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
-        var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
-        return CreatedAtAction(nameof(CreateCategory), response);
+        return CreatedAtAction(nameof(CreateCategory), _categoryService.CreateCategoryAsync(userId,request));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //get all categories for the user
@@ -56,9 +41,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetCategories()
     {
         var userId = User.GetUserId();
-        var categories = await _context.Categories.AsNoTracking().Where(c => (c.IsSystemCategory||c.UserId==userId)).ToListAsync();
-        var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name, IsSystemCategory = c.IsSystemCategory }).ToList();
-        return Ok(categoryDtos);
+        return Ok(_categoryService.GetCategoriesAsync(userId));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update category endpoint
@@ -67,32 +50,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> UpdateCategory(int id, UpdateCategoryDto request)
     {
         var userId = User.GetUserId();
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory||c.UserId == userId));
-        if (category == null)
-        {
-            return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
-        }
-
-        //check if category is system category
-        if (category.IsSystemCategory)
-        {
-            return BadRequest("Can not update pre-defined categories");
-        }
-
-        // Check if new name is duplicate (case-insensitive, excluding current category)
-        var isDuplicate = await _context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && c.Id != id);
-        if (isDuplicate)
-        {
-            return BadRequest(new ApiResponse { Success = false, Message = "Category with this name already exists" });
-        }
-
-        category.Name = request.Name;
-        _context.Categories.Update(category);
-        await _context.SaveChangesAsync();
-
-        var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory=category.IsSystemCategory };
-        var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
-        return Ok(response);
+        return Ok(_categoryService.UpdateCategoryAsync(userId,id,request));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete category endpoint
@@ -101,18 +59,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var userId = User.GetUserId();
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory||c.UserId == userId));
-        if (category == null)
-        {
-            return NotFound(new ApiResponse { Success = false, Message = "Category not found" });
-        }
-        //check if category is not system category
-        if (category.IsSystemCategory)
-        {
-            return BadRequest("Can not delete pre-defined categories");
-        }
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
-        return Ok(new ApiResponse { Success = true, Message = "Category deleted successfully" });
+        return Ok(_categoryService.DeleteCategoryAsync(userId,id));
     }
 }

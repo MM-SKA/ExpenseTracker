@@ -1,3 +1,5 @@
+namespace Finance.Api.Application.DTOs.Expenses;
+
 public class FilterResponseDto
 {
     public List<ExpenseDto> Expenses { get; set; } = new();

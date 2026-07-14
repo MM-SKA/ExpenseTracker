@@ -1,4 +1,4 @@
-using Finance.Api.DTOs.Expenses;
+using Finance.Api.Application.DTOs.Expenses;
 
 public class ExpenseDto{
     public int Id { get; set; }

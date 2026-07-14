@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Finance.Api.DTOs.Expenses;
+namespace Finance.Api.Application.DTOs.Expenses;
 
 public class CreateExpenseDto
 {

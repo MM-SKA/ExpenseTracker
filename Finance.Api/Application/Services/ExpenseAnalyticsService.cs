@@ -1,5 +1,6 @@
 using Finance.Api.Data;
-using Finance.Api.DTOs.Expenses;
+using Finance.Api.Application.DTOs.Expenses;
+using Finance.Api.Application.Interfaces;
 using Finance.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.DTOs.Category;

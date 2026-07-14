@@ -1,4 +1,4 @@
-using Finance.Api.DTOs.Expenses;
+namespace Finance.Api.Application.DTOs.Expenses;
 
 public class FilterExpenseDto{
     public int? categoryId {get;set;}

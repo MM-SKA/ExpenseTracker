@@ -33,6 +33,8 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 builder.Services.AddScoped<IExpenseAnalyticsService, ExpenseAnalyticsService>();
 
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
+
 builder.Services
     .AddAuthentication(
         JwtBearerDefaults.AuthenticationScheme)
