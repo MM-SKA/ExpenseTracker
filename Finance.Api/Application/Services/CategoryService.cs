@@ -11,13 +11,15 @@ namespace Finance.Api.Application.Services;
 public class CategoryService : ICategoryService
 {
     private readonly FinanceDbContext _context;
+    private readonly ILogger<CategoryService> _logger;
 
     public CategoryService(
-        FinanceDbContext context
+        FinanceDbContext context , ILogger<CategoryService> logger
     )
 
     {
         _context = context;
+        _logger = logger;
     }
 
     public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(int userId, CreateCategoryDto request)
@@ -28,6 +30,7 @@ public class CategoryService : ICategoryService
         var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && (c.IsSystemCategory || c.UserId == userId));
         if (existingCategory != null)
         {
+            _logger.LogWarning("Attemp to Create Category with Existing Name");
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
         }
 
@@ -39,6 +42,7 @@ public class CategoryService : ICategoryService
         };
         _context.Categories.Add(category);
         await _context.SaveChangesAsync();
+        _logger.LogInformation("New Category Added by UserID : {userId}",userId);
         var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return response;

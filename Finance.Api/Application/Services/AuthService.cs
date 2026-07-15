@@ -165,9 +165,6 @@ public class AuthService : IAuthService
             })
             .ToListAsync();
 
-        _logger.LogInformation(
-                "Returned the list of registered users");
-
         return new ApiResponse<List<AuthDto>>
         {
             Success = true,
@@ -184,9 +181,6 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            _logger.LogWarning(
-                "UserId - {userId} : Not Found",
-                userId);
             
             return new ApiResponse<AuthDto>
             {
@@ -202,10 +196,6 @@ public class AuthService : IAuthService
             Email = user.Email,
             PhoneNumber = user.PhoneNumber
         };
-
-        _logger.LogInformation(
-                "User Data Displayed for userId : {userId}",
-                userId);
 
         return new ApiResponse<AuthDto>
         {
@@ -224,9 +214,6 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            _logger.LogWarning(
-                "UserId - {userId} : Not Found",
-                userId);
             
             return new ApiResponse<AuthDto>
             {
@@ -307,10 +294,6 @@ public class AuthService : IAuthService
 
         if (user == null)
         {
-            _logger.LogWarning(
-                "UserId - {userId} : Not Found",
-                userId);
-
             return new ApiResponse
             {
                 Success = false,
@@ -324,7 +307,6 @@ public class AuthService : IAuthService
 
         if (!isCurrentPasswordValid)
         {
-            _logger.LogInformation("userId : {userId} did not enter the original password",userId);
             
             return new ApiResponse
             {
@@ -335,7 +317,6 @@ public class AuthService : IAuthService
 
         if (request.CurrentPassword == request.NewPassword)
         {
-            _logger.LogInformation("userId : {userId} enter new password same as original password",userId);
             return new ApiResponse
             {
                 Success = false,
@@ -347,6 +328,10 @@ public class AuthService : IAuthService
             request.NewPassword);
 
         await _context.SaveChangesAsync();
+
+        _logger.LogInformation(
+            "password updated successfully"
+        );
 
         return new ApiResponse
         {

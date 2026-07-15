@@ -18,6 +18,13 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
+    
+    [HttpPost]
+    public IActionResult Test()
+    {
+        throw new Exception("Boom");
+    }
+    
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterRequestDto request)
     {

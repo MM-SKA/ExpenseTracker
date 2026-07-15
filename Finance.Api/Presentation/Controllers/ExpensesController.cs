@@ -19,14 +19,11 @@ namespace Finance.Api.Controllers;
 public class ExpensesController : ControllerBase
 {
     private readonly FinanceDbContext _context;
-    private readonly IExpenseAnalyticsService _analyticsService;
-
     private readonly IExpenseService _expenseService;
 
-    public ExpensesController(FinanceDbContext context, IExpenseAnalyticsService analyticsService, IExpenseService expenseService)
+    public ExpensesController(FinanceDbContext context, IExpenseService expenseService)
     {
         _context = context;
-        _analyticsService = analyticsService;
         _expenseService=expenseService;
     }
     //------------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +69,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> FilterExpense(FilterExpenseDto request)
     {
         var userId = User.GetUserId();
-        var response = await _analyticsService.FilterExpensesWithAnalyticsAsync(userId, request);
+        var response = await _expenseService.FilterExpensesWithAnalyticsAsync(userId, request);
         return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
     }
 

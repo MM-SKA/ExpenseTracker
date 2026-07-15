@@ -32,8 +32,6 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-builder.Services.AddScoped<IExpenseAnalyticsService, ExpenseAnalyticsService>();
-
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 builder.Services
@@ -133,6 +131,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 // app.UseHttpLogging();
 
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
