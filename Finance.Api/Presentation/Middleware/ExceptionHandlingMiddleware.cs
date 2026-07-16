@@ -1,3 +1,4 @@
+using System.Data.Common;
 using System.Text.Json;
 using Finance.Api.Application.DTOs.Common;
 
@@ -25,7 +26,7 @@ public class ExceptionHandlingMiddleware
             _logger.LogError(ex, "Unhandled Exception . Method={Method}, Path={Path}", context.Request.Method, context.Request.Path);
             context.Response.StatusCode = 500;
             context.Response.ContentType = "application/json";
-            var response = new ApiResponse { Success = false, Message = "An unexpected error occurred" };
+            var response = new ApiResponse { Success = false, Message = ex.Message };
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }

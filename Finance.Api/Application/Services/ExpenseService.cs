@@ -15,7 +15,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
     {
         _context = context;
     }
-    public async Task<ApiResponse<ExpenseDto>> CreateExpense(int userId , CreateExpenseDto request)
+    public async Task<ApiResponse<ExpenseDto>> CreateExpense(int userId, CreateExpenseDto request)
     {
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory || c.UserId == userId));
         if (category == null)
@@ -43,7 +43,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
         var response = new ApiResponse<ExpenseDto> { Success = true, Message = "Expense created successfully", Data = expenseDto };
         return response;
     }
-    public async Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId , int id, UpdateExpenseDto request)
+    public async Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request)
     {
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
         if (expense == null)
@@ -78,7 +78,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
         return response;
     }
 
-    public async Task<ApiResponse> DeleteExpense(int userId , int id)
+    public async Task<ApiResponse> DeleteExpense(int userId, int id)
     {
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId);
         if (expense == null)
@@ -87,7 +87,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
         }
         _context.Expenses.Remove(expense);
         await _context.SaveChangesAsync();
-        return new ApiResponse{Success=true , Message = "Expense Deleted successfully"};
+        return new ApiResponse { Success = true, Message = "Expense Deleted successfully" };
     }
 
     public async Task<List<ExpenseDto>> GetExpense(int userId)
@@ -110,7 +110,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
 
     // public async Task<ApiResponse<FilterResponseDto>> FilterExpense(int userId , FilterExpenseDto request)
     // {
-        
+
     // }
 
     public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(int userId, FilterExpenseDto filters)
@@ -123,7 +123,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
             Expenses = filteredExpenses.Select(e => new ExpenseDto
             {
                 Id = e.Id,
-                Description = e.Notes??string.Empty,
+                Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
                 CategoryId = e.CategoryId
@@ -148,7 +148,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
         var query = _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).AsQueryable();
 
         if (filters.categoryId.HasValue)
-            query = query.Where(e => e.CategoryId == filters.categoryId.Value );
+            query = query.Where(e => e.CategoryId == filters.categoryId.Value);
 
         if (filters.startDate.HasValue)
             query = query.Where(e => e.ExpenseDate >= filters.startDate.Value.Date);
@@ -229,14 +229,25 @@ public class ExpenseService : IExpenseService<ExpenseDto>
         };
     }
 
-    public async Task<PaginationResponseDto<ExpenseDto>> GetPaginatedExpensesAsync(int userId , int pageNumber , int pageSize)
+    public async Task<PaginationResponseDto<ExpenseDto>> GetPaginatedExpensesAsync(int userId, int pageNumber, int pageSize)
     {
+
+        // if(pageSize<=0 || pageNumber <= 0)
+        // {
+        //     throw new Exception("PageNumber or PageSize can not be Negative nor Zero");
+        // }
 
         var query = _context.Expenses
             .AsNoTracking()
             .Where(e => e.UserId == userId);
 
         var totalRecords = await query.CountAsync();
+
+        int totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+        if (pageNumber > totalPages)
+        {
+            pageNumber = Math.Min(pageNumber, totalPages);
+        }
 
         var expenses = await query
             .OrderByDescending(e => e.ExpenseDate)
@@ -245,7 +256,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
             .Take(pageSize)
             .ToListAsync();
 
-        
+
         var expenseDtos = expenses
             .Select(e => new ExpenseDto
             {
@@ -257,7 +268,7 @@ public class ExpenseService : IExpenseService<ExpenseDto>
             })
             .ToList();
 
-        
+
         return new PaginationResponseDto<ExpenseDto>
         {
             Items = expenseDtos,
