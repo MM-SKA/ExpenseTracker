@@ -4,7 +4,7 @@ using Finance.Api.Models;
 
 namespace Finance.Api.Application.Interfaces;
 
-public interface IExpenseService
+public interface IExpenseService<T>
 {
     Task<ApiResponse<ExpenseDto>> CreateExpense(int userId , CreateExpenseDto request);
     Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId , int id, UpdateExpenseDto request);
@@ -15,5 +15,6 @@ public interface IExpenseService
     Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses);
 
     Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(int userId, FilterExpenseDto filters);
-    // Task<ApiResponse<FilterResponseDto>> FilterExpense(int userId , FilterExpenseDto request);
+
+    Task<PaginationResponseDto<ExpenseDto>> GetPaginatedExpensesAsync(int userId , int pageNumber , int pageSize);
 }

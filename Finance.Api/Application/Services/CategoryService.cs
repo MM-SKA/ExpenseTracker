@@ -30,7 +30,7 @@ public class CategoryService : ICategoryService
         var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && (c.IsSystemCategory || c.UserId == userId));
         if (existingCategory != null)
         {
-            _logger.LogWarning("Attemp to Create Category with Existing Name");
+            _logger.LogWarning("Attempt to Create Category with Existing Name");
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
         }
 

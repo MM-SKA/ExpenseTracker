@@ -32,7 +32,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<IExpenseService<ExpenseDto>, ExpenseService>();
 
 builder.Services
     .AddAuthentication(

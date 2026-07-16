@@ -19,9 +19,9 @@ namespace Finance.Api.Controllers;
 public class ExpensesController : ControllerBase
 {
     private readonly FinanceDbContext _context;
-    private readonly IExpenseService _expenseService;
+    private readonly IExpenseService<ExpenseDto> _expenseService;
 
-    public ExpensesController(FinanceDbContext context, IExpenseService expenseService)
+    public ExpensesController(FinanceDbContext context, IExpenseService<ExpenseDto> expenseService)
     {
         _context = context;
         _expenseService=expenseService;
@@ -130,4 +130,23 @@ public class ExpensesController : ControllerBase
     //         $"Expenses_{DateTime.UtcNow:yyyyMMdd}.xlsx"
     //     );
     // }
+
+    
+    [HttpGet("paged")]
+    public async Task<IActionResult>
+    GetPagedExpenses(
+        [FromQuery] PaginationRequestDto request)
+    {
+        var userId = User.GetUserId();
+
+        var response =
+            await _expenseService
+                .GetPaginatedExpensesAsync(
+                    userId,
+                    request.PageNumber,
+                    request.PageSize);
+
+        return Ok(response);
+    }
+
 }

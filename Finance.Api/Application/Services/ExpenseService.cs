@@ -6,7 +6,7 @@ using Finance.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.DTOs.Category;
 
-public class ExpenseService : IExpenseService
+public class ExpenseService : IExpenseService<ExpenseDto>
 {
 
     private readonly FinanceDbContext _context;
@@ -227,5 +227,48 @@ public class ExpenseService : IExpenseService
                 DaysWithExpenses = daysWithExpenses
             }
         };
+    }
+
+    public async Task<PaginationResponseDto<ExpenseDto>> GetPaginatedExpensesAsync(int userId , int pageNumber , int pageSize)
+    {
+
+        var query = _context.Expenses
+            .AsNoTracking()
+            .Where(e => e.UserId == userId);
+
+        var totalRecords = await query.CountAsync();
+
+        var expenses = await query
+            .OrderByDescending(e => e.ExpenseDate)
+            .ThenByDescending(e => e.Id)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        
+        var expenseDtos = expenses
+            .Select(e => new ExpenseDto
+            {
+                Id = e.Id,
+                Description = e.Notes ?? string.Empty,
+                Amount = e.Amount,
+                Date = e.ExpenseDate,
+                CategoryId = e.CategoryId
+            })
+            .ToList();
+
+        
+        return new PaginationResponseDto<ExpenseDto>
+        {
+            Items = expenseDtos,
+            PageNumber = pageNumber,
+            PageSize = pageSize,
+            TotalRecords = totalRecords,
+            TotalPages =
+                (int)Math.Ceiling(
+                    totalRecords /
+                    (double)pageSize)
+        };
+
     }
 }
