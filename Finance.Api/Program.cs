@@ -1,4 +1,4 @@
-using Finance.Api.Data;
+﻿using Finance.Api.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.Services;
@@ -7,8 +7,9 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
-using Finance.Api.Models;
+using Finance.Api.Domain.Entities;
 using Finance.Api.Presentation.Middleware;
+using Finance.Api.Application.DTOs.Expenses;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,10 +34,9 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddHttpLogging(options =>{});
+builder.Services.AddHttpLogging(options => { });
 
-
-builder.Services.AddScoped<IJWTService,JWTService>();
+builder.Services.AddScoped<IJWTService, JWTService>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -85,13 +85,13 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-using(var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var context =
         scope.ServiceProvider
             .GetRequiredService<FinanceDbContext>();
 
-    if(!context.Categories.Any())
+    if (!context.Categories.Any())
     {
         context.Categories.AddRange(
             new Category

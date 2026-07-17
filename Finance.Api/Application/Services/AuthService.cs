@@ -1,11 +1,11 @@
-using Finance.Api.Application.Interfaces;
-using Finance.Api.Data;
+﻿using Finance.Api.Application.Interfaces;
+using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
-using Finance.Api.Models;
+using Finance.Api.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-
 
 namespace Finance.Api.Application.Services;
 
@@ -27,12 +27,11 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)
     {
-        var emailExists = await _context.Users
-            .AnyAsync(u => u.Email == request.Email);
+        var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email).ConfigureAwait(false);
 
         if (emailExists)
         {
-            
+
             _logger.LogWarning(
                 "Duplicate email registration attempt {Email}",
                 request.Email);
@@ -70,7 +69,7 @@ public class AuthService : IAuthService
 
         _context.Users.Add(user);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync().ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -95,7 +94,7 @@ public class AuthService : IAuthService
     public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email);
+            .FirstOrDefaultAsync(u => u.Email == request.Email).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -132,11 +131,7 @@ public class AuthService : IAuthService
             PhoneNumber = user.PhoneNumber
         };
 
-        
-        _logger.LogInformation(
-            "User {Email} logged in",
-            user.Email);
-
+        _logger.LogInformation("User {Email} logged in", user.Email);
 
         var loginResponse = new LoginResponseDto
         {
@@ -154,16 +149,7 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<List<AuthDto>>> GetUsersAsync()
     {
-        var users = await _context.Users
-            .AsNoTracking()
-            .Select(u => new AuthDto
-            {
-                Id = u.Id,
-                FullName = u.FullName,
-                Email = u.Email,
-                PhoneNumber = u.PhoneNumber
-            })
-            .ToListAsync();
+        var users = await _context.Users.AsNoTracking().Select(u => new AuthDto { Id = u.Id, FullName = u.FullName, Email = u.Email, PhoneNumber = u.PhoneNumber }).ToListAsync().ConfigureAwait(false);
 
         return new ApiResponse<List<AuthDto>>
         {
@@ -175,13 +161,11 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<AuthDto>> GetCurrentUserAsync(int userId)
     {
-        var user = await _context.Users
-            .AsNoTracking()
-            .FirstOrDefaultAsync(u => u.Id == userId);
+        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
 
         if (user == null)
         {
-            
+
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -210,11 +194,11 @@ public class AuthService : IAuthService
         UpdateUserDto request)
     {
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
 
         if (user == null)
         {
-            
+
             return new ApiResponse<AuthDto>
             {
                 Success = false,
@@ -248,7 +232,7 @@ public class AuthService : IAuthService
             var phoneExists = await _context.Users
                 .AnyAsync(u =>
                     u.PhoneNumber == request.PhoneNumber &&
-                    u.Id != userId);
+                    u.Id != userId).ConfigureAwait(false);
 
             if (phoneExists)
             {
@@ -307,7 +291,7 @@ public class AuthService : IAuthService
 
         if (!isCurrentPasswordValid)
         {
-            
+
             return new ApiResponse
             {
                 Success = false,

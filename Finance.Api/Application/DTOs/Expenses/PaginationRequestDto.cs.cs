@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Finance.Api.Application.DTOs.Expenses;
 
 public class PaginationRequestDto
-{ 
-    
+{
+
     [Range(1, int.MaxValue, ErrorMessage = "PageNumber must be atleast 1")]
 
     public int PageNumber { get; set; } = 1;

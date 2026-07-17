@@ -1,4 +1,4 @@
-﻿using Finance.Api.Application.DTOs.Category;
+﻿using Finance.Api.Application.DTOs.Categories;
 using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 

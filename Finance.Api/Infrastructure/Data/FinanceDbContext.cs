@@ -2,7 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Finance.Api.Data;
+namespace Finance.Api.Infrastructure.Data;
 
 public class FinanceDbContext : DbContext
 {

@@ -1,6 +1,6 @@
-﻿using Finance.Api.Application.DTOs.Category;
+﻿using Finance.Api.Application.DTOs.Categories;
 using Finance.Api.Domain.Entities;
-using Finance.Api.Data;
+using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Helpers;
 using System.Security.Claims;

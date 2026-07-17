@@ -1,20 +1,25 @@
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Finance.Api.Models;
+
+using Finance.Api.Domain.Entities;
 using Finance.Api.Application.Interfaces;
+
 using Microsoft.IdentityModel.Tokens;
 
 namespace Finance.Api.Infrastructure.Services;
 
-public class JWTService : IJWTService {
+public class JWTService : IJWTService
+{
     private readonly IConfiguration _config;
 
-    public JWTService (IConfiguration config){
-        _config=config;
+    public JWTService(IConfiguration config)
+    {
+        _config = config;
     }
 
-    public string GenerateToken(AppUser user){
+    public string GenerateToken(AppUser user)
+    {
         var claims = new[]{
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.FullName),

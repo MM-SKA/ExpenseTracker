@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Finance.Api.Application.DTOs.Category;
+namespace Finance.Api.Application.DTOs.Categories;
 
 public class UpdateCategoryDto
 {

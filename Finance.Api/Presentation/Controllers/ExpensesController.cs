@@ -5,7 +5,7 @@ using System.Security.Claims;
 using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
-using Finance.Api.Data;
+using Finance.Api.Infrastructure.Data;
 using Finance.Api.Helpers;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Presentation;

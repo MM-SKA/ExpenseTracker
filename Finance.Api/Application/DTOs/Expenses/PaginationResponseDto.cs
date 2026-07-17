@@ -1,7 +1,7 @@
-namespace Finance.Api.Application.DTOs.Expenses;
+﻿namespace Finance.Api.Application.DTOs.Expenses;
 
 public class PaginationResponseDto<T>
-{   
+{
     public List<T> Items { get; set; } = new();
     public int PageNumber { get; set; }
     public int PageSize { get; set; }

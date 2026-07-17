@@ -1,7 +1,8 @@
-using Finance.Api.Application.Interfaces;
+﻿using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Helpers;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,17 +19,16 @@ public class AuthController : ControllerBase
         _authService = authService;
     }
 
-    
     [HttpPost]
     public IActionResult Test()
     {
-        throw new Exception("Boom");
+        throw new NotImplementedException("Test endpoint");
     }
-    
+
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterRequestDto request)
+    public async Task<IActionResult> RegisterAsync(RegisterRequestDto request)
     {
-        var response = await _authService.RegisterAsync(request);
+        var response = await _authService.RegisterAsync(request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -36,14 +36,14 @@ public class AuthController : ControllerBase
         }
 
         return CreatedAtAction(
-            nameof(Register),
+            nameof(RegisterAsync),
             response);
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginRequestDto request)
+    public async Task<IActionResult> LoginAsync(LoginRequestDto request)
     {
-        var response = await _authService.LoginAsync(request);
+        var response = await _authService.LoginAsync(request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -55,12 +55,12 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> Me()
+    public async Task<IActionResult> MeAsync()
     {
         var userId = User.GetUserId();
 
         var response =
-            await _authService.GetCurrentUserAsync(userId);
+            await _authService.GetCurrentUserAsync(userId).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -72,12 +72,12 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpPatch("update")]
-    public async Task<IActionResult> UpdateUser(UpdateUserDto request)
+    public async Task<IActionResult> UpdateUserAsync(UpdateUserDto request)
     {
         var userId = User.GetUserId();
 
         var response =
-            await _authService.UpdateUserAsync(userId, request);
+            await _authService.UpdateUserAsync(userId, request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -89,12 +89,12 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpPatch("change-password")]
-    public async Task<IActionResult> ChangePassword(ChangePasswordDto request)
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDto request)
     {
         var userId = User.GetUserId();
 
         var response =
-            await _authService.ChangePasswordAsync(userId, request);
+            await _authService.ChangePasswordAsync(userId, request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -106,9 +106,9 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet("users")]
-    public async Task<IActionResult> GetUsers()
+    public async Task<IActionResult> GetUsersAsync()
     {
-        var response = await _authService.GetUsersAsync();
+        var response = await _authService.GetUsersAsync().ConfigureAwait(false);
 
         return Ok(response);
     }

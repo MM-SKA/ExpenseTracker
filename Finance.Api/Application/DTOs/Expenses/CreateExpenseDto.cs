@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Finance.Api.Application.DTOs.Expenses;
@@ -9,11 +9,11 @@ public class CreateExpenseDto
     [MaxLength(200)]
     // [JsonPropertyName("Notes")]
     public string Notes { get; set; } = null!;
-    
+
     [Required]
     [Range(0.01, double.MaxValue, ErrorMessage = "Amount is required and must be a positive value.")]
     public decimal Amount { get; set; }
-    
+
     [Required]
     public int CategoryId { get; set; }
 

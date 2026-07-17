@@ -1,4 +1,4 @@
-using Finance.Api.Models;
+﻿using Finance.Api.Domain.Entities;
 
 namespace Finance.Api.Application.Interfaces;
 

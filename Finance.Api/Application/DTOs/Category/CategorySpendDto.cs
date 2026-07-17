@@ -1,4 +1,4 @@
-namespace Finance.Api.Application.DTOs.Category;
+namespace Finance.Api.Application.DTOs.Categories;
 
 public class CategorySpendDto
 {

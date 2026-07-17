@@ -1,4 +1,4 @@
-using Finance.Api.Application.DTOs.Category;
+using Finance.Api.Application.DTOs.Categories;
 
 public class FilteredAnalyticsDto
 {
