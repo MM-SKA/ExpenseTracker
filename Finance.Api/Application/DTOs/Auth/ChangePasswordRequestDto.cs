@@ -2,10 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Finance.Api.Application.DTOs.Auth;
 
-public class ChangePasswordDto{
+public class ChangePasswordDto
+{
     [Required]
-    public required string CurrentPassword {get;set;}
+    public required string CurrentPassword { get; set; }
 
     [Required]
-    public required string NewPassword {get;set;}
+    public required string NewPassword { get; set; }
 }

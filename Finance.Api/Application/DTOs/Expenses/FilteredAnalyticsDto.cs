@@ -1,5 +1,6 @@
-using Finance.Api.Application.DTOs.Categories;
+using Finance.Api.Application.DTOs.Category;
 
+namespace Finance.Api.Application.DTOs.Expenses;
 public class FilteredAnalyticsDto
 {
     public SummaryDto Summary { get; set; } = new();

@@ -2,10 +2,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Finance.Api.Application.DTOs.Auth;
 
-public class LoginRequestDto{
+public class LoginRequestDto
+{
     [Required]
-    public string Email { get; set; } = String.Empty;
+    public required string Email { get; set; }
 
     [Required]
-    public string Password { get; set; } = String.Empty;
+    public required string Password { get; set; }
 }

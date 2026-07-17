@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Finance.Api.Application.DTOs.Categories;
+namespace Finance.Api.Application.DTOs.Category;
 
-public class CreateCategoryDto{
+public class CreateCategoryDto
+{
     [Required]
-    public string Name {get; set;} = String.Empty;
+    public required string Name { get; set; }
 }
