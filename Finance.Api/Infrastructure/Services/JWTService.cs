@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Globalization;
 
 using Finance.Api.Domain.Entities;
 using Finance.Api.Application.Interfaces;
@@ -14,14 +15,13 @@ public class JWTService : IJWTService
     private readonly IConfiguration _config;
 
     public JWTService(IConfiguration config)
-    {
-        _config = config;
-    }
+        => _config = config;
 
     public string GenerateToken(AppUser user)
     {
+        ArgumentNullException.ThrowIfNull(user);
         var claims = new[]{
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(CultureInfo.InvariantCulture)),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
@@ -31,7 +31,7 @@ public class JWTService : IJWTService
         var issuer = _config["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer configuration is required.");
         var audience = _config["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience configuration is required.");
         var expiryMinutesText = _config["Jwt:ExpiryMinutes"] ?? throw new InvalidOperationException("Jwt:ExpiryMinutes configuration is required.");
-        var expiryMinutes = int.Parse(expiryMinutesText);
+        var expiryMinutes = int.Parse(expiryMinutesText, CultureInfo.InvariantCulture);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         var creds = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

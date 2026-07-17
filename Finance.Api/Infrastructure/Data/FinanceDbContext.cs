@@ -14,12 +14,12 @@ public class FinanceDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
+        ArgumentNullException.ThrowIfNull(modelBuilder);
         //indexes for unique constraints and performance optimization
-        modelBuilder.Entity<AppUser>().HasIndex(u => u.Email).IsUnique();
-        modelBuilder.Entity<Category>().HasIndex(c => new { c.UserId, c.Name }).IsUnique();
-        modelBuilder.Entity<Expense>().HasIndex(e => e.ExpenseDate);
-        modelBuilder.Entity<Expense>().HasOne(e => e.User).WithMany(u => u.Expenses).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Expense>().HasOne(e => e.Category).WithMany(c => c.Expenses).HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Cascade);
+        _ = modelBuilder.Entity<AppUser>().HasIndex(u => u.Email).IsUnique();
+        _ = modelBuilder.Entity<Category>().HasIndex(c => new { c.UserId, c.Name }).IsUnique();
+        _ = modelBuilder.Entity<Expense>().HasIndex(e => e.ExpenseDate);
+        _ = modelBuilder.Entity<Expense>().HasOne(e => e.User).WithMany(u => u.Expenses).HasForeignKey(e => e.UserId).OnDelete(DeleteBehavior.Cascade);
+        _ = modelBuilder.Entity<Expense>().HasOne(e => e.Category).WithMany(c => c.Expenses).HasForeignKey(e => e.CategoryId).OnDelete(DeleteBehavior.Cascade);
     }
 }

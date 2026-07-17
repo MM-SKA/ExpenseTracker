@@ -1,10 +1,11 @@
 using Finance.Api.Application.DTOs.Category;
 
 namespace Finance.Api.Application.DTOs.Expenses;
+
 public class FilteredAnalyticsDto
 {
     public SummaryDto Summary { get; set; } = new();
-    public List<CategorySpendDto> ByCategory { get; set; } = new();
+    public List<CategorySpendDto> ByCategory { get; set; } = [];
     public DateDistributionDto DateDistribution { get; set; } = new();
 }
 

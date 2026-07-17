@@ -1,6 +1,6 @@
 ﻿using Finance.Api.Application.Interfaces;
 using Finance.Api.Infrastructure.Data;
-using Finance.Api.Application.DTOs.Categories;
+using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
@@ -25,7 +25,8 @@ public class CategoryService : ICategoryService
         // var userId = User.GetUserId();
 
         // Check if category with same name already exists for this user
-        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(request);
+        var existingCategory = await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToUpperInvariant().Trim() == request.Name.ToUpperInvariant().Trim() && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (existingCategory != null)
         {
             _logger.LogWarning("Attempt to Create Category with Existing Name");
@@ -38,9 +39,9 @@ public class CategoryService : ICategoryService
             UserId = userId,
             IsSystemCategory = false
         };
-        _context.Categories.Add(category);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
-        _logger.LogInformation("New Category Added by UserID : {userId}", userId);
+        _ = _context.Categories.Add(category);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+        _logger.LogInformation("New Category Added by UserID : {UserId}", userId);
         var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return response;
@@ -53,9 +54,10 @@ public class CategoryService : ICategoryService
         return (categoryDtos);
     }
 
-    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(int userId, int categoryId, UpdateCategoryDto request)
+    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(int userId, int id, UpdateCategoryDto request)
     {
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(request);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category not found" };
@@ -68,24 +70,24 @@ public class CategoryService : ICategoryService
         }
 
         // Check if new name is duplicate (case-insensitive, excluding current category)
-        var isDuplicate = await _context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToLower().Trim() == request.Name.ToLower().Trim() && c.Id != categoryId).ConfigureAwait(false);
+        var isDuplicate = await _context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToUpperInvariant().Trim() == request.Name.ToUpperInvariant().Trim() && c.Id != id).ConfigureAwait(false);
         if (isDuplicate)
         {
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
         }
 
         category.Name = request.Name;
-        _context.Categories.Update(category);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = _context.Categories.Update(category);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
         return (response);
     }
 
-    public async Task<ApiResponse> DeleteCategoryAsync(int userId, int categoryId)
+    public async Task<ApiResponse> DeleteCategoryAsync(int userId, int id)
     {
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == categoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
             return new ApiResponse { Success = false, Message = "Category not found" };
@@ -95,8 +97,8 @@ public class CategoryService : ICategoryService
         {
             return new ApiResponse { Success = false, Message = "Can not delete pre-defined categories" };
         }
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = _context.Categories.Remove(category);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
         return new ApiResponse { Success = true, Message = "Category deleted successfully" };
     }
 }

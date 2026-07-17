@@ -12,7 +12,7 @@ public class Category
     public required string Name { get; set; }
 
     [JsonIgnore]
-    public ICollection<Expense> Expenses { get; } = new List<Expense>();
+    public ICollection<Expense> Expenses { get; } = [];
 
     public int? UserId { get; set; }
 

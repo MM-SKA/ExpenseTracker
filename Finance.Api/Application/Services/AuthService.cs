@@ -9,24 +9,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Finance.Api.Application.Services;
 
-public class AuthService : IAuthService
+public class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger) : IAuthService
 {
-    private readonly FinanceDbContext _context;
-    private readonly IJWTService _jwtService;
-    private readonly ILogger<AuthService> _logger;
-
-    public AuthService(
-        FinanceDbContext context,
-        IJWTService jwtService,
-        ILogger<AuthService> logger)
-    {
-        _context = context;
-        _jwtService = jwtService;
-        _logger = logger;
-    }
 
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email).ConfigureAwait(false);
 
         if (emailExists)
@@ -44,7 +32,7 @@ public class AuthService : IAuthService
         }
 
         var phoneExists = await _context.Users
-            .AnyAsync(u => u.PhoneNumber == request.PhoneNumber);
+            .AnyAsync(u => u.PhoneNumber == request.PhoneNumber).ConfigureAwait(false);
 
         if (phoneExists)
         {
@@ -67,9 +55,9 @@ public class AuthService : IAuthService
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
         };
 
-        _context.Users.Add(user);
+        _ = _context.Users.Add(user);
 
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -93,6 +81,7 @@ public class AuthService : IAuthService
 
     public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Email == request.Email).ConfigureAwait(false);
 
@@ -189,10 +178,9 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(
-        int userId,
-        UpdateUserDto request)
+    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(int userId, UpdateUserDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
 
@@ -212,7 +200,7 @@ public class AuthService : IAuthService
             var emailExists = await _context.Users
                 .AnyAsync(u =>
                     u.Email == request.Email &&
-                    u.Id != userId);
+                    u.Id != userId).ConfigureAwait(false);
 
             if (emailExists)
             {
@@ -251,7 +239,7 @@ public class AuthService : IAuthService
             user.FullName = request.FullName.Trim();
         }
 
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -273,8 +261,9 @@ public class AuthService : IAuthService
         int userId,
         ChangePasswordDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId);
+            .FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -311,7 +300,7 @@ public class AuthService : IAuthService
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(
             request.NewPassword);
 
-        await _context.SaveChangesAsync();
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         _logger.LogInformation(
             "password updated successfully"

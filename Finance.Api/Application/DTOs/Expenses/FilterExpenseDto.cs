@@ -18,5 +18,5 @@ public class FilterExpenseDto
 
     public string? notes { get; set; }
 
-    public bool includeAnalytics { get; set; } = false;
+    public bool includeAnalytics { get; set; }
 }

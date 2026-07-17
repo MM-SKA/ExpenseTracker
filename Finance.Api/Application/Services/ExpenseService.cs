@@ -4,7 +4,7 @@ using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Finance.Api.Application.DTOs.Categories;
+using Finance.Api.Application.DTOs.Category;
 
 namespace Finance.Api.Application.Services;
 
@@ -14,6 +14,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
 
     public async Task<ApiResponse<ExpenseDto>> CreateExpense(int userId, CreateExpenseDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
@@ -27,8 +28,8 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
             ExpenseDate = request.Date,
             UserId = userId
         };
-        _context.Expenses.Add(expense);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = _context.Expenses.Add(expense);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
         var expenseDto = new ExpenseDto
         {
             Id = expense.Id,
@@ -42,6 +43,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
     }
     public async Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
         if (expense == null)
         {
@@ -60,8 +62,8 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
         expense.Amount = request.Amount;
         expense.ExpenseDate = request.Date;
 
-        _context.Expenses.Update(expense);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = _context.Expenses.Update(expense);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
         var expenseDto = new ExpenseDto
         {
@@ -82,8 +84,8 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
         {
             return new ApiResponse { Success = false, Message = "Expense not found" };
         }
-        _context.Expenses.Remove(expense);
-        await _context.SaveChangesAsync().ConfigureAwait(false);
+        _ = _context.Expenses.Remove(expense);
+        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
         return new ApiResponse { Success = true, Message = "Expense Deleted successfully" };
     }
 
@@ -108,6 +110,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
 
     public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(int userId, FilterExpenseDto filters)
     {
+        ArgumentNullException.ThrowIfNull(filters);
         var query = BuildFilteredQuery(userId, filters);
         var filteredExpenses = await query.ToListAsync().ConfigureAwait(false);
 
@@ -133,6 +136,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
 
     public Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses)
     {
+        ArgumentNullException.ThrowIfNull(filteredExpenses);
         return Task.FromResult(CalculateAnalytics(filteredExpenses));
     }
 
@@ -185,7 +189,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
             return new FilteredAnalyticsDto
             {
                 Summary = new SummaryDto(),
-                ByCategory = new List<CategorySpendDto>(),
+                ByCategory = [],
                 DateDistribution = new DateDistributionDto()
             };
         }
@@ -248,6 +252,7 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
         var totalRecords = await query.CountAsync().ConfigureAwait(false);
 
         var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
+        totalPages = Math.Max(totalPages, 1);
         if (pageNumber > totalPages)
         {
             pageNumber = Math.Min(pageNumber, totalPages);

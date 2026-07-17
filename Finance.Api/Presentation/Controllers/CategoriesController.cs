@@ -1,4 +1,4 @@
-﻿using Finance.Api.Application.DTOs.Categories;
+﻿using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Common;

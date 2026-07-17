@@ -1,5 +1,6 @@
-using System.Data.Common;
+﻿using System.Data.Common;
 using System.Text.Json;
+
 using Finance.Api.Application.DTOs.Common;
 
 namespace Finance.Api.Presentation.Middleware;
@@ -19,7 +20,8 @@ public class ExceptionHandlingMiddleware
     {
         try
         {
-            await _next(context);
+            ArgumentNullException.ThrowIfNull(context);
+            await _next(context).ConfigureAwait(false);
         }
         catch (Exception ex)
         {

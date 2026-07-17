@@ -76,6 +76,7 @@ public class ExpensesController : ControllerBase
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedExpensesAsync([FromQuery] PaginationRequestDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         var userId = User.GetUserId();
 
         var response =

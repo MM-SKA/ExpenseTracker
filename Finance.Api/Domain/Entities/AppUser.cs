@@ -14,21 +14,21 @@ public class AppUser
     [Required]
     [MaxLength(100)]
     [EmailAddress]
-    public string Email { get; set; } = String.Empty;
+    public required string Email { get; set; }
 
     [Required]
-    public string PasswordHash { get; set; } = String.Empty;
+    public required string PasswordHash { get; set; }
 
     [Required]
     [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Phone number must contain exactly 10 digits")]
 
-    public string PhoneNumber { get; set; } = String.Empty;
+    public required string PhoneNumber { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [JsonIgnore]
-    public ICollection<Category> Categories { get; set; } = new List<Category>();
+    public ICollection<Category> Categories { get; set; } = [];
 
     [JsonIgnore]
-    public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
+    public ICollection<Expense> Expenses { get; set; } = [];
 }
