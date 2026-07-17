@@ -1,14 +1,15 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Finance.Api.Models;
+namespace Finance.Api.Domain.Entities;
 
-public class AppUser{
+public class AppUser
+{
     public int Id { get; set; }
-    
+
     [Required]
     [MaxLength(50)]
-    public required string FullName { get; set; } 
+    public required string FullName { get; set; }
 
     [Required]
     [MaxLength(100)]
