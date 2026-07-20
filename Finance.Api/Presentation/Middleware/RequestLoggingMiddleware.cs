@@ -1,4 +1,4 @@
-namespace Finance.Api.Presentation.Middleware;
+﻿namespace Finance.Api.Presentation.Middleware;
 
 public class RequestLoggingMiddleware
 {
@@ -15,10 +15,8 @@ public class RequestLoggingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
-        
         // Console.WriteLine("REQUEST LOGGING MIDDLEWARE HIT");
-
-        
+        ArgumentNullException.ThrowIfNull(context);
         var startTime = DateTime.UtcNow;
 
         _logger.LogInformation(
@@ -26,7 +24,7 @@ public class RequestLoggingMiddleware
             context.Request.Method,
             context.Request.Path);
 
-        await _next(context);
+        await _next(context).ConfigureAwait(false);
 
         var duration =
             DateTime.UtcNow - startTime;

@@ -1,7 +1,3 @@
-input handling
-query http
-custom http method naming
-
 custom validation
 add body in get request
 also enact post as get
@@ -15,6 +11,6 @@ architecture
 middleware
 pagination
 
-search feature 
+search feature
 
 expenses -> through notes , categories

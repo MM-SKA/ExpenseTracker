@@ -6,7 +6,7 @@ using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Infrastructure.Data;
-using Finance.Api.Helpers;
+using Finance.Api.Presentation.Extensions;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Presentation;
 using Finance.Api.Application.Interfaces;

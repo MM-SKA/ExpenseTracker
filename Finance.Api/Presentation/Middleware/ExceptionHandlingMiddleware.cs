@@ -18,19 +18,19 @@ public class ExceptionHandlingMiddleware
 
     public async Task InvokeAsync(HttpContext context)
     {
+        ArgumentNullException.ThrowIfNull(context);
         try
         {
-            ArgumentNullException.ThrowIfNull(context);
             await _next(context).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
+            ArgumentNullException.ThrowIfNull(context);
             _logger.LogError(ex, "Unhandled Exception . Method={Method}, Path={Path}", context.Request.Method, context.Request.Path);
             context.Response.StatusCode = 500;
             context.Response.ContentType = "application/json";
             var response = new ApiResponse { Success = false, Message = ex.Message };
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
         }
     }
-
 }

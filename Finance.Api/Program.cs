@@ -32,7 +32,6 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpLogging(options => { });
 
@@ -82,7 +81,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    _ = app.MapOpenApi();
 }
 
 using (var scope = app.Services.CreateScope())
@@ -131,14 +130,11 @@ using (var scope = app.Services.CreateScope())
             }
         );
 
-        context.SaveChanges();
+        _ = context.SaveChanges();
     }
 }
 
 // app.UseHttpsRedirection();
-
-app.UseSwagger();
-app.UseSwaggerUI();
 // app.UseHttpLogging();
 
 app.UseMiddleware<RequestLoggingMiddleware>();

@@ -1,6 +1,6 @@
-using System.Security.Claims;
+﻿using System.Security.Claims;
 
-namespace Finance.Api.Helpers;
+namespace Finance.Api.Presentation.Extensions;
 
 public static class ClaimsExtensions
 {
@@ -9,6 +9,7 @@ public static class ClaimsExtensions
     /// </summary>
     public static int GetUserId(this ClaimsPrincipal user)
     {
+        ArgumentNullException.ThrowIfNull(user);
         var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
         {

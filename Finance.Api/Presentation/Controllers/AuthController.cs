@@ -1,7 +1,7 @@
 ﻿using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
-using Finance.Api.Helpers;
+using Finance.Api.Presentation.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

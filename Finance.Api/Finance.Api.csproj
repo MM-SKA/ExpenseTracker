@@ -4,7 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>CA1002;IDE0290;CA1848;CA1515;CA2227</NoWarn>
+    <NoWarn>CA1002;IDE0290;CA1848;CA1515;CA2227;CA1062</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,7 +24,6 @@
     </PackageReference>
     <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="7.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
   </ItemGroup>
 
 </Project>

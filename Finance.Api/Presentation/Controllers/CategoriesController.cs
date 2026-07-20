@@ -2,7 +2,7 @@
 using Finance.Api.Domain.Entities;
 using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Common;
-using Finance.Api.Helpers;
+using Finance.Api.Presentation.Extensions;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
