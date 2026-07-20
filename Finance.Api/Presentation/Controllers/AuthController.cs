@@ -10,25 +10,13 @@ namespace Finance.Api.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController : ControllerBase
+internal class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(IAuthService authService)
-    {
-        _authService = authService;
-    }
-
-    [HttpPost]
-    public IActionResult Test()
-    {
-        throw new NotImplementedException("Test endpoint");
-    }
 
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync(RegisterRequestDto request)
     {
-        var response = await _authService.RegisterAsync(request).ConfigureAwait(false);
+        var response = await authService.RegisterAsync(request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -43,7 +31,7 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync(LoginRequestDto request)
     {
-        var response = await _authService.LoginAsync(request).ConfigureAwait(false);
+        var response = await authService.LoginAsync(request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -60,7 +48,7 @@ public class AuthController : ControllerBase
         var userId = User.GetUserId();
 
         var response =
-            await _authService.GetCurrentUserAsync(userId).ConfigureAwait(false);
+            await authService.GetCurrentUserAsync(userId).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -77,7 +65,7 @@ public class AuthController : ControllerBase
         var userId = User.GetUserId();
 
         var response =
-            await _authService.UpdateUserAsync(userId, request).ConfigureAwait(false);
+            await authService.UpdateUserAsync(userId, request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -94,7 +82,7 @@ public class AuthController : ControllerBase
         var userId = User.GetUserId();
 
         var response =
-            await _authService.ChangePasswordAsync(userId, request).ConfigureAwait(false);
+            await authService.ChangePasswordAsync(userId, request).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -108,7 +96,7 @@ public class AuthController : ControllerBase
     [HttpGet("users")]
     public async Task<IActionResult> GetUsersAsync()
     {
-        var response = await _authService.GetUsersAsync().ConfigureAwait(false);
+        var response = await authService.GetUsersAsync().ConfigureAwait(false);
 
         return Ok(response);
     }

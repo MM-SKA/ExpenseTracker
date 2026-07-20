@@ -8,7 +8,7 @@ using Finance.Api.Application.DTOs.Category;
 
 namespace Finance.Api.Application.Services;
 
-public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseDto>
+internal class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseDto>
 {
     private readonly FinanceDbContext _context = context;
 
@@ -116,14 +116,14 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
 
         var response = new FilterResponseDto
         {
-            Expenses = filteredExpenses.Select(e => new ExpenseDto
+            Expenses = [..filteredExpenses.Select(e => new ExpenseDto
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
                 CategoryId = e.CategoryId
-            }).ToList()
+            })]
         };
 
         if (filters.includeAnalytics)
@@ -132,12 +132,6 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
         }
 
         return response;
-    }
-
-    public Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses)
-    {
-        ArgumentNullException.ThrowIfNull(filteredExpenses);
-        return Task.FromResult(CalculateAnalytics(filteredExpenses));
     }
 
     private IQueryable<Expense> BuildFilteredQuery(int userId, FilterExpenseDto filters)
@@ -289,13 +283,15 @@ public class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseD
     {
         var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId && (e.Category.Name.Contains(request.Query) || (e.Notes != null && e.Notes.Contains(request.Query)))).OrderByDescending(e => e.ExpenseDate).ToListAsync().ConfigureAwait(false);
 
-        return expenses.Select(e => new ExpenseDto
-        {
-            Id = e.Id,
-            Description = e.Notes ?? string.Empty,
-            Amount = e.Amount,
-            Date = e.ExpenseDate,
-            CategoryId = e.CategoryId
-        }).ToList();
+        return
+        [..expenses.Select(e => new ExpenseDto
+            {
+                Id = e.Id,
+                Description = e.Notes ?? string.Empty,
+                Amount = e.Amount,
+                Date = e.ExpenseDate,
+                CategoryId = e.CategoryId
+            })
+        ];
     }
 }

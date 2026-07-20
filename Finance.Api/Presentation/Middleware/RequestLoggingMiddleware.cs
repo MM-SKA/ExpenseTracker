@@ -1,17 +1,9 @@
-﻿namespace Finance.Api.Presentation.Middleware;
+﻿using Finance.Api.Presentation.Middleware.Logs;
 
-public class RequestLoggingMiddleware
+namespace Finance.Api.Presentation.Middleware;
+
+internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
 {
-    private readonly RequestDelegate _next;
-    private readonly ILogger<RequestLoggingMiddleware> _logger;
-
-    public RequestLoggingMiddleware(
-        RequestDelegate next,
-        ILogger<RequestLoggingMiddleware> logger)
-    {
-        _next = next;
-        _logger = logger;
-    }
 
     public async Task InvokeAsync(HttpContext context)
     {
@@ -19,21 +11,13 @@ public class RequestLoggingMiddleware
         ArgumentNullException.ThrowIfNull(context);
         var startTime = DateTime.UtcNow;
 
-        _logger.LogInformation(
-            "Incoming Request. Method={Method}, Path={Path}",
-            context.Request.Method,
-            context.Request.Path);
+        RequestLoggingMiddlewareLogs.IncomingRequest(logger, context.Request.Method, context.Request.Path);
 
-        await _next(context).ConfigureAwait(false);
+        await next(context).ConfigureAwait(false);
 
         var duration =
             DateTime.UtcNow - startTime;
 
-        _logger.LogInformation(
-            "Request Completed. Method={Method}, Path={Path}, StatusCode={StatusCode}, Duration={Duration}ms",
-            context.Request.Method,
-            context.Request.Path,
-            context.Response.StatusCode,
-            duration.TotalMilliseconds);
+        RequestLoggingMiddlewareLogs.Requestcompleted(logger, context.Request.Method, context.Request.Path, context.Response.StatusCode, duration);
     }
 }

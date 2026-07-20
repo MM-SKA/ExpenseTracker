@@ -4,7 +4,6 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <NoWarn>CA1002;IDE0290;CA1848;CA1515;CA2227;CA1062</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

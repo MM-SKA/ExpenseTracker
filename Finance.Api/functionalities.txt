@@ -1,16 +1,10 @@
 custom validation
-add body in get request
+add body in get request  -
 also enact post as get
 pass parameters in headers as well as body
 
-things to consider :
 
-logging
-return dto
-architecture
-middleware
-pagination
+did today:
 
-search feature
-
-expenses -> through notes , categories
+logmessage vs logwarning
+primary constructor

@@ -4,7 +4,7 @@ using Finance.Api.Domain.Entities;
 
 namespace Finance.Api.Application.Interfaces;
 
-public interface IExpenseService<T>
+internal interface IExpenseService<T>
 {
     Task<ApiResponse<ExpenseDto>> CreateExpense(int userId, CreateExpenseDto request);
     Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request);
@@ -12,7 +12,7 @@ public interface IExpenseService<T>
 
     Task<List<ExpenseDto>> GetExpense(int userId);
 
-    Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses);
+    // Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses);
 
     Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(int userId, FilterExpenseDto filters);
 

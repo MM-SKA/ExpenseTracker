@@ -16,23 +16,15 @@ namespace Finance.Api.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class ExpensesController : ControllerBase
+internal class ExpensesController(IExpenseService<ExpenseDto> expenseService) : ControllerBase
 {
-    private readonly FinanceDbContext _context;
-    private readonly IExpenseService<ExpenseDto> _expenseService;
-
-    public ExpensesController(FinanceDbContext context, IExpenseService<ExpenseDto> expenseService)
-    {
-        _context = context;
-        _expenseService = expenseService;
-    }
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
     [HttpPost("create")]
     public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request)
     {
         var userId = User.GetUserId();
-        var result = _expenseService.CreateExpense(userId, request);
+        var result = expenseService.CreateExpense(userId, request);
         return CreatedAtAction(nameof(CreateExpenseAsync), result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
@@ -42,7 +34,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> GetExpenseAsync()
     {
         var userId = User.GetUserId();
-        return Ok(_expenseService.GetExpense(userId));
+        return Ok(expenseService.GetExpense(userId));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update expense endpoint
@@ -51,7 +43,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> UpdateExpenseAsync(int id, UpdateExpenseDto request)
     {
         var userId = User.GetUserId();
-        return Ok(_expenseService.UpdateExpense(userId, id, request));
+        return Ok(expenseService.UpdateExpense(userId, id, request));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete expense endpoint
@@ -60,7 +52,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> DeleteExpenseAsync(int id)
     {
         var userId = User.GetUserId();
-        return Ok(_expenseService.DeleteExpense(userId, id));
+        return Ok(expenseService.DeleteExpense(userId, id));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //filter expense endpoint
@@ -69,7 +61,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> FilterExpenseAsync(FilterExpenseDto request)
     {
         var userId = User.GetUserId();
-        var response = await _expenseService.FilterExpensesWithAnalyticsAsync(userId, request).ConfigureAwait(false);
+        var response = await expenseService.FilterExpensesWithAnalyticsAsync(userId, request).ConfigureAwait(false);
         return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
     }
 
@@ -80,7 +72,7 @@ public class ExpensesController : ControllerBase
         var userId = User.GetUserId();
 
         var response =
-            await _expenseService.GetPaginatedExpensesAsync(userId, request.PageNumber, request.PageSize).ConfigureAwait(false);
+            await expenseService.GetPaginatedExpensesAsync(userId, request.PageNumber, request.PageSize).ConfigureAwait(false);
 
         return Ok(response);
     }
@@ -89,7 +81,7 @@ public class ExpensesController : ControllerBase
     public async Task<IActionResult> GetSearchedExpenseAsync([FromQuery] SearchRequestDto request)
     {
         var userId = User.GetUserId();
-        var result = await _expenseService.GlobalSearchAsync(userId, request).ConfigureAwait(false);
+        var result = await expenseService.GlobalSearchAsync(userId, request).ConfigureAwait(false);
         return Ok(result);
     }
 }

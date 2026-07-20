@@ -1,6 +1,6 @@
-namespace Finance.Api.Application.DTOs.Category;
+﻿namespace Finance.Api.Application.DTOs.Category;
 
-public class CategorySpendDto
+internal class CategorySpendDto
 {
     public int CategoryId { get; set; }
     public required string CategoryName { get; set; }

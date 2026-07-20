@@ -14,16 +14,8 @@ namespace Finance.Api.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class CategoriesController : ControllerBase
+internal class CategoriesController(ICategoryService categoryService) : ControllerBase
 {
-    private readonly FinanceDbContext _context;
-    private readonly ICategoryService _categoryService;
-
-    public CategoriesController(FinanceDbContext context, ICategoryService categoryService)
-    {
-        _context = context;
-        _categoryService = categoryService;
-    }
 
     //------------------------------------------------------------------------------------------------------------------------------------
     //create category endpoint
@@ -32,7 +24,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> CreateCategoryAsync(CreateCategoryDto request)
     {
         var userId = User.GetUserId();
-        return CreatedAtAction(nameof(CreateCategoryAsync), _categoryService.CreateCategoryAsync(userId, request));
+        return CreatedAtAction(nameof(CreateCategoryAsync), categoryService.CreateCategoryAsync(userId, request));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //get all categories for the user
@@ -41,7 +33,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> GetCategoriesAsync()
     {
         var userId = User.GetUserId();
-        return Ok(_categoryService.GetCategoriesAsync(userId));
+        return Ok(categoryService.GetCategoriesAsync(userId));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update category endpoint
@@ -50,7 +42,7 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> UpdateCategoryAsync(int id, UpdateCategoryDto request)
     {
         var userId = User.GetUserId();
-        return Ok(_categoryService.UpdateCategoryAsync(userId, id, request));
+        return Ok(categoryService.UpdateCategoryAsync(userId, id, request));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete category endpoint
@@ -59,6 +51,6 @@ public class CategoriesController : ControllerBase
     public async Task<IActionResult> DeleteCategoryAsync(int id)
     {
         var userId = User.GetUserId();
-        return Ok(_categoryService.DeleteCategoryAsync(userId, id));
+        return Ok(categoryService.DeleteCategoryAsync(userId, id));
     }
 }

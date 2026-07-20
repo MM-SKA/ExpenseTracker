@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Finance.Api.Domain.Entities;
 
-public class AppUser
+internal class AppUser
 {
     public int Id { get; set; }
 

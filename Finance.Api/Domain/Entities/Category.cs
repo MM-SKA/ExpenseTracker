@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Finance.Api.Domain.Entities;
 
-public class Category
+internal class Category
 {
     public int Id { get; set; }
 

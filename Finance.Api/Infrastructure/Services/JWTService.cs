@@ -10,13 +10,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Finance.Api.Infrastructure.Services;
 
-public class JWTService : IJWTService
+internal class JWTService(IConfiguration config) : IJWTService
 {
-    private readonly IConfiguration _config;
-
-    public JWTService(IConfiguration config)
-        => _config = config;
-
     public string GenerateToken(AppUser user)
     {
         ArgumentNullException.ThrowIfNull(user);
@@ -27,10 +22,10 @@ public class JWTService : IJWTService
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
 
-        var key = _config["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key configuration is required.");
-        var issuer = _config["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer configuration is required.");
-        var audience = _config["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience configuration is required.");
-        var expiryMinutesText = _config["Jwt:ExpiryMinutes"] ?? throw new InvalidOperationException("Jwt:ExpiryMinutes configuration is required.");
+        var key = config["Jwt:Key"] ?? throw new InvalidOperationException("Jwt:Key configuration is required.");
+        var issuer = config["Jwt:Issuer"] ?? throw new InvalidOperationException("Jwt:Issuer configuration is required.");
+        var audience = config["Jwt:Audience"] ?? throw new InvalidOperationException("Jwt:Audience configuration is required.");
+        var expiryMinutesText = config["Jwt:ExpiryMinutes"] ?? throw new InvalidOperationException("Jwt:ExpiryMinutes configuration is required.");
         var expiryMinutes = int.Parse(expiryMinutesText, CultureInfo.InvariantCulture);
 
         var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
