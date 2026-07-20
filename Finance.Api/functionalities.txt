@@ -1,10 +1,7 @@
 custom validation
-add body in get request  -
-also enact post as get
-pass parameters in headers as well as body
-
 
 did today:
 
 logmessage vs logwarning
 primary constructor
+api for header and body params

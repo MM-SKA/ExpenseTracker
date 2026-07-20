@@ -21,12 +21,12 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
     [HttpPost("test")]
-    public IActionResult TestRequest(CreateExpenseUsingHeaderDto request
-    )
+    public IActionResult TestRequest(CreateExpenseUsingHeaderDto request)
     {
+        ArgumentNullException.ThrowIfNull(request);
         return Ok(new
         {
-            ClientId = Request.Headers["X-User-Id"],
+            ClientId = Request.Headers["X-Client-Id"],
             ApiVersion = Request.Headers["X-Api-Version"],
             Description = request.Desc,
             Amount = request.Amount
