@@ -90,3 +90,6 @@ coverage*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+FinanceDb.db-shm
+FinanceDb.db-wal

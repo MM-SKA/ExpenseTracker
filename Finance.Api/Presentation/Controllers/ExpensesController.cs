@@ -20,6 +20,20 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
 {
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
+    [HttpPost("test")]
+    public IActionResult TestRequest(CreateExpenseUsingHeaderDto request
+    )
+    {
+        return Ok(new
+        {
+            ClientId = Request.Headers["X-User-Id"],
+            ApiVersion = Request.Headers["X-Api-Version"],
+            Description = request.Desc,
+            Amount = request.Amount
+        });
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------
+    //create expense endpoint
     [HttpPost("create")]
     public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request)
     {
