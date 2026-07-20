@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Finance.Api.Domain.Entities;
 
-internal class AppUser
+public class AppUser
 {
     public int Id { get; set; }
 
@@ -27,8 +27,8 @@ internal class AppUser
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     [JsonIgnore]
-    public ICollection<Category> Categories { get; set; } = [];
+    public IReadOnlyCollection<Category> Categories { get; set; } = [];
 
     [JsonIgnore]
-    public ICollection<Expense> Expenses { get; set; } = [];
+    public IReadOnlyCollection<Expense> Expenses { get; set; } = [];
 }

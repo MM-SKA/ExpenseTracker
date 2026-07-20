@@ -7,7 +7,7 @@ using Finance.Api.Application.DTOs.Common;
 
 namespace Finance.Api.Presentation.Middleware;
 
-internal class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
+public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
 {
 
     public async Task InvokeAsync(HttpContext context)

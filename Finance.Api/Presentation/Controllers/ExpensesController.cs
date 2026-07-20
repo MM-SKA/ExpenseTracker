@@ -16,7 +16,7 @@ namespace Finance.Api.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-internal class ExpensesController(IExpenseService<ExpenseDto> expenseService) : ControllerBase
+public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : ControllerBase
 {
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint

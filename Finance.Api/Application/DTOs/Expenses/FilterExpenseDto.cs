@@ -1,6 +1,6 @@
 ﻿namespace Finance.Api.Application.DTOs.Expenses;
 
-internal class FilterExpenseDto
+public class FilterExpenseDto
 {
     public int? categoryId { get; set; }
 

@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Finance.Api.Infrastructure.Services;
 
-internal class JWTService(IConfiguration config) : IJWTService
+public class JWTService(IConfiguration config) : IJWTService
 {
     public string GenerateToken(AppUser user)
     {

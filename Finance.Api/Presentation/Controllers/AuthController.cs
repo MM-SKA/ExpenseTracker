@@ -10,7 +10,7 @@ namespace Finance.Api.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-internal class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService) : ControllerBase
 {
 
     [HttpPost("register")]

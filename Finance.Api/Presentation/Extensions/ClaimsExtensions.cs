@@ -2,7 +2,7 @@
 
 namespace Finance.Api.Presentation.Extensions;
 
-internal static class ClaimsExtensions
+public static class ClaimsExtensions
 {
     /// <summary>
     /// Gets the UserId from the current user's claims

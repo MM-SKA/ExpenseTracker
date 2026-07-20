@@ -4,7 +4,7 @@ using Finance.Api.Domain.Entities;
 
 namespace Finance.Api.Application.Interfaces;
 
-internal interface IExpenseService<T>
+public interface IExpenseService<T>
 {
     Task<ApiResponse<ExpenseDto>> CreateExpense(int userId, CreateExpenseDto request);
     Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request);

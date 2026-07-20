@@ -14,7 +14,7 @@ namespace Finance.Api.Presentation.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-internal class CategoriesController(ICategoryService categoryService) : ControllerBase
+public class CategoriesController(ICategoryService categoryService) : ControllerBase
 {
 
     //------------------------------------------------------------------------------------------------------------------------------------

@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Finance.Api.Application.Services;
 
-public class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger) : IAuthService
+internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger) : IAuthService
 {
 
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)
@@ -101,7 +101,7 @@ public class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILo
         if (!isPasswordValid)
         {
             _logger.LogWarning(
-                "Invalid Password for : {Email}",
+                "Invalid Password Attempt for : {Email}",
                 request.Email);
             return new ApiResponse<LoginResponseDto>
             {

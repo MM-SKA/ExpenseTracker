@@ -2,7 +2,7 @@
 
 namespace Finance.Api.Presentation.Middleware;
 
-internal class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
+public class RequestLoggingMiddleware(RequestDelegate next, ILogger<RequestLoggingMiddleware> logger)
 {
 
     public async Task InvokeAsync(HttpContext context)
