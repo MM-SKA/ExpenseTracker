@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Presentation.Middleware;
 using Finance.Api.Application.DTOs.Expenses;
+using Asp.Versioning;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -70,6 +71,13 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+});
 
 builder.Services.AddDbContext<FinanceDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
