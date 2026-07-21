@@ -1,24 +1,25 @@
-﻿using Finance.Api.Application.Interfaces;
+﻿using Finance.Api.Application.Interfaces.V1;
 using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.DTOs.Category;
+using Finance.Api.Application.DTOs.V1.Expenses;
 
-namespace Finance.Api.Application.Services;
+namespace Finance.Api.Application.Services.V1;
 
-internal class ExpenseService(FinanceDbContext context) : IExpenseService<ExpenseDto>
+internal class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<ExpenseDtoV1>
 {
     private readonly FinanceDbContext _context = context;
 
-    public async Task<ApiResponse<ExpenseDto>> CreateExpense(int userId, CreateExpenseDto request)
+    public async Task<ApiResponse<ExpenseDtoV1>> CreateExpenseAsync(int userId, CreateExpenseDto request)
     {
         ArgumentNullException.ThrowIfNull(request);
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
-            return new ApiResponse<ExpenseDto> { Success = false, Message = "Invalid category" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category" };
         }
         var expense = new Expense
         {
@@ -30,7 +31,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
         };
         _ = _context.Expenses.Add(expense);
         _ = await _context.SaveChangesAsync().ConfigureAwait(false);
-        var expenseDto = new ExpenseDto
+        var expenseDto = new ExpenseDtoV1
         {
             Id = expense.Id,
             Description = expense.Notes,
@@ -38,23 +39,23 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
             Date = expense.ExpenseDate,
             CategoryId = expense.CategoryId
         };
-        var response = new ApiResponse<ExpenseDto> { Success = true, Message = "Expense created successfully", Data = expenseDto };
+        var response = new ApiResponse<ExpenseDtoV1> { Success = true, Message = "Expense created successfully", Data = expenseDto };
         return response;
     }
-    public async Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request)
+    public async Task<ApiResponse<ExpenseDtoV1>> UpdateExpenseAsync(int userId, int id, UpdateExpenseDto request)
     {
         ArgumentNullException.ThrowIfNull(request);
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
         if (expense == null)
         {
-            return new ApiResponse<ExpenseDto> { Success = false, Message = "Expense not found" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Expense not found" };
         }
 
         // Verify category belongs to user
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && c.UserId == userId).ConfigureAwait(false);
         if (category == null)
         {
-            return new ApiResponse<ExpenseDto> { Success = false, Message = "Invalid category" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category" };
         }
 
         expense.CategoryId = request.CategoryId;
@@ -65,7 +66,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
         _ = _context.Expenses.Update(expense);
         _ = await _context.SaveChangesAsync().ConfigureAwait(false);
 
-        var expenseDto = new ExpenseDto
+        var expenseDto = new ExpenseDtoV1
         {
             Id = expense.Id,
             Description = expense.Notes,
@@ -73,11 +74,11 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
             Date = expense.ExpenseDate,
             CategoryId = expense.CategoryId
         };
-        var response = new ApiResponse<ExpenseDto> { Success = true, Message = "Expense updated successfully", Data = expenseDto };
+        var response = new ApiResponse<ExpenseDtoV1> { Success = true, Message = "Expense updated successfully", Data = expenseDto };
         return response;
     }
 
-    public async Task<ApiResponse> DeleteExpense(int userId, int id)
+    public async Task<ApiResponse> DeleteExpenseAsync(int userId, int id)
     {
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
         if (expense == null)
@@ -89,10 +90,10 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
         return new ApiResponse { Success = true, Message = "Expense Deleted successfully" };
     }
 
-    public async Task<List<ExpenseDto>> GetExpense(int userId)
+    public async Task<List<ExpenseDtoV1>> GetExpenseAsync(int userId)
     {
         var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).ToListAsync().ConfigureAwait(false);
-        var expenseDtos = expenses.Select(e => new ExpenseDto
+        var expenseDtos = expenses.Select(e => new ExpenseDtoV1
         {
             Id = e.Id,
             Description = e.Notes ?? string.Empty,
@@ -116,7 +117,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
 
         var response = new FilterResponseDto
         {
-            Expenses = [..filteredExpenses.Select(e => new ExpenseDto
+            Expenses = [..filteredExpenses.Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,
@@ -231,7 +232,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
         };
     }
 
-    public async Task<PaginationResponseDto<ExpenseDto>> GetPaginatedExpensesAsync(int userId, int pageNumber, int pageSize)
+    public async Task<PaginationResponseDto<ExpenseDtoV1>> GetPaginatedExpensesAsync(int userId, int pageNumber, int pageSize)
     {
 
         // if(pageSize<=0 || pageNumber <= 0)
@@ -255,7 +256,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
         var expenses = await query.OrderByDescending(e => e.ExpenseDate).ThenByDescending(e => e.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
 
         var expenseDtos = expenses
-            .Select(e => new ExpenseDto
+            .Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,
@@ -265,7 +266,7 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
             })
             .ToList();
 
-        return new PaginationResponseDto<ExpenseDto>
+        return new PaginationResponseDto<ExpenseDtoV1>
         {
             Items = expenseDtos,
             PageNumber = pageNumber,
@@ -279,12 +280,12 @@ internal class ExpenseService(FinanceDbContext context) : IExpenseService<Expens
 
     }
 
-    public async Task<List<ExpenseDto>> GlobalSearchAsync(int userId, SearchRequestDto request)
+    public async Task<List<ExpenseDtoV1>> GlobalSearchAsync(int userId, SearchRequestDto request)
     {
         var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId && (e.Category.Name.Contains(request.Query) || (e.Notes != null && e.Notes.Contains(request.Query)))).OrderByDescending(e => e.ExpenseDate).ToListAsync().ConfigureAwait(false);
 
         return
-        [..expenses.Select(e => new ExpenseDto
+        [..expenses.Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,

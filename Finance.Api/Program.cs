@@ -1,7 +1,11 @@
 ﻿using Finance.Api.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.Interfaces;
+using Finance.Api.Application.Interfaces.V1;
+using Finance.Api.Application.Interfaces.V2;
 using Finance.Api.Application.Services;
+using Finance.Api.Application.Services.V1;
+using Finance.Api.Application.Services.V2;
 using Finance.Api.Infrastructure.Services;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,9 +13,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Presentation.Middleware;
-using Finance.Api.Application.DTOs.Expenses;
+using Finance.Api.Application.DTOs.V1.Expenses;
 using Asp.Versioning;
 using Serilog;
+using Finance.Api.Application.DTOs.V2.Expenses;
+using Asp.Versioning.Conventions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +46,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-builder.Services.AddScoped<IExpenseService<ExpenseDto>, ExpenseService>();
+builder.Services.AddScoped<IExpenseServiceV1<ExpenseDtoV1>, ExpenseServiceV1>();
+builder.Services.AddScoped<IExpenseServiceV2<ExpenseDtoV2>, ExpenseServiceV2>();
 
 builder.Services
     .AddAuthentication(
@@ -74,9 +81,18 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddApiVersioning(options =>
 {
-    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.DefaultApiVersion = new ApiVersion(2, 0);
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader(),
+        new QueryStringApiVersionReader("api-version")
+    );
+}).AddMvc(options=>{
+    options.Conventions.Add(new VersionByNamespaceConvention());
+}).AddApiExplorer(options=>{
+    options.GroupNameFormat = "v'V";
+    options.SubstituteApiVersionInUrl = true;
 });
 
 builder.Services.AddDbContext<FinanceDbContext>(options =>

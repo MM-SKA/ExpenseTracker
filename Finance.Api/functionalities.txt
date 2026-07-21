@@ -1,7 +1,11 @@
+to do
+
 custom validation
+remove unwanted "using" statements
 
 did today:
 
 logmessage vs logwarning
 primary constructor
 api for header and body params
+start api versioning

@@ -1,8 +1,8 @@
 ﻿using Finance.Api.Application.DTOs.Expenses;
 
-namespace Finance.Api.Application.DTOs.Expenses;
+namespace Finance.Api.Application.DTOs.V1.Expenses;
 
-public class ExpenseDto
+public class ExpenseDtoV1
 {
     public int Id { get; set; }
     public string Description { get; set; } = string.Empty;

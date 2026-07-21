@@ -1,24 +1,22 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
-using Finance.Api.Application.DTOs.Expenses;
-using Finance.Api.Application.DTOs.Common;
-using Finance.Api.Domain.Entities;
-using Finance.Api.Infrastructure.Data;
-using Finance.Api.Presentation.Extensions;
-using ClosedXML.Excel;
-using DocumentFormat.OpenXml.Presentation;
-using Finance.Api.Application.Interfaces;
-using Asp.Versioning;
+﻿using Asp.Versioning;
 
-namespace Finance.Api.Presentation.Controllers;
+using Finance.Api.Application.DTOs.Common;
+using Finance.Api.Application.DTOs.Expenses;
+using Finance.Api.Application.DTOs.V1.Expenses;
+using Finance.Api.Application.Interfaces.V1;
+using Finance.Api.Presentation.Extensions;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Finance.Api.Presentation.Controllers.V1;
 
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/expenses")]
+[Route("api/expenses")]
 [Authorize]
-public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : ControllerBase
+public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService) : ControllerBase
 {
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
@@ -41,17 +39,18 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
     public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request)
     {
         var userId = User.GetUserId();
-        var result = expenseService.CreateExpense(userId, request);
+        var result = await expenseService.CreateExpenseAsync(userId, request).ConfigureAwait(false);
         return CreatedAtAction(nameof(CreateExpenseAsync), result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //get all expenses for the user
 
     [HttpGet("get")]
+    [MapToApiVersion("1.0")]
     public async Task<IActionResult> GetExpenseAsync()
     {
         var userId = User.GetUserId();
-        return Ok(expenseService.GetExpense(userId));
+        return Ok(await expenseService.GetExpenseAsync(userId).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update expense endpoint
@@ -60,7 +59,7 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
     public async Task<IActionResult> UpdateExpenseAsync(int id, UpdateExpenseDto request)
     {
         var userId = User.GetUserId();
-        return Ok(expenseService.UpdateExpense(userId, id, request));
+        return Ok(await expenseService.UpdateExpenseAsync(userId, id, request).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete expense endpoint
@@ -69,7 +68,7 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
     public async Task<IActionResult> DeleteExpenseAsync(int id)
     {
         var userId = User.GetUserId();
-        return Ok(expenseService.DeleteExpense(userId, id));
+        return Ok(await expenseService.DeleteExpenseAsync(userId, id).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //filter expense endpoint
@@ -100,18 +99,5 @@ public class ExpensesController(IExpenseService<ExpenseDto> expenseService) : Co
         var userId = User.GetUserId();
         var result = await expenseService.GlobalSearchAsync(userId, request).ConfigureAwait(false);
         return Ok(result);
-    }
-}
-
-
-[ApiController]
-[ApiVersion("2.0")]
-[Route("api/v{version:apiVersion}/expenses")]
-public class ExpensesV2Controller : ControllerBase
-{
-    [HttpGet]
-    public IActionResult Get()
-    {
-        return Ok("Expenses API V2");
     }
 }
