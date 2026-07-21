@@ -27,5 +27,4 @@ internal class ExpenseServiceV2(FinanceDbContext context) : IExpenseServiceV2<Ex
         }).ToList();
         return expenseDtos;
     }
-
 }

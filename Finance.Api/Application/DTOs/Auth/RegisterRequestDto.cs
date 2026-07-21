@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+using Finance.Api.Application.Validation;
+
 namespace Finance.Api.Application.DTOs.Auth;
 
 public class RegisterRequestDto
@@ -12,6 +14,7 @@ public class RegisterRequestDto
     public required string Email { get; set; }
 
     [Required]
+    [StrongPassword]
     public required string Password { get; set; }
 
     [Required]

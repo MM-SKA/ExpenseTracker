@@ -81,16 +81,15 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddApiVersioning(options =>
 {
-    options.DefaultApiVersion = new ApiVersion(2, 0);
+    options.DefaultApiVersion = new ApiVersion(1, 0);
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ReportApiVersions = true;
     options.ApiVersionReader = ApiVersionReader.Combine(
         new UrlSegmentApiVersionReader(),
         new QueryStringApiVersionReader("api-version")
     );
-}).AddMvc(options=>{
-    options.Conventions.Add(new VersionByNamespaceConvention());
-}).AddApiExplorer(options=>{
+}).AddMvc(options => options.Conventions.Add(new VersionByNamespaceConvention())).AddApiExplorer(options =>
+{
     options.GroupNameFormat = "v'V";
     options.SubstituteApiVersionInUrl = true;
 });

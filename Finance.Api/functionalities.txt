@@ -1,7 +1,6 @@
-to do
 
 custom validation
-remove unwanted "using" statements
+api versioning
 
 did today:
 

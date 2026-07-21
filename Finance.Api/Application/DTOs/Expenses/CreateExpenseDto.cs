@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using Finance.Api.Application.Validation;
 
 namespace Finance.Api.Application.DTOs.Expenses;
 
@@ -18,5 +19,6 @@ public class CreateExpenseDto
     public int CategoryId { get; set; }
 
     [Required]
+    [DateValidation]
     public DateTime Date { get; set; }
 }
