@@ -1,21 +1,29 @@
 ﻿using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.DTOs.Auth;
-using Finance.Api.Application.DTOs.Common;
+using FluentValidation;
 using Finance.Api.Presentation.Extensions;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Finance.Api.Application.DTOs.Common;
 
 namespace Finance.Api.Presentation.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AuthController(IAuthService authService) : ControllerBase
+public class AuthController(IAuthService authService, IValidator<RegisterRequestDto> validator) : ControllerBase
 {
 
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync(RegisterRequestDto request)
     {
+        var validationResult = await validator.ValidateAsync(request).ConfigureAwait(false);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new ApiResponse { Success = false, Message = validationResult.Errors.First().ErrorMessage });
+        }
+
         var response = await authService.RegisterAsync(request).ConfigureAwait(false);
 
         if (!response.Success)

@@ -14,7 +14,6 @@ public class RegisterRequestDto
     public required string Email { get; set; }
 
     [Required]
-    [StrongPassword]
     public required string Password { get; set; }
 
     [Required]

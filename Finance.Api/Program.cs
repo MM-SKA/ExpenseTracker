@@ -15,9 +15,9 @@ using Finance.Api.Domain.Entities;
 using Finance.Api.Presentation.Middleware;
 using Finance.Api.Application.DTOs.V1.Expenses;
 using Asp.Versioning;
-using Serilog;
 using Finance.Api.Application.DTOs.V2.Expenses;
 using Asp.Versioning.Conventions;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,7 +78,7 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
-
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);

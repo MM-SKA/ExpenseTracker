@@ -5,7 +5,7 @@ using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.V1.Expenses;
 using Finance.Api.Application.Interfaces.V1;
 using Finance.Api.Presentation.Extensions;
-
+using Finance.Api.Application.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +16,7 @@ namespace Finance.Api.Presentation.Controllers.V1;
 [Route("api/v{version:apiVersion}/expenses")]
 [Route("api/expenses")]
 [Authorize]
-public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService) : ControllerBase
+public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, CreateExpenseValidator createExpenseValidator) : ControllerBase
 {
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
@@ -38,6 +38,11 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService) 
     [HttpPost("create")]
     public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request)
     {
+        var validationResult = await createExpenseValidator.ValidateAsync(request).ConfigureAwait(false);
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new ApiResponse { Success = false, Message = validationResult.Errors.First().ErrorMessage });
+        }
         var userId = User.GetUserId();
         var result = await expenseService.CreateExpenseAsync(userId, request).ConfigureAwait(false);
         return CreatedAtAction(nameof(CreateExpenseAsync), result);

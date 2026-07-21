@@ -1,54 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+﻿using Finance.Api.Application.DTOs.Auth;
 
-using DocumentFormat.OpenXml.Office2016.Drawing.Command;
+using FluentValidation;
 
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-
-namespace Finance.Api.Application.Validation;
-
-public sealed partial class StrongPasswordAttribute : ValidationAttribute
+public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
 {
-    [GeneratedRegex("[A-Z]")]
-    private static partial Regex UpperCaseRegex();
-
-    [GeneratedRegex("[a-z]")]
-    private static partial Regex LowerCaseRegex();
-
-    [GeneratedRegex("[0-9]")]
-    private static partial Regex DigitRegex();
-
-    [GeneratedRegex(@"\W_")]
-    private static partial Regex SpecialCharacterRegex();
-
-    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    public RegisterRequestValidator()
     {
-        if (value is not string password)
-        {
-            return new ValidationResult("Password must not be empty");
-        }
+        _ = RuleFor(x => x.Password)
+        .NotEmpty()
+        .MinimumLength(8)
+        .Matches("[A-Z]")
+        .WithMessage("PASSWORD MUST CONTAIN ATLEAST ONE UPPERCASE LETTER")
+        .Matches("[a-z]")
+        .WithMessage("password must contain a lowercase letter.")
+        .Matches("[0-9]")
+        .WithMessage("Password must contain a digit.")
+        .Matches(@"[\W_]")
+        .WithMessage("Password must contain a special character.");
 
-        if (!UpperCaseRegex().IsMatch(password))
-        {
-            return new ValidationResult("PASSWORD MUST CONTAIN ATLEAST ONE UPPERCASE LETTER");
-        }
-
-        if (!LowerCaseRegex().IsMatch(password))
-        {
-            return new ValidationResult("password must contain atleast one lowercase letter");
-        }
-
-        if (!DigitRegex().IsMatch(password))
-        {
-            return new ValidationResult("Password must contain atleast one Digit");
-        }
-
-        if (!SpecialCharacterRegex().IsMatch(password))
-        {
-            return new ValidationResult("Password must contain atleast one $pecial Ch@racter");
-        }
-
-        return ValidationResult.Success;
     }
 }
