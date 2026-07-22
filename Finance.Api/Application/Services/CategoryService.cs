@@ -4,6 +4,7 @@ using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Application.Logs;
 using Finance.Api.Domain.Entities;
+using Finance.Api.Application.Constants;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -52,20 +53,20 @@ internal class CategoryService(FinanceDbContext context, ILogger<CategoryService
         var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
-            return new ApiResponse<CategoryDto> { Success = false, Message = "Category not found" };
+            return new ApiResponse<CategoryDto> { Success = false, Message = "Category not found", ErrorCode = ErrorCodes.CategoryNotFound };
         }
 
         //check if category is system category
         if (category.IsSystemCategory)
         {
-            return new ApiResponse<CategoryDto> { Success = false, Message = "Can not update pre-defined categories" };
+            return new ApiResponse<CategoryDto> { Success = false, Message = "Can not update pre-defined categories", ErrorCode = ErrorCodes.SystemCategoryUpdate };
         }
 
         // Check if new name is duplicate (case-insensitive, excluding current category)
         var isDuplicate = await context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToUpperInvariant().Trim() == request.Name.ToUpperInvariant().Trim() && c.Id != id).ConfigureAwait(false);
         if (isDuplicate)
         {
-            return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
+            return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists", ErrorCode = ErrorCodes.DuplicateCategory };
         }
 
         category.Name = request.Name;
@@ -87,7 +88,7 @@ internal class CategoryService(FinanceDbContext context, ILogger<CategoryService
         //check if category is not system category
         if (category.IsSystemCategory)
         {
-            return new ApiResponse { Success = false, Message = "Can not delete pre-defined categories" };
+            return new ApiResponse { Success = false, Message = "Can not delete pre-defined categories", ErrorCode = ErrorCodes.SystemCategoryUpdate };
         }
         _ = context.Categories.Remove(category);
         _ = await context.SaveChangesAsync().ConfigureAwait(false);

@@ -6,6 +6,7 @@ using Finance.Api.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Application.DTOs.V1.Expenses;
+using Finance.Api.Application.Constants;
 
 namespace Finance.Api.Application.Services.V1;
 
@@ -19,7 +20,7 @@ internal class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<Ex
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
         if (category == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category", ErrorCode = ErrorCodes.InvalidCategory };
         }
         var expense = new Expense
         {
@@ -48,14 +49,14 @@ internal class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<Ex
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
         if (expense == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Expense not found" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Expense not found", ErrorCode = ErrorCodes.ExpenseNotFound };
         }
 
         // Verify category belongs to user
         var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && c.UserId == userId).ConfigureAwait(false);
         if (category == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category" };
+            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category", ErrorCode = ErrorCodes.InvalidCategory };
         }
 
         expense.CategoryId = request.CategoryId;
@@ -83,7 +84,7 @@ internal class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<Ex
         var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
         if (expense == null)
         {
-            return new ApiResponse { Success = false, Message = "Expense not found" };
+            return new ApiResponse { Success = false, Message = "Expense not found", ErrorCode = ErrorCodes.ExpenseNotFound };
         }
         _ = _context.Expenses.Remove(expense);
         _ = await _context.SaveChangesAsync().ConfigureAwait(false);
