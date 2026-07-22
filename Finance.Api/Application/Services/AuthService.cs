@@ -3,6 +3,7 @@ using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
+using Finance.Api.Application.Constants;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -27,7 +28,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<AuthDto>
             {
                 Success = false,
-                Message = "Email already exists"
+                Message = "Email already exists",
+                ErrorCode = ErrorCodes.DuplicateRequest
             };
         }
 
@@ -43,7 +45,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<AuthDto>
             {
                 Success = false,
-                Message = "Phone number already exists"
+                Message = "Phone number already exists",
+                ErrorCode = ErrorCodes.DuplicateRequest
             };
         }
 
@@ -90,7 +93,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<LoginResponseDto>
             {
                 Success = false,
-                Message = "Invalid email"
+                Message = "Invalid email",
+                ErrorCode = ErrorCodes.InvalidCredentials
             };
         }
 
@@ -106,7 +110,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<LoginResponseDto>
             {
                 Success = false,
-                Message = "Invalid password"
+                Message = "Invalid password",
+                ErrorCode = ErrorCodes.InvalidCredentials
             };
         }
 
@@ -158,7 +163,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<AuthDto>
             {
                 Success = false,
-                Message = "User not found"
+                Message = "User not found",
+                ErrorCode = ErrorCodes.UserNotFound
             };
         }
 
@@ -190,7 +196,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse<AuthDto>
             {
                 Success = false,
-                Message = "User not found"
+                Message = "User not found",
+                ErrorCode = ErrorCodes.UserNotFound
             };
         }
 
@@ -207,7 +214,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
                 return new ApiResponse<AuthDto>
                 {
                     Success = false,
-                    Message = "Email already exists"
+                    Message = "Email already exists",
+                    ErrorCode = ErrorCodes.DuplicateRequest
                 };
             }
 
@@ -227,7 +235,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
                 return new ApiResponse<AuthDto>
                 {
                     Success = false,
-                    Message = "Phone number already exists"
+                    Message = "Phone number already exists",
+                    ErrorCode = ErrorCodes.DuplicateRequest
                 };
             }
 
@@ -270,7 +279,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse
             {
                 Success = false,
-                Message = "User not found"
+                Message = "User not found",
+                ErrorCode = ErrorCodes.UserNotFound
             };
         }
 
@@ -284,7 +294,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse
             {
                 Success = false,
-                Message = "Enter the correct password"
+                Message = "Enter the correct password",
+                ErrorCode = ErrorCodes.InvalidPasswordWhileChangingPassword
             };
         }
 
@@ -293,7 +304,8 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             return new ApiResponse
             {
                 Success = false,
-                Message = "New password must be different from current password"
+                Message = "New password must be different from current password",
+                ErrorCode = ErrorCodes.NewPasswordMatchesOldPassword
             };
         }
 
