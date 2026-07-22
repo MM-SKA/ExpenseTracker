@@ -1,8 +1,10 @@
+error code
+remove noise
+
+did today:
 
 custom validation
 api versioning
-
-did today:
 
 logmessage vs logwarning
 primary constructor

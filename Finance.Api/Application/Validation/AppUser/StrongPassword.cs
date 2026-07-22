@@ -18,5 +18,10 @@ public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
         .Matches(@"[\W_]")
         .WithMessage("Password must contain a special character.");
 
+        _ = RuleFor(x => x.PhoneNumber)
+        .NotEmpty()
+        .WithMessage("PhoneNumber is Must")
+        .Length(10)
+        .WithMessage("PhoneNumber Should be exactly of 10 Digits");
     }
 }
