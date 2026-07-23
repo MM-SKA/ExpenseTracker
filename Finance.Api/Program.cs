@@ -1,53 +1,40 @@
-﻿using Finance.Api.Infrastructure.Data;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using System.Text.Json.Serialization;
 using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.Interfaces.V1;
 using Finance.Api.Application.Interfaces.V2;
 using Finance.Api.Application.Services;
 using Finance.Api.Application.Services.V1;
 using Finance.Api.Application.Services.V2;
-using Finance.Api.Infrastructure.Services;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text.Json.Serialization;
 using Finance.Api.Domain.Entities;
+using Finance.Api.Infrastructure.Services;
+using Finance.Api.Infrastructure.Data;
 using Finance.Api.Presentation.Middleware;
-using Finance.Api.Application.DTOs.V1.Expenses;
+
 using Asp.Versioning;
-using Finance.Api.Application.DTOs.V2.Expenses;
 using Asp.Versioning.Conventions;
+using Finance.Api.Application.DTOs.V1.Expenses;
+using Finance.Api.Application.DTOs.V2.Expenses;
+
 using FluentValidation;
+using Finance.Api.Application.Validation.AppUser;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Log.Logger = new LoggerConfiguration()
-//     .WriteTo.Console()
-//     .WriteTo.File(
-//         "logs/log-.txt",
-//         rollingInterval: RollingInterval.Day)
-//     .CreateLogger();
-
-// builder.Host.UseSerilog();
-
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
-
 builder.Services.AddHttpLogging(options => { });
 
 builder.Services.AddScoped<IJWTService, JWTService>();
-
 builder.Services.AddScoped<IAuthService, AuthService>();
-
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-
 builder.Services.AddScoped<IExpenseServiceV1<ExpenseDtoV1>, ExpenseServiceV1>();
 builder.Services.AddScoped<IExpenseServiceV2<ExpenseDtoV2>, ExpenseServiceV2>();
+
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
 builder.Services
     .AddAuthentication(

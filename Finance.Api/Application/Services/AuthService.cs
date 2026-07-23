@@ -4,13 +4,15 @@ using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Application.Constants;
+using FluentValidation;
+using Finance.Api.Application.Validation.AppUser;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Finance.Api.Application.Services;
 
-internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger) : IAuthService
+internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger, IValidator<RegisterRequestDto> validator) : IAuthService
 {
 
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)
@@ -49,6 +51,14 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
                 ErrorCode = ErrorCodes.DuplicateRequest
             };
         }
+
+        var StrongPassword = await validator.ValidateAsync(request).ConfigureAwait(false);
+
+        if (!StrongPassword.IsValid)
+        {
+            return new ApiResponse<AuthDto> { Success = false, Message = StrongPassword.Errors.First().ErrorMessage };
+        }
+
 
         var user = new AppUser
         {

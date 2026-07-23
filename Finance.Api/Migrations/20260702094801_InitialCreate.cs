@@ -9,8 +9,16 @@ namespace Finance.Api.Migrations
     public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
+        private static readonly string[] CategoryIndexColumns =
+        [
+            "UserId",
+            "Name"
+        ];
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -80,7 +88,7 @@ namespace Finance.Api.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_UserId_Name",
                 table: "Categories",
-                columns: new[] { "UserId", "Name" },
+                columns:CategoryIndexColumns,
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -108,6 +116,7 @@ namespace Finance.Api.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
             migrationBuilder.DropTable(
                 name: "Expenses");
 
