@@ -2,6 +2,8 @@
 
 using FluentValidation;
 
+namespace Finance.Api.Application.Validation.AppUser;
+
 public class RegisterRequestValidator : AbstractValidator<RegisterRequestDto>
 {
     public RegisterRequestValidator()
