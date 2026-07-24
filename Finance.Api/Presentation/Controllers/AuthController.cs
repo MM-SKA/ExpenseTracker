@@ -77,12 +77,12 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [Authorize]
     [HttpPatch("change-password")]
-    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDto request)
+    public async Task<IActionResult> ChangePasswordAsync(ChangePasswordDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
 
         var response =
-            await authService.ChangePasswordAsync(userId, request).ConfigureAwait(false);
+            await authService.ChangePasswordAsync(userId, request, cancellationToken).ConfigureAwait(false);
 
         if (!response.Success)
         {

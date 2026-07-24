@@ -37,73 +37,73 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
     //------------------------------------------------------------------------------------------------------------------------------------
     //create expense endpoint
     [HttpPost("create")]
-    public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request)
+    public async Task<IActionResult> CreateExpenseAsync(CreateExpenseDto request, CancellationToken cancellationToken)
     {
-        var validationResult = await createExpenseValidator.ValidateAsync(request).ConfigureAwait(false);
+        var validationResult = await createExpenseValidator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
         if (!validationResult.IsValid)
         {
             return BadRequest(new ApiResponse { Success = false, Message = validationResult.Errors.First().ErrorMessage });
         }
         var userId = User.GetUserId();
-        var result = await expenseService.CreateExpenseAsync(userId, request).ConfigureAwait(false);
-        return CreatedAtAction(nameof(CreateExpenseAsync), result);
+        var result = await expenseService.CreateExpenseAsync(userId, request, cancellationToken).ConfigureAwait(false);
+        return Ok(result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //get all expenses for the user
 
     [HttpGet("get")]
     [MapToApiVersion("1.0")]
-    public async Task<IActionResult> GetExpenseAsync()
+    public async Task<IActionResult> GetExpenseAsync(CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return Ok(await expenseService.GetExpenseAsync(userId).ConfigureAwait(false));
+        return Ok(await expenseService.GetExpenseAsync(userId, cancellationToken).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update expense endpoint
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateExpenseAsync(int id, UpdateExpenseDto request)
+    public async Task<IActionResult> UpdateExpenseAsync(int id, UpdateExpenseDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return Ok(await expenseService.UpdateExpenseAsync(userId, id, request).ConfigureAwait(false));
+        return Ok(await expenseService.UpdateExpenseAsync(userId, id, request, cancellationToken).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete expense endpoint
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteExpenseAsync(int id)
+    public async Task<IActionResult> DeleteExpenseAsync(int id, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return Ok(await expenseService.DeleteExpenseAsync(userId, id).ConfigureAwait(false));
+        return Ok(await expenseService.DeleteExpenseAsync(userId, id, cancellationToken).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //filter expense endpoint
 
     [HttpPost("filter")]
-    public async Task<IActionResult> FilterExpenseAsync(FilterExpenseDto request)
+    public async Task<IActionResult> FilterExpenseAsync(FilterExpenseDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        var response = await expenseService.FilterExpensesWithAnalyticsAsync(userId, request).ConfigureAwait(false);
+        var response = await expenseService.FilterExpensesWithAnalyticsAsync(userId, request, cancellationToken).ConfigureAwait(false);
         return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
     }
 
     [HttpGet("paged")]
-    public async Task<IActionResult> GetPagedExpensesAsync([FromQuery] PaginationRequestDto request)
+    public async Task<IActionResult> GetPagedExpensesAsync([FromQuery] PaginationRequestDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var userId = User.GetUserId();
 
         var response =
-            await expenseService.GetPaginatedExpensesAsync(userId, request.PageNumber, request.PageSize).ConfigureAwait(false);
+            await expenseService.GetPaginatedExpensesAsync(userId, request.PageNumber, request.PageSize, cancellationToken).ConfigureAwait(false);
 
         return Ok(response);
     }
 
     [HttpGet("search")]
-    public async Task<IActionResult> GetSearchedExpenseAsync([FromQuery] SearchRequestDto request)
+    public async Task<IActionResult> GetSearchedExpenseAsync([FromQuery] SearchRequestDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        var result = await expenseService.GlobalSearchAsync(userId, request).ConfigureAwait(false);
+        var result = await expenseService.GlobalSearchAsync(userId, request, cancellationToken).ConfigureAwait(false);
         return Ok(result);
     }
 }

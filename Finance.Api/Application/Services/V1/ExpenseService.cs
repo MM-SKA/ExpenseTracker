@@ -1,27 +1,44 @@
-﻿using Finance.Api.Application.Interfaces.V1;
-using Finance.Api.Infrastructure.Data;
-using Finance.Api.Application.DTOs.Expenses;
-using Finance.Api.Application.DTOs.Common;
-using Finance.Api.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Finance.Api.Application.Constants;
 using Finance.Api.Application.DTOs.Category;
+using Finance.Api.Application.DTOs.Common;
+using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.V1.Expenses;
-using Finance.Api.Application.Constants;
+using Finance.Api.Application.Interfaces;
+using Finance.Api.Application.Interfaces.V1;
+using Finance.Api.Domain.Entities;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Finance.Api.Application.Services.V1;
 
-internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<ExpenseDtoV1>
+internal sealed class ExpenseServiceV1(
+    IExpenseRepository expenseRepository)
+    : IExpenseServiceV1<ExpenseDtoV1>
 {
-    private readonly FinanceDbContext _context = context;
-
-    public async Task<ApiResponse<ExpenseDtoV1>> CreateExpenseAsync(int userId, CreateExpenseDto request)
+    public async Task<ApiResponse<ExpenseDtoV1>> CreateExpenseAsync(
+        int userId,
+        CreateExpenseDto request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+
+        var category =
+            await expenseRepository.GetCategoryByIdAsync(
+                    request.CategoryId,
+                    userId,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
         if (category == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category", ErrorCode = ErrorCodes.InvalidCategory };
+            return new ApiResponse<ExpenseDtoV1>
+            {
+                Success = false,
+                Message = "Invalid category",
+                ErrorCode = ErrorCodes.InvalidCategory
+            };
         }
+
         var expense = new Expense
         {
             CategoryId = request.CategoryId,
@@ -30,33 +47,75 @@ internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServi
             ExpenseDate = request.Date,
             UserId = userId
         };
-        _ = _context.Expenses.Add(expense);
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+
+        await expenseRepository
+            .AddExpenseAsync(
+                expense,
+                cancellationToken)
+            .ConfigureAwait(false);
+
+        await expenseRepository
+            .SaveChangesAsync(
+                cancellationToken)
+            .ConfigureAwait(false);
+
         var expenseDto = new ExpenseDtoV1
         {
             Id = expense.Id,
-            Description = expense.Notes,
+            Description = expense.Notes ?? string.Empty,
             Amount = expense.Amount,
             Date = expense.ExpenseDate,
             CategoryId = expense.CategoryId
         };
-        var response = new ApiResponse<ExpenseDtoV1> { Success = true, Message = "Expense created successfully", Data = expenseDto };
-        return response;
+
+        return new ApiResponse<ExpenseDtoV1>
+        {
+            Success = true,
+            Message = "Expense created successfully",
+            Data = expenseDto
+        };
     }
-    public async Task<ApiResponse<ExpenseDtoV1>> UpdateExpenseAsync(int userId, int id, UpdateExpenseDto request)
+
+    public async Task<ApiResponse<ExpenseDtoV1>> UpdateExpenseAsync(
+        int userId,
+        int id,
+        UpdateExpenseDto request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
+
+        var expense =
+            await expenseRepository.GetExpenseByIdAsync(
+                    id,
+                    userId,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
         if (expense == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Expense not found", ErrorCode = ErrorCodes.ExpenseNotFound };
+            return new ApiResponse<ExpenseDtoV1>
+            {
+                Success = false,
+                Message = "Expense not found",
+                ErrorCode = ErrorCodes.ExpenseNotFound
+            };
         }
 
-        // Verify category belongs to user
-        var category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == request.CategoryId && c.UserId == userId).ConfigureAwait(false);
+        var category =
+            await expenseRepository.GetCategoryByIdAsync(
+                    request.CategoryId,
+                    userId,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
         if (category == null)
         {
-            return new ApiResponse<ExpenseDtoV1> { Success = false, Message = "Invalid category", ErrorCode = ErrorCodes.InvalidCategory };
+            return new ApiResponse<ExpenseDtoV1>
+            {
+                Success = false,
+                Message = "Invalid category",
+                ErrorCode = ErrorCodes.InvalidCategory
+            };
         }
 
         expense.CategoryId = request.CategoryId;
@@ -64,121 +123,190 @@ internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServi
         expense.Amount = request.Amount;
         expense.ExpenseDate = request.Date;
 
-        _ = _context.Expenses.Update(expense);
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+        await expenseRepository
+            .SaveChangesAsync(
+                cancellationToken)
+            .ConfigureAwait(false);
 
         var expenseDto = new ExpenseDtoV1
         {
             Id = expense.Id,
-            Description = expense.Notes,
+            Description = expense.Notes ?? string.Empty,
             Amount = expense.Amount,
             Date = expense.ExpenseDate,
             CategoryId = expense.CategoryId
         };
-        var response = new ApiResponse<ExpenseDtoV1> { Success = true, Message = "Expense updated successfully", Data = expenseDto };
-        return response;
+
+        return new ApiResponse<ExpenseDtoV1>
+        {
+            Success = true,
+            Message = "Expense updated successfully",
+            Data = expenseDto
+        };
     }
 
-    public async Task<ApiResponse> DeleteExpenseAsync(int userId, int id)
+    public async Task<ApiResponse> DeleteExpenseAsync(
+        int userId,
+        int id,
+        CancellationToken cancellationToken)
     {
-        var expense = await _context.Expenses.FirstOrDefaultAsync(e => e.Id == id && e.UserId == userId).ConfigureAwait(false);
+        var expense =
+            await expenseRepository.GetExpenseByIdAsync(
+                    id,
+                    userId,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
         if (expense == null)
         {
-            return new ApiResponse { Success = false, Message = "Expense not found", ErrorCode = ErrorCodes.ExpenseNotFound };
+            return new ApiResponse
+            {
+                Success = false,
+                Message = "Expense not found",
+                ErrorCode = ErrorCodes.ExpenseNotFound
+            };
         }
-        _ = _context.Expenses.Remove(expense);
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
-        return new ApiResponse { Success = true, Message = "Expense Deleted successfully" };
+
+        await expenseRepository
+            .DeleteExpenseAsync(expense)
+            .ConfigureAwait(false);
+
+        await expenseRepository
+            .SaveChangesAsync(
+                cancellationToken)
+            .ConfigureAwait(false);
+
+        return new ApiResponse
+        {
+            Success = true,
+            Message = "Expense deleted successfully"
+        };
     }
 
-    public async Task<List<ExpenseDtoV1>> GetExpenseAsync(int userId)
+    public async Task<List<ExpenseDtoV1>> GetExpenseAsync(
+        int userId,
+        CancellationToken cancellationToken)
     {
-        var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).ToListAsync().ConfigureAwait(false);
-        var expenseDtos = expenses.Select(e => new ExpenseDtoV1
-        {
-            Id = e.Id,
-            Description = e.Notes ?? string.Empty,
-            Amount = e.Amount,
-            Date = e.ExpenseDate,
-            CategoryId = e.CategoryId
-        }).ToList();
-        return expenseDtos;
-    }
+        var expenses =
+            await expenseRepository
+                .GetExpenseQuery(userId)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
-    // public async Task<ApiResponse<FilterResponseDto>> FilterExpense(int userId , FilterExpenseDto request)
-    // {
-
-    // }
-
-    public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(int userId, FilterExpenseDto filters)
-    {
-        ArgumentNullException.ThrowIfNull(filters);
-        var query = BuildFilteredQuery(userId, filters);
-        var filteredExpenses = await query.ToListAsync().ConfigureAwait(false);
-
-        var response = new FilterResponseDto
-        {
-            Expenses = [..filteredExpenses.Select(e => new ExpenseDtoV1
+        return expenses
+            .Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
                 CategoryId = e.CategoryId
-            })]
+            })
+            .ToList();
+    }
+
+    public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
+        int userId,
+        FilterExpenseDto filters,
+        CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(filters);
+
+        var query =
+            BuildFilteredQuery(
+                userId,
+                filters);
+
+        var filteredExpenses =
+            await query
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        var response = new FilterResponseDto
+        {
+            Expenses =
+            [
+                .. filteredExpenses.Select(e => new ExpenseDtoV1
+                {
+                    Id = e.Id,
+                    Description = e.Notes ?? string.Empty,
+                    Amount = e.Amount,
+                    Date = e.ExpenseDate,
+                    CategoryId = e.CategoryId
+                })
+            ]
         };
 
         if (filters.includeAnalytics)
         {
-            response.Analytics = CalculateAnalytics(filteredExpenses);
+            response.Analytics =
+                CalculateAnalytics(filteredExpenses);
         }
 
         return response;
     }
 
-    private IQueryable<Expense> BuildFilteredQuery(int userId, FilterExpenseDto filters)
+    private IQueryable<Expense> BuildFilteredQuery(
+        int userId,
+        FilterExpenseDto filters)
     {
-        var query = _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).AsQueryable();
+        var query =
+            expenseRepository.GetExpenseQuery(userId);
 
         if (filters.categoryId.HasValue)
         {
-            query = query.Where(e => e.CategoryId == filters.categoryId.Value);
+            query = query.Where(
+                e => e.CategoryId == filters.categoryId.Value);
         }
+
         if (filters.startDate.HasValue)
         {
-            query = query.Where(e => e.ExpenseDate >= filters.startDate.Value.Date);
+            query = query.Where(
+                e => e.ExpenseDate >= filters.startDate.Value.Date);
         }
+
         if (filters.endDate.HasValue)
         {
-            query = query.Where(e => e.ExpenseDate <= filters.endDate.Value.Date);
+            query = query.Where(
+                e => e.ExpenseDate <= filters.endDate.Value.Date);
         }
+
         if (filters.minAmount.HasValue)
         {
-            query = query.Where(e => e.Amount >= filters.minAmount.Value);
+            query = query.Where(
+                e => e.Amount >= filters.minAmount.Value);
         }
+
         if (filters.maxAmount.HasValue)
         {
-            query = query.Where(e => e.Amount <= filters.maxAmount.Value);
+            query = query.Where(
+                e => e.Amount <= filters.maxAmount.Value);
         }
+
         if (filters.month.HasValue)
         {
-            query = query.Where(e => e.ExpenseDate.Month == filters.month.Value);
+            query = query.Where(
+                e => e.ExpenseDate.Month == filters.month.Value);
         }
 
         if (filters.year.HasValue)
         {
-            query = query.Where(e => e.ExpenseDate.Year == filters.year.Value);
-
+            query = query.Where(
+                e => e.ExpenseDate.Year == filters.year.Value);
         }
-        if (!string.IsNullOrEmpty(filters.notes))
+
+        if (!string.IsNullOrWhiteSpace(filters.notes))
         {
-            query = query.Where(e => e.Notes != null && e.Notes.Contains(filters.notes));
+            query = query.Where(
+                e => e.Notes != null &&
+                     e.Notes.Contains(filters.notes));
         }
 
         return query;
     }
 
-    private static FilteredAnalyticsDto CalculateAnalytics(List<Expense> expenses)
+    private static FilteredAnalyticsDto CalculateAnalytics(
+        List<Expense> expenses)
     {
         if (expenses.Count == 0)
         {
@@ -192,26 +320,46 @@ internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServi
 
         var totalSpent = expenses.Sum(e => e.Amount);
         var count = expenses.Count;
-        var averageAmount = count > 0 ? totalSpent / count : 0;
+        var averageAmount =
+            count > 0
+                ? totalSpent / count
+                : 0;
+
         var minAmount = expenses.Min(e => e.Amount);
         var maxAmount = expenses.Max(e => e.Amount);
 
-        var firstDate = expenses.Min(e => e.ExpenseDate).Date;
-        var lastDate = expenses.Max(e => e.ExpenseDate).Date;
-        var daysWithExpenses = expenses.Select(e => e.ExpenseDate.Date).Distinct().Count();
+        var firstDate =
+            expenses.Min(e => e.ExpenseDate).Date;
 
-        var categories = expenses
-            .GroupBy(e => new { e.CategoryId, e.Category.Name })
-            .Select(g => new CategorySpendDto
-            {
-                CategoryId = g.Key.CategoryId,
-                CategoryName = g.Key.Name,
-                Amount = g.Sum(e => e.Amount),
-                TransactionCount = g.Count(),
-                Percentage = totalSpent > 0 ? (double)(g.Sum(e => e.Amount) / totalSpent * 100m) : 0
-            })
-            .OrderByDescending(x => x.Amount)
-            .ToList();
+        var lastDate =
+            expenses.Max(e => e.ExpenseDate).Date;
+
+        var daysWithExpenses =
+            expenses
+                .Select(e => e.ExpenseDate.Date)
+                .Distinct()
+                .Count();
+
+        var categories =
+            expenses
+                .GroupBy(e => new
+                {
+                    e.CategoryId,
+                    e.Category.Name
+                })
+                .Select(g => new CategorySpendDto
+                {
+                    CategoryId = g.Key.CategoryId,
+                    CategoryName = g.Key.Name,
+                    Amount = g.Sum(e => e.Amount),
+                    TransactionCount = g.Count(),
+                    Percentage =
+                        totalSpent > 0
+                            ? (double)(g.Sum(e => e.Amount) / totalSpent * 100m)
+                            : 0
+                })
+                .OrderByDescending(x => x.Amount)
+                .ToList();
 
         return new FilteredAnalyticsDto
         {
@@ -233,39 +381,53 @@ internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServi
         };
     }
 
-    public async Task<PaginationResponseDto<ExpenseDtoV1>> GetPaginatedExpensesAsync(int userId, int pageNumber, int pageSize)
+    public async Task<PaginationResponseDto<ExpenseDtoV1>>
+        GetPaginatedExpensesAsync(
+            int userId,
+            int pageNumber,
+            int pageSize,
+            CancellationToken cancellationToken)
     {
+        var query =
+            expenseRepository.GetExpenseQuery(userId);
 
-        // if(pageSize<=0 || pageNumber <= 0)
-        // {
-        //     throw new Exception("PageNumber or PageSize can not be Negative nor Zero");
-        // }
+        var totalRecords =
+            await query
+                .CountAsync(cancellationToken)
+                .ConfigureAwait(false);
 
-        var query = _context.Expenses
-            .AsNoTracking()
-            .Where(e => e.UserId == userId);
+        var totalPages =
+            (int)Math.Ceiling(
+                totalRecords / (double)pageSize);
 
-        var totalRecords = await query.CountAsync().ConfigureAwait(false);
+        totalPages =
+            Math.Max(totalPages, 1);
 
-        var totalPages = (int)Math.Ceiling(totalRecords / (double)pageSize);
-        totalPages = Math.Max(totalPages, 1);
         if (pageNumber > totalPages)
         {
-            pageNumber = Math.Min(pageNumber, totalPages);
+            pageNumber = totalPages;
         }
 
-        var expenses = await query.OrderByDescending(e => e.ExpenseDate).ThenByDescending(e => e.Id).Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync().ConfigureAwait(false);
+        var expenses =
+            await query
+                .OrderByDescending(e => e.ExpenseDate)
+                .ThenByDescending(e => e.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
-        var expenseDtos = expenses
-            .Select(e => new ExpenseDtoV1
-            {
-                Id = e.Id,
-                Description = e.Notes ?? string.Empty,
-                Amount = e.Amount,
-                Date = e.ExpenseDate,
-                CategoryId = e.CategoryId
-            })
-            .ToList();
+        var expenseDtos =
+            expenses
+                .Select(e => new ExpenseDtoV1
+                {
+                    Id = e.Id,
+                    Description = e.Notes ?? string.Empty,
+                    Amount = e.Amount,
+                    Date = e.ExpenseDate,
+                    CategoryId = e.CategoryId
+                })
+                .ToList();
 
         return new PaginationResponseDto<ExpenseDtoV1>
         {
@@ -273,20 +435,33 @@ internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServi
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalRecords = totalRecords,
-            TotalPages =
-                (int)Math.Ceiling(
-                    totalRecords /
-                    (double)pageSize)
+            TotalPages = totalPages
         };
-
     }
 
-    public async Task<List<ExpenseDtoV1>> GlobalSearchAsync(int userId, SearchRequestDto request)
+    public async Task<List<ExpenseDtoV1>> GlobalSearchAsync(
+        int userId,
+        SearchRequestDto request,
+        CancellationToken cancellationToken)
     {
-        var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId && (e.Category.Name.Contains(request.Query) || (e.Notes != null && e.Notes.Contains(request.Query)))).OrderByDescending(e => e.ExpenseDate).ToListAsync().ConfigureAwait(false);
+        ArgumentNullException.ThrowIfNull(request);
+
+        var expenses =
+            await expenseRepository
+                .GetExpenseQuery(userId)
+                .Where(e =>
+                    e.Category.Name.Contains(request.Query) ||
+                    (
+                        e.Notes != null &&
+                        e.Notes.Contains(request.Query)
+                    ))
+                .OrderByDescending(e => e.ExpenseDate)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
 
         return
-        [..expenses.Select(e => new ExpenseDtoV1
+        [
+            .. expenses.Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
                 Description = e.Notes ?? string.Empty,
