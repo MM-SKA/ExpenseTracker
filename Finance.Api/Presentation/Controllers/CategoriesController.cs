@@ -33,7 +33,8 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     public async Task<IActionResult> GetCategoriesAsync()
     {
         var userId = User.GetUserId();
-        return Ok(categoryService.GetCategoriesAsync(userId));
+        var categories =await categoryService.GetCategoriesAsync(userId).ConfigureAwait(false);
+        return Ok(categories);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update category endpoint

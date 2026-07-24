@@ -20,7 +20,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
     public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var emailExists = await authRepository.EmailExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
+        var emailExists = await authRepository.EmailExistsAsync(request.Email.ToLowerInvariant(), cancellationToken).ConfigureAwait(false);
 
         if (emailExists)
         {
@@ -56,7 +56,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         var user = new AppUser
         {
             FullName = request.FullName.Trim(),
-            Email = request.Email.Trim(),
+            Email = request.Email.Trim().ToLowerInvariant(),
             PhoneNumber = request.PhoneNumber.Trim(),
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
         };

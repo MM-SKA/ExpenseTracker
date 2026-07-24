@@ -27,6 +27,10 @@ public class ExceptionHandlingMiddleware(RequestDelegate next, ILogger<Exception
             var response = new ApiResponse { Success = false, Message = "a null argument is being passed" };
             await context.Response.WriteAsync(JsonSerializer.Serialize(response)).ConfigureAwait(false);
         }
+        catch(InvalidOperationException ex)
+        {
+            
+        }
         catch (DbUpdateException ex)
         {
             ExceptionHandlingMiddlewareLogs.DbException(logger, ex, context.Request.Method, context.Request.Path);

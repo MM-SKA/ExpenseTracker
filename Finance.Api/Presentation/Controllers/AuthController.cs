@@ -23,9 +23,7 @@ public class AuthController(IAuthService authService) : ControllerBase
             return BadRequest(response);
         }
 
-        return CreatedAtAction(
-            nameof(RegisterAsync),
-            response);
+        return Ok(response);
     }
 
     [HttpPost("login")]

@@ -44,7 +44,7 @@ internal sealed class ExpenseServiceV1(
             CategoryId = request.CategoryId,
             Notes = request.Notes,
             Amount = request.Amount,
-            ExpenseDate = request.Date,
+            ExpenseDate = DateTime.SpecifyKind(request.Date,DateTimeKind.Utc),
             UserId = userId
         };
 
