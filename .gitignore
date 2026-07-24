@@ -93,3 +93,4 @@ yarn-error.log*
 
 FinanceDb.db-shm
 FinanceDb.db-wal
+Finance.Api/appsettings.json

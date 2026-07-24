@@ -85,8 +85,9 @@ builder.Services.AddApiVersioning(options =>
 });
 
 builder.Services.AddDbContext<FinanceDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
-
+    options.UseNpgsql(
+    builder.Configuration.GetConnectionString(
+        "DefaultConnection")));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
