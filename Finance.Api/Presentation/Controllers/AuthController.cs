@@ -14,9 +14,9 @@ public class AuthController(IAuthService authService) : ControllerBase
 {
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync(RegisterRequestDto request)
+    public async Task<IActionResult> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
-        var response = await authService.RegisterAsync(request).ConfigureAwait(false);
+        var response = await authService.RegisterAsync(request, cancellationToken).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -29,9 +29,9 @@ public class AuthController(IAuthService authService) : ControllerBase
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginRequestDto request)
+    public async Task<IActionResult> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken)
     {
-        var response = await authService.LoginAsync(request).ConfigureAwait(false);
+        var response = await authService.LoginAsync(request, cancellationToken).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -43,12 +43,12 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [Authorize]
     [HttpGet("me")]
-    public async Task<IActionResult> MeAsync()
+    public async Task<IActionResult> MeAsync(CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
 
         var response =
-            await authService.GetCurrentUserAsync(userId).ConfigureAwait(false);
+            await authService.GetCurrentUserAsync(userId, cancellationToken).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -60,12 +60,12 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [Authorize]
     [HttpPatch("update")]
-    public async Task<IActionResult> UpdateUserAsync(UpdateUserDto request)
+    public async Task<IActionResult> UpdateUserAsync(UpdateUserDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
 
         var response =
-            await authService.UpdateUserAsync(userId, request).ConfigureAwait(false);
+            await authService.UpdateUserAsync(userId, request, cancellationToken).ConfigureAwait(false);
 
         if (!response.Success)
         {
@@ -94,9 +94,9 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     [Authorize]
     [HttpGet("users")]
-    public async Task<IActionResult> GetUsersAsync()
+    public async Task<IActionResult> GetUsersAsync(CancellationToken cancellationToken)
     {
-        var response = await authService.GetUsersAsync().ConfigureAwait(false);
+        var response = await authService.GetUsersAsync(cancellationToken).ConfigureAwait(false);
 
         return Ok(response);
     }

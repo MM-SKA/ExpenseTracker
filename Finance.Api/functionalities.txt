@@ -1,5 +1,6 @@
-error code
-remove noise
+supabase
+repository
+dynamic versioning
 
 did today:
 

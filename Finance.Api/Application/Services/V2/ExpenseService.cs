@@ -9,7 +9,7 @@ using Finance.Api.Application.DTOs.Category;
 
 namespace Finance.Api.Application.Services.V2;
 
-internal class ExpenseServiceV2(FinanceDbContext context) : IExpenseServiceV2<ExpenseDtoV2>
+internal sealed class ExpenseServiceV2(FinanceDbContext context) : IExpenseServiceV2<ExpenseDtoV2>
 {
     private readonly FinanceDbContext _context = context;
 

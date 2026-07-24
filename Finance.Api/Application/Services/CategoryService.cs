@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Finance.Api.Application.Services;
 
-internal class CategoryService(FinanceDbContext context, ILogger<CategoryService> logger) : ICategoryService
+internal sealed class CategoryService(FinanceDbContext context, ILogger<CategoryService> logger) : ICategoryService
 {
 
     public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(int userId, CreateCategoryDto request)

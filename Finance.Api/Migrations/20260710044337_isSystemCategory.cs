@@ -10,11 +10,12 @@ namespace Finance.Api.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_Categories_Users_UserId",
                 table: "Categories");
 
-            migrationBuilder.AlterColumn<int>(
+            _ = migrationBuilder.AlterColumn<int>(
                 name: "UserId",
                 table: "Categories",
                 type: "INTEGER",
@@ -22,14 +23,14 @@ namespace Finance.Api.Migrations
                 oldClrType: typeof(int),
                 oldType: "INTEGER");
 
-            migrationBuilder.AddColumn<bool>(
+            _ = migrationBuilder.AddColumn<bool>(
                 name: "IsSystemCategory",
                 table: "Categories",
                 type: "INTEGER",
                 nullable: false,
                 defaultValue: false);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_Categories_Users_UserId",
                 table: "Categories",
                 column: "UserId",
@@ -40,15 +41,17 @@ namespace Finance.Api.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+
+            _ = migrationBuilder.DropForeignKey(
                 name: "FK_Categories_Users_UserId",
                 table: "Categories");
 
-            migrationBuilder.DropColumn(
+            _ = migrationBuilder.DropColumn(
                 name: "IsSystemCategory",
                 table: "Categories");
 
-            migrationBuilder.AlterColumn<int>(
+            _ = migrationBuilder.AlterColumn<int>(
                 name: "UserId",
                 table: "Categories",
                 type: "INTEGER",
@@ -58,7 +61,7 @@ namespace Finance.Api.Migrations
                 oldType: "INTEGER",
                 oldNullable: true);
 
-            migrationBuilder.AddForeignKey(
+            _ = migrationBuilder.AddForeignKey(
                 name: "FK_Categories_Users_UserId",
                 table: "Categories",
                 column: "UserId",

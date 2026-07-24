@@ -10,7 +10,8 @@ namespace Finance.Api.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+            _ = migrationBuilder.AddColumn<string>(
                 name: "PhoneNumber",
                 table: "Users",
                 type: "TEXT",
@@ -21,7 +22,8 @@ namespace Finance.Api.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
+            ArgumentNullException.ThrowIfNull(migrationBuilder);
+            _ = migrationBuilder.DropColumn(
                 name: "PhoneNumber",
                 table: "Users");
         }

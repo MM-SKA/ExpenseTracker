@@ -5,27 +5,26 @@ using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Domain.Entities;
 using Finance.Api.Application.Constants;
 using FluentValidation;
-using Finance.Api.Application.Validation.AppUser;
+using Finance.Api.Application.Logs.AppUser;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Finance.Api.Application.Services;
 
-internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, ILogger<AuthService> _logger, IValidator<RegisterRequestDto> validator) : IAuthService
+internal sealed class AuthService(IAuthRepository authRepository, IJWTService _jwtService, ILogger<AuthService> _logger, IValidator<RegisterRequestDto> validator)
+    : IAuthService
+
 {
 
-    public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request)
+    public async Task<ApiResponse<AuthDto>> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var emailExists = await _context.Users.AnyAsync(u => u.Email == request.Email).ConfigureAwait(false);
+        var emailExists = await authRepository.EmailExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
 
         if (emailExists)
         {
-
-            _logger.LogWarning(
-                "Duplicate email registration attempt {Email}",
-                request.Email);
+            AppUserServiceLogs.UserLogin(_logger, request.Email);
 
             return new ApiResponse<AuthDto>
             {
@@ -35,14 +34,10 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             };
         }
 
-        var phoneExists = await _context.Users
-            .AnyAsync(u => u.PhoneNumber == request.PhoneNumber).ConfigureAwait(false);
+        var phoneExists = await authRepository.PhoneExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
 
         if (phoneExists)
         {
-            _logger.LogWarning(
-                "Duplicate Phone Number registration attempt {PhoneNumber}",
-                request.PhoneNumber);
 
             return new ApiResponse<AuthDto>
             {
@@ -52,14 +47,12 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             };
         }
 
-        var StrongPassword = await validator.ValidateAsync(request).ConfigureAwait(false);
+        var StrongPassword = await validator.ValidateAsync(request, cancellationToken).ConfigureAwait(false);
 
         if (!StrongPassword.IsValid)
         {
             return new ApiResponse<AuthDto> { Success = false, Message = StrongPassword.Errors.First().ErrorMessage };
         }
-
-
         var user = new AppUser
         {
             FullName = request.FullName.Trim(),
@@ -68,9 +61,9 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
         };
 
-        _ = _context.Users.Add(user);
+        _ = authRepository.AddUserAsync(user, cancellationToken);
 
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+        await authRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -80,9 +73,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             PhoneNumber = user.PhoneNumber
         };
 
-        _logger.LogInformation(
-                "User {Email} registered",
-                request.Email);
+        AppUserServiceLogs.UserRegisters(_logger, request.Email);
 
         return new ApiResponse<AuthDto>
         {
@@ -92,11 +83,10 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         };
     }
 
-    public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request)
+    public async Task<ApiResponse<LoginResponseDto>> LoginAsync(LoginRequestDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Email == request.Email).ConfigureAwait(false);
+        var user = await authRepository.GetUserByEmailAsync(request.Email, cancellationToken).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -114,9 +104,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
 
         if (!isPasswordValid)
         {
-            _logger.LogWarning(
-                "Invalid Password Attempt for : {Email}",
-                request.Email);
+            AppUserServiceLogs.InvalidAttempt(_logger, request.Email);
             return new ApiResponse<LoginResponseDto>
             {
                 Success = false,
@@ -135,7 +123,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             PhoneNumber = user.PhoneNumber
         };
 
-        _logger.LogInformation("User {Email} logged in", user.Email);
+        AppUserServiceLogs.UserLogin(_logger, request.Email);
 
         var loginResponse = new LoginResponseDto
         {
@@ -151,21 +139,29 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         };
     }
 
-    public async Task<ApiResponse<List<AuthDto>>> GetUsersAsync()
+    public async Task<ApiResponse<List<AuthDto>>> GetUsersAsync(CancellationToken cancellationToken)
     {
-        var users = await _context.Users.AsNoTracking().Select(u => new AuthDto { Id = u.Id, FullName = u.FullName, Email = u.Email, PhoneNumber = u.PhoneNumber }).ToListAsync().ConfigureAwait(false);
+        var users = await authRepository.GetUsersAsync(cancellationToken);
 
+        var authDtos = users.Select(u => new AuthDto
+        {
+            Id = u.Id,
+            FullName = u.FullName,
+            Email = u.Email,
+            PhoneNumber = u.PhoneNumber
+        })
+            .ToList();
         return new ApiResponse<List<AuthDto>>
         {
             Success = true,
             Message = "Users fetched successfully",
-            Data = users
+            Data = authDtos
         };
     }
 
-    public async Task<ApiResponse<AuthDto>> GetCurrentUserAsync(int userId)
+    public async Task<ApiResponse<AuthDto>> GetCurrentUserAsync(int userId, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+        var user = await authRepository.GetUserByIdAsync(userId, cancellationToken).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -194,11 +190,10 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         };
     }
 
-    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(int userId, UpdateUserDto request)
+    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(int userId, UpdateUserDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+        var user = await authRepository.GetUserByIdAsync(userId, cancellationToken).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -214,10 +209,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         if (!string.IsNullOrWhiteSpace(request.Email) &&
             request.Email != user.Email)
         {
-            var emailExists = await _context.Users
-                .AnyAsync(u =>
-                    u.Email == request.Email &&
-                    u.Id != userId).ConfigureAwait(false);
+            var emailExists = await authRepository.EmailExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
 
             if (emailExists)
             {
@@ -235,10 +227,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         if (!string.IsNullOrWhiteSpace(request.PhoneNumber) &&
             request.PhoneNumber != user.PhoneNumber)
         {
-            var phoneExists = await _context.Users
-                .AnyAsync(u =>
-                    u.PhoneNumber == request.PhoneNumber &&
-                    u.Id != userId).ConfigureAwait(false);
+            var phoneExists = await authRepository.PhoneExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
 
             if (phoneExists)
             {
@@ -258,7 +247,7 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
             user.FullName = request.FullName.Trim();
         }
 
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+        await authRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -278,11 +267,10 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
 
     public async Task<ApiResponse> ChangePasswordAsync(
         int userId,
-        ChangePasswordDto request)
+        ChangePasswordDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId).ConfigureAwait(false);
+        var user = await authRepository.GetUserByIdAsync(userId, cancellationToken).ConfigureAwait(false);
 
         if (user == null)
         {
@@ -322,11 +310,9 @@ internal class AuthService(FinanceDbContext _context, IJWTService _jwtService, I
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(
             request.NewPassword);
 
-        _ = await _context.SaveChangesAsync().ConfigureAwait(false);
+        await authRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        _logger.LogInformation(
-            "password updated successfully"
-        );
+        AppUserServiceLogs.PasswordUpdateSuccess(_logger, user.Email);
 
         return new ApiResponse
         {

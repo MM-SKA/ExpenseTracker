@@ -10,7 +10,7 @@ using Finance.Api.Application.Constants;
 
 namespace Finance.Api.Application.Services.V1;
 
-internal class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<ExpenseDtoV1>
+internal sealed class ExpenseServiceV1(FinanceDbContext context) : IExpenseServiceV1<ExpenseDtoV1>
 {
     private readonly FinanceDbContext _context = context;
 
