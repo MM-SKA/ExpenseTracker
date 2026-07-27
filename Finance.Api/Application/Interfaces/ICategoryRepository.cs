@@ -4,6 +4,9 @@ namespace Finance.Api.Application.Interfaces;
 
 public interface ICategoryRepository
 {
+    Task<int> GetNextCategoryIdAsync(
+        CancellationToken cancellationToken);
+
     Task<Category?> GetCategoryByIdAsync(
         int categoryId,
         int userId,

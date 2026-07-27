@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "PersonalFinanceDashboard",
+  "sourceCode": "parent",
+  "sessionId": "c04948d1-bff3-4413-89ce-0cefde095548",
+  "runCounts": {},
+  "phases": {
+    "discovery": {
+      "status": "in-progress",
+      "applicationAnalysis": {
+        "projectName": "Finance.Api",
+        "projectType": "Web App",
+        "language": "C#",
+        "frameworks": [
+          "ASP.NET Core"
+        ],
+        "databaseType": "PostgreSQL",
+        "databaseAccess": "Entity Framework Core",
+        "completedAt": "2026-07-27T09:37:23.096Z"
+      },
+      "schemaInventory": {
+        "path": "Finance.Api\\Domain\\Entities"
+      }
+    }
+  },
+  "consentGiven": true
+}

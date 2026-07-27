@@ -90,4 +90,22 @@ internal sealed class CategoryRepository(
                 cancellationToken)
             .ConfigureAwait(false);
     }
+
+    public async Task<int> GetNextCategoryIdAsync(
+    CancellationToken cancellationToken)
+    {
+        var categoryIds =
+            await context.Categories
+                .AsNoTracking()
+                .Select(c => c.Id)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        if (categoryIds.Count == 0)
+        {
+            return 1;
+        }
+
+        return categoryIds.Max() + 1;
+    }
 }

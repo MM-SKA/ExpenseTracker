@@ -85,10 +85,13 @@ builder.Services.AddApiVersioning(options =>
     options.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddDbContext<FinanceDbContext>(options =>
-    options.UseNpgsql(
-    builder.Configuration.GetConnectionString(
-        "DefaultConnection")));
+builder.Services.AddDbContext<FinanceDbContext>(
+    options =>
+        options.UseCosmos(
+            builder.Configuration["CosmosDb:AccountEndpoint"]!,
+            builder.Configuration["CosmosDb:AccountKey"]!,
+            builder.Configuration["CosmosDb:DatabaseName"]!));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -103,47 +106,73 @@ using (var scope = app.Services.CreateScope())
         scope.ServiceProvider
             .GetRequiredService<FinanceDbContext>();
 
-    if (!await context.Categories.AnyAsync())
+    await context.Database
+        .EnsureCreatedAsync()
+        .ConfigureAwait(false);
+
+    var existingSystemCategories =
+        await context.Categories
+            .Where(c => c.IsSystemCategory)
+            .OrderBy(c => c.Id)
+            .Take(1)
+            .ToListAsync()
+            .ConfigureAwait(false);
+
+    if (existingSystemCategories.Count == 0)
     {
         context.Categories.AddRange(
             new Category
             {
+                Id = 1,
                 Name = "Food",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 2,
                 Name = "Travel",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 3,
                 Name = "Entertainment",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 4,
                 Name = "Shopping",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 5,
                 Name = "Health",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 6,
                 Name = "Education",
-                IsSystemCategory = true
+                IsSystemCategory = true,
+                UserId = 0
             },
             new Category
             {
+                Id = 7,
                 Name = "Bills",
-                IsSystemCategory = true
-            }
-        );
+                IsSystemCategory = true,
+                UserId = 0
+            });
 
-        _ = await context.SaveChangesAsync();
+        _ = await context.SaveChangesAsync()
+            .ConfigureAwait(false);
     }
 }
 

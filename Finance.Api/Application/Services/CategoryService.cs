@@ -27,12 +27,19 @@ internal sealed class CategoryService(ICategoryRepository categoryRepository, IL
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
         }
 
+        var nextCategoryId =
+        await categoryRepository
+            .GetNextCategoryIdAsync(cancellationToken)
+            .ConfigureAwait(false);
+
         var category = new Category
         {
+            Id = nextCategoryId,
             Name = request.Name.Trim(),
             UserId = userId,
             IsSystemCategory = false
         };
+
         await categoryRepository.AddCategoryAsync(category, cancellationToken).ConfigureAwait(false);
         await categoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         CategoryServiceLogs.CategoryCreated(logger, userId);

@@ -11,23 +11,37 @@ internal sealed class AuthRepository(
     : IAuthRepository
 {
     public async Task<bool> EmailExistsAsync(
-        string email,
-        CancellationToken cancellationToken)
+    string email,
+    CancellationToken cancellationToken)
     {
-        return await context.Users
-            .AnyAsync(
-                u => u.Email == email,
-                cancellationToken).ConfigureAwait(false);
+        var users =
+            await context.Users
+                .AsNoTracking()
+                .Where(u => u.Email == email)
+                .OrderBy(u => u.Id)
+                .Select(u => u.Id)
+                .Take(1)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        return users.Count > 0;
     }
 
     public async Task<bool> PhoneExistsAsync(
-        string phoneNumber,
-        CancellationToken cancellationToken)
+    string phoneNumber,
+    CancellationToken cancellationToken)
     {
-        return await context.Users
-            .AnyAsync(
-                u => u.PhoneNumber == phoneNumber,
-                cancellationToken).ConfigureAwait(false);
+        var users =
+            await context.Users
+                .AsNoTracking()
+                .Where(u => u.PhoneNumber == phoneNumber)
+                .OrderBy(u => u.Id)
+                .Select(u => u.Id)
+                .Take(1)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        return users.Count > 0;
     }
 
     public async Task AddUserAsync(
@@ -68,10 +82,28 @@ internal sealed class AuthRepository(
 
     public async Task<List<AppUser>> GetUsersAsync(
     CancellationToken cancellationToken)
-{
-    return await context.Users
-        .AsNoTracking()
-        .ToListAsync(cancellationToken)
-        .ConfigureAwait(false);
-}
+    {
+        return await context.Users
+            .AsNoTracking()
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    public async Task<int> GetNextUserIdAsync(
+    CancellationToken cancellationToken)
+    {
+        var userIds =
+            await context.Users
+                .AsNoTracking()
+                .Select(c => c.Id)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        if (userIds.Count == 0)
+        {
+            return 1;
+        }
+
+        return userIds.Max() + 1;
+    }
 }

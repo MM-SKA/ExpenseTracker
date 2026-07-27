@@ -53,15 +53,20 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         {
             return new ApiResponse<AuthDto> { Success = false, Message = StrongPassword.Errors.First().ErrorMessage };
         }
+        var nextUserId =
+            await authRepository
+                .GetNextUserIdAsync(cancellationToken)
+                .ConfigureAwait(false);
         var user = new AppUser
         {
+            Id = nextUserId,
             FullName = request.FullName.Trim(),
             Email = request.Email.Trim().ToLowerInvariant(),
             PhoneNumber = request.PhoneNumber.Trim(),
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
         };
 
-        _ = authRepository.AddUserAsync(user, cancellationToken);
+        await authRepository.AddUserAsync(user, cancellationToken);
 
         await authRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
@@ -227,7 +232,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         if (!string.IsNullOrWhiteSpace(request.PhoneNumber) &&
             request.PhoneNumber != user.PhoneNumber)
         {
-            var phoneExists = await authRepository.PhoneExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
+            var phoneExists = await authRepository.PhoneExistsAsync(request.PhoneNumber, cancellationToken).ConfigureAwait(false);
 
             if (phoneExists)
             {
