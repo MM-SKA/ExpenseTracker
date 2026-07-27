@@ -10,16 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Finance.Api.Application.Services;
 
-internal sealed class CategoryService(FinanceDbContext context, ILogger<CategoryService> logger) : ICategoryService
+internal sealed class CategoryService(ICategoryRepository categoryRepository, ILogger<CategoryService> logger) : ICategoryService
 {
 
-    public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(int userId, CreateCategoryDto request)
+    public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(int userId, CreateCategoryDto request, CancellationToken cancellationToken)
     {
         // var userId = User.GetUserId();
 
         // Check if category with same name already exists for this user
         ArgumentNullException.ThrowIfNull(request);
-        var existingCategory = await context.Categories.FirstOrDefaultAsync(c => c.Name.ToUpperInvariant().Trim() == request.Name.ToUpperInvariant().Trim() && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        var existingCategory = await categoryRepository.GetCategoryByNameAsync(request.Name, userId, cancellationToken).ConfigureAwait(false);
+
         if (existingCategory != null)
         {
             CategoryServiceLogs.DuplicateCategory(logger);
@@ -32,25 +33,25 @@ internal sealed class CategoryService(FinanceDbContext context, ILogger<Category
             UserId = userId,
             IsSystemCategory = false
         };
-        _ = context.Categories.Add(category);
-        _ = await context.SaveChangesAsync().ConfigureAwait(false);
+        await categoryRepository.AddCategoryAsync(category, cancellationToken).ConfigureAwait(false);
+        await categoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         CategoryServiceLogs.CategoryCreated(logger, userId);
         var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category created successfully", Data = categoryDto };
         return response;
     }
 
-    public async Task<List<CategoryDto>> GetCategoriesAsync(int userId)
+    public async Task<List<CategoryDto>> GetCategoriesAsync(int userId, CancellationToken cancellationToken)
     {
-        var categories = await context.Categories.AsNoTracking().Where(c => (c.IsSystemCategory || c.UserId == userId)).ToListAsync().ConfigureAwait(false);
+        var categories = await categoryRepository.GetCategoriesAsync(userId, cancellationToken).ConfigureAwait(false);
         var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name, IsSystemCategory = c.IsSystemCategory }).ToList();
         return (categoryDtos);
     }
 
-    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(int userId, int id, UpdateCategoryDto request)
+    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(int userId, int id, UpdateCategoryDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        var category = await categoryRepository.GetCategoryByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
         if (category == null)
         {
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category not found", ErrorCode = ErrorCodes.CategoryNotFound };
@@ -63,24 +64,23 @@ internal sealed class CategoryService(FinanceDbContext context, ILogger<Category
         }
 
         // Check if new name is duplicate (case-insensitive, excluding current category)
-        var isDuplicate = await context.Categories.AnyAsync(c => (c.IsSystemCategory || c.UserId == userId) && c.Name.ToUpperInvariant().Trim() == request.Name.ToUpperInvariant().Trim() && c.Id != id).ConfigureAwait(false);
+        var isDuplicate = await categoryRepository.CategoryExistsAsync(request.Name, userId, id, cancellationToken).ConfigureAwait(false);
         if (isDuplicate)
         {
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists", ErrorCode = ErrorCodes.DuplicateCategory };
         }
 
         category.Name = request.Name;
-        _ = context.Categories.Update(category);
-        _ = await context.SaveChangesAsync().ConfigureAwait(false);
+        await categoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         var categoryDto = new CategoryDto { Id = category.Id, Name = category.Name, IsSystemCategory = category.IsSystemCategory };
         var response = new ApiResponse<CategoryDto> { Success = true, Message = "Category updated successfully", Data = categoryDto };
         return (response);
     }
 
-    public async Task<ApiResponse> DeleteCategoryAsync(int userId, int id)
+    public async Task<ApiResponse> DeleteCategoryAsync(int userId, int id, CancellationToken cancellationToken)
     {
-        var category = await context.Categories.FirstOrDefaultAsync(c => c.Id == id && (c.IsSystemCategory || c.UserId == userId)).ConfigureAwait(false);
+        var category = await categoryRepository.GetCategoryByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
         if (category == null)
         {
             return new ApiResponse { Success = false, Message = "Category not found" };
@@ -90,8 +90,8 @@ internal sealed class CategoryService(FinanceDbContext context, ILogger<Category
         {
             return new ApiResponse { Success = false, Message = "Can not delete pre-defined categories", ErrorCode = ErrorCodes.SystemCategoryUpdate };
         }
-        _ = context.Categories.Remove(category);
-        _ = await context.SaveChangesAsync().ConfigureAwait(false);
+        await categoryRepository.DeleteCategoryAsync(category).ConfigureAwait(false);
+        await categoryRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         return new ApiResponse { Success = true, Message = "Category deleted successfully" };
     }
 }

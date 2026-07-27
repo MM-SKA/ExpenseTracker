@@ -141,7 +141,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
 
     public async Task<ApiResponse<List<AuthDto>>> GetUsersAsync(CancellationToken cancellationToken)
     {
-        var users = await authRepository.GetUsersAsync(cancellationToken);
+        var users = await authRepository.GetUsersAsync(cancellationToken).ConfigureAwait(false);
 
         var authDtos = users.Select(u => new AuthDto
         {

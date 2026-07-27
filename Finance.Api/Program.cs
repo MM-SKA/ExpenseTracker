@@ -36,6 +36,7 @@ builder.Services.AddScoped<IExpenseServiceV1<ExpenseDtoV1>, ExpenseServiceV1>();
 builder.Services.AddScoped<IExpenseServiceV2<ExpenseDtoV2>, ExpenseServiceV2>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
@@ -102,7 +103,7 @@ using (var scope = app.Services.CreateScope())
         scope.ServiceProvider
             .GetRequiredService<FinanceDbContext>();
 
-    if (!context.Categories.Any())
+    if (!await context.Categories.AnyAsync())
     {
         context.Categories.AddRange(
             new Category
@@ -142,7 +143,7 @@ using (var scope = app.Services.CreateScope())
             }
         );
 
-        _ = context.SaveChanges();
+        _ = await context.SaveChangesAsync();
     }
 }
 

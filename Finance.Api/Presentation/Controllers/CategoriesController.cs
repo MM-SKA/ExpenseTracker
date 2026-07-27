@@ -21,37 +21,40 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     //create category endpoint
 
     [HttpPost("create")]
-    public async Task<IActionResult> CreateCategoryAsync(CreateCategoryDto request)
+    public async Task<IActionResult> CreateCategoryAsync(CreateCategoryDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return CreatedAtAction(nameof(CreateCategoryAsync), categoryService.CreateCategoryAsync(userId, request));
+        var result = await categoryService.CreateCategoryAsync(userId, request, cancellationToken);
+        return Ok(result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //get all categories for the user
 
     [HttpGet("get")]
-    public async Task<IActionResult> GetCategoriesAsync()
+    public async Task<IActionResult> GetCategoriesAsync(CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        var categories =await categoryService.GetCategoriesAsync(userId).ConfigureAwait(false);
+        var categories = await categoryService.GetCategoriesAsync(userId, cancellationToken).ConfigureAwait(false);
         return Ok(categories);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //update category endpoint
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateCategoryAsync(int id, UpdateCategoryDto request)
+    public async Task<IActionResult> UpdateCategoryAsync(int id, UpdateCategoryDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return Ok(categoryService.UpdateCategoryAsync(userId, id, request));
+        var result = await categoryService.UpdateCategoryAsync(userId, id, request, cancellationToken);
+        return Ok(result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     //delete category endpoint
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteCategoryAsync(int id)
+    public async Task<IActionResult> DeleteCategoryAsync(int id, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
-        return Ok(categoryService.DeleteCategoryAsync(userId, id));
+        var result = await categoryService.DeleteCategoryAsync(userId, id, cancellationToken);
+        return Ok(result);
     }
 }
