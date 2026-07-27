@@ -34,7 +34,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
             };
         }
 
-        var phoneExists = await authRepository.PhoneExistsAsync(request.Email, cancellationToken).ConfigureAwait(false);
+        var phoneExists = await authRepository.PhoneExistsAsync(request.PhoneNumber, cancellationToken).ConfigureAwait(false);
 
         if (phoneExists)
         {

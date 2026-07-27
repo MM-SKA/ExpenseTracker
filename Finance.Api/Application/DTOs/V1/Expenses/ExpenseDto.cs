@@ -9,4 +9,6 @@ public class ExpenseDtoV1
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     public int CategoryId { get; set; }
+
+    public string? Location { get; set; }
 }

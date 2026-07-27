@@ -1,3 +1,5 @@
+add location in expense or fetch current district
+
 supabase
 repository
 dynamic versioning

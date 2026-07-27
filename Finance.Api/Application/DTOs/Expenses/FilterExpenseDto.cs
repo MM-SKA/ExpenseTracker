@@ -19,4 +19,6 @@ public class FilterExpenseDto
     public string? notes { get; set; }
 
     public bool includeAnalytics { get; set; }
+
+    public string? Location { get; set; }
 }

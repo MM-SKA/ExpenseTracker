@@ -18,4 +18,10 @@ public static class ErrorCodes
     public const string ExpenseNotFound = "EXP001";
     public const string InvalidCategory = "EXP002";
 
+    // Database
+    public const string DatabaseConnectionFailed = "DB001";
+    public const string DatabaseDnsResolutionFailed = "DB002";
+    public const string DatabaseTimeout = "DB003";
+    public const string DatabaseUnavailable = "DB004";
+
 }

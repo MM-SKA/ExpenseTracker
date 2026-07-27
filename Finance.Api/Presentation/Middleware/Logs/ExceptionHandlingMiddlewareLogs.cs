@@ -24,4 +24,11 @@ internal static partial class ExceptionHandlingMiddlewareLogs
         message: "Argument Null Exception Occurred. Method={Method}, Path={Path}"
     )]
     public static partial void ArgumentNullException(ILogger logger, Exception ex, string Method, string Path);
+
+    [LoggerMessage(
+        eventId: 6004,
+        level: LogLevel.Critical,
+        message: "Database Connection Failed : DNS Error"
+    )]
+    public static partial void NpgsqlException(ILogger logger, Exception ex);
 }

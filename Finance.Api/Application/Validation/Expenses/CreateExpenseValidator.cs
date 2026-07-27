@@ -15,5 +15,9 @@ public sealed class CreateExpenseValidator : AbstractValidator<CreateExpenseDto>
         _ = RuleFor(x => x.Amount)
         .GreaterThan(0)
         .WithMessage("Amount can not be less than or equal to Zero (0)");
+
+        _ = RuleFor(x => x.Location)
+        .MaximumLength(100)
+        .WithMessage("Location Name Too Big (>100) , Use Abbreviation");
     }
 }

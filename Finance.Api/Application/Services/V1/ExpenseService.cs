@@ -44,8 +44,9 @@ internal sealed class ExpenseServiceV1(
             CategoryId = request.CategoryId,
             Notes = request.Notes,
             Amount = request.Amount,
-            ExpenseDate = DateTime.SpecifyKind(request.Date,DateTimeKind.Utc),
-            UserId = userId
+            ExpenseDate = DateTime.SpecifyKind(request.Date, DateTimeKind.Utc),
+            UserId = userId,
+            Location = request.Location
         };
 
         await expenseRepository
@@ -121,7 +122,8 @@ internal sealed class ExpenseServiceV1(
         expense.CategoryId = request.CategoryId;
         expense.Notes = request.Notes;
         expense.Amount = request.Amount;
-        expense.ExpenseDate = request.Date;
+        expense.ExpenseDate = DateTime.SpecifyKind(request.Date, DateTimeKind.Utc);
+        expense.Location = request.Location;
 
         await expenseRepository
             .SaveChangesAsync(
@@ -134,7 +136,8 @@ internal sealed class ExpenseServiceV1(
             Description = expense.Notes ?? string.Empty,
             Amount = expense.Amount,
             Date = expense.ExpenseDate,
-            CategoryId = expense.CategoryId
+            CategoryId = expense.CategoryId,
+            Location = expense.Location
         };
 
         return new ApiResponse<ExpenseDtoV1>
@@ -200,7 +203,8 @@ internal sealed class ExpenseServiceV1(
                 Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
-                CategoryId = e.CategoryId
+                CategoryId = e.CategoryId,
+                Location = e.Location
             })
             .ToList();
     }
@@ -232,7 +236,8 @@ internal sealed class ExpenseServiceV1(
                     Description = e.Notes ?? string.Empty,
                     Amount = e.Amount,
                     Date = e.ExpenseDate,
-                    CategoryId = e.CategoryId
+                    CategoryId = e.CategoryId,
+                    Location = e.Location
                 })
             ]
         };
@@ -302,7 +307,14 @@ internal sealed class ExpenseServiceV1(
                      e.Notes.Contains(filters.notes));
         }
 
-        return query;
+        if (!string.IsNullOrWhiteSpace(filters.Location))
+        {
+            query = query.Where(
+                e => e.Location != null &&
+                e.Location.Contains(filters.Location));
+        }
+
+        return query.OrderByDescending(e => e.ExpenseDate).ThenByDescending(e => e.Id);
     }
 
     private static FilteredAnalyticsDto CalculateAnalytics(
@@ -425,7 +437,8 @@ internal sealed class ExpenseServiceV1(
                     Description = e.Notes ?? string.Empty,
                     Amount = e.Amount,
                     Date = e.ExpenseDate,
-                    CategoryId = e.CategoryId
+                    CategoryId = e.CategoryId,
+                    Location = e.Location
                 })
                 .ToList();
 
@@ -454,6 +467,10 @@ internal sealed class ExpenseServiceV1(
                     (
                         e.Notes != null &&
                         e.Notes.Contains(request.Query)
+                    ) ||
+                    (
+                        e.Location != null &&
+                        e.Location.Contains(request.Query)
                     ))
                 .OrderByDescending(e => e.ExpenseDate)
                 .ToListAsync(cancellationToken)
@@ -467,7 +484,8 @@ internal sealed class ExpenseServiceV1(
                 Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
-                CategoryId = e.CategoryId
+                CategoryId = e.CategoryId,
+                Location = e.Location
             })
         ];
     }

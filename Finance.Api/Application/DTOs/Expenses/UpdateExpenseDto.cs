@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace Finance.Api.Application.DTOs.Expenses;
@@ -17,4 +17,6 @@ public class UpdateExpenseDto
 
     [Required]
     public DateTime Date { get; set; }
+
+    public string? Location { get; set; }
 }

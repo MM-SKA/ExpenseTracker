@@ -22,6 +22,9 @@ public class Expense
     [MaxLength(250)]
     public string? Notes { get; set; }
 
+    [MaxLength(100)]
+    public string? Location { get; set; }
+
     public int UserId { get; set; }
 
     public AppUser? User { get; set; }
