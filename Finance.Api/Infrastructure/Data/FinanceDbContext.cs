@@ -12,7 +12,12 @@ public class FinanceDbContext(DbContextOptions<FinanceDbContext> options) : DbCo
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        _ = modelBuilder.Entity<AppUser>().ToContainer("Users").HasPartitionKey(u => u.Id);
+
+        _ = modelBuilder.Entity<Category>().ToContainer("Category").HasPartitionKey(c => c.UserId);
+
+        _ = modelBuilder.Entity<Expense>().ToContainer("Expense").HasPartitionKey(e => e.UserId);
+
         base.OnModelCreating(modelBuilder);
-        ArgumentNullException.ThrowIfNull(modelBuilder);
     }
 }

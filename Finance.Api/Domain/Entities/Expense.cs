@@ -25,7 +25,7 @@ public class Expense
     [MaxLength(100)]
     public string? Location { get; set; }
 
-    public string UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     public AppUser? User { get; set; }
 }

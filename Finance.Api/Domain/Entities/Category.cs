@@ -14,7 +14,7 @@ public class Category
     [JsonIgnore]
     public ICollection<Expense> Expenses { get; } = [];
 
-    public string? UserId { get; set; }
+    public string UserId { get; set; } = string.Empty;
 
     public bool IsSystemCategory { get; set; }
 
