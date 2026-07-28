@@ -1,12 +1,7 @@
 ﻿using Finance.Api.Application.DTOs.Category;
-using Finance.Api.Domain.Entities;
-using Finance.Api.Infrastructure.Data;
-using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Presentation.Extensions;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Finance.Api.Application.Interfaces;
 
 namespace Finance.Api.Presentation.Controllers;
