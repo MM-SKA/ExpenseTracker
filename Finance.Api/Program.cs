@@ -13,6 +13,7 @@ using Finance.Api.Domain.Entities;
 using Finance.Api.Infrastructure.Services;
 using Finance.Api.Infrastructure.Data;
 using Finance.Api.Presentation.Middleware;
+using Finance.Api.Infrastructure.Options;
 using Finance.Api.Infrastructure.Repositories;
 
 using Asp.Versioning;
@@ -37,6 +38,9 @@ builder.Services.AddScoped<IExpenseServiceV2<ExpenseDtoV2>, ExpenseServiceV2>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IAiExpenseService, AiExpenseService>();
+builder.Services.Configure<GroqOptions>(builder.Configuration.GetSection("Groq"));
+builder.Services.AddHttpClient<IGroqService, GroqService>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
 
