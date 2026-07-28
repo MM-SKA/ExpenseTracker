@@ -13,7 +13,7 @@ internal sealed class ExpenseServiceV2(FinanceDbContext context) : IExpenseServi
 {
     private readonly FinanceDbContext _context = context;
 
-    public async Task<List<ExpenseDtoV2>> GetExpensesAsync(int userId)
+    public async Task<List<ExpenseDtoV2>> GetExpensesAsync(string userId)
     {
         var expenses = await _context.Expenses.AsNoTracking().Include(e => e.Category).Where(e => e.UserId == userId).ToListAsync().ConfigureAwait(false);
         var expenseDtos = expenses.Select(e => new ExpenseDtoV2

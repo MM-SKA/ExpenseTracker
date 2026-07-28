@@ -11,7 +11,7 @@ public interface IExpenseServiceV2<T>
     // Task<ApiResponse<ExpenseDto>> UpdateExpense(int userId, int id, UpdateExpenseDto request);
     // Task<ApiResponse> DeleteExpense(int userId, int id);
 
-    Task<List<ExpenseDtoV2>> GetExpensesAsync(int userId);
+    Task<List<ExpenseDtoV2>> GetExpensesAsync(string userId);
 
     // Task<FilteredAnalyticsDto> CalculateAnalyticsAsync(List<Expense> filteredExpenses);
 

@@ -5,7 +5,7 @@ namespace Finance.Api.Domain.Entities;
 
 public class Category
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [Required]
     [MaxLength(50)]
@@ -14,7 +14,7 @@ public class Category
     [JsonIgnore]
     public ICollection<Expense> Expenses { get; } = [];
 
-    public int? UserId { get; set; }
+    public string? UserId { get; set; }
 
     public bool IsSystemCategory { get; set; }
 

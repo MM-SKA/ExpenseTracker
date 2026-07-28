@@ -123,52 +123,52 @@ using (var scope = app.Services.CreateScope())
         context.Categories.AddRange(
             new Category
             {
-                Id = 1,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Food",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 2,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Travel",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 3,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Entertainment",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 4,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Shopping",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 5,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Health",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 6,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Education",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             },
             new Category
             {
-                Id = 7,
+                Id = Guid.NewGuid().ToString(),
                 Name = "Bills",
                 IsSystemCategory = true,
-                UserId = 0
+                UserId = "System"
             });
 
         _ = await context.SaveChangesAsync()

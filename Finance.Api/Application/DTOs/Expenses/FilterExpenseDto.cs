@@ -2,7 +2,7 @@
 
 public class FilterExpenseDto
 {
-    public int? categoryId { get; set; }
+    public string? categoryId { get; set; }
 
     public DateTime? startDate { get; set; }
 

@@ -64,7 +64,7 @@ internal sealed class AuthRepository(
     }
 
     public async Task<AppUser?> GetUserByIdAsync(
-        int id,
+        string id,
         CancellationToken cancellationToken)
     {
         return await context.Users
@@ -87,23 +87,5 @@ internal sealed class AuthRepository(
             .AsNoTracking()
             .ToListAsync(cancellationToken)
             .ConfigureAwait(false);
-    }
-
-    public async Task<int> GetNextUserIdAsync(
-    CancellationToken cancellationToken)
-    {
-        var userIds =
-            await context.Users
-                .AsNoTracking()
-                .Select(c => c.Id)
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-        if (userIds.Count == 0)
-        {
-            return 1;
-        }
-
-        return userIds.Max() + 1;
     }
 }

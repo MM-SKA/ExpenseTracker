@@ -17,5 +17,5 @@ internal static partial class CategoryServiceLogs
         Message = "New category added by UserId: {UserId}")]
     public static partial void CategoryCreated(
         ILogger logger,
-        int userId);
+        string userId);
 }

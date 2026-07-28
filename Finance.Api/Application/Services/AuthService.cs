@@ -53,13 +53,8 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         {
             return new ApiResponse<AuthDto> { Success = false, Message = StrongPassword.Errors.First().ErrorMessage };
         }
-        var nextUserId =
-            await authRepository
-                .GetNextUserIdAsync(cancellationToken)
-                .ConfigureAwait(false);
         var user = new AppUser
         {
-            Id = nextUserId,
             FullName = request.FullName.Trim(),
             Email = request.Email.Trim().ToLowerInvariant(),
             PhoneNumber = request.PhoneNumber.Trim(),
@@ -164,7 +159,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         };
     }
 
-    public async Task<ApiResponse<AuthDto>> GetCurrentUserAsync(int userId, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthDto>> GetCurrentUserAsync(string userId, CancellationToken cancellationToken)
     {
         var user = await authRepository.GetUserByIdAsync(userId, cancellationToken).ConfigureAwait(false);
 
@@ -195,7 +190,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         };
     }
 
-    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(int userId, UpdateUserDto request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<AuthDto>> UpdateUserAsync(string userId, UpdateUserDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var user = await authRepository.GetUserByIdAsync(userId, cancellationToken).ConfigureAwait(false);
@@ -271,7 +266,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
     }
 
     public async Task<ApiResponse> ChangePasswordAsync(
-        int userId,
+        string userId,
         ChangePasswordDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);

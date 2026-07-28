@@ -12,10 +12,10 @@ public interface IAuthService
 
     Task<ApiResponse<List<AuthDto>>> GetUsersAsync(CancellationToken cancellationToken);
 
-    Task<ApiResponse<AuthDto>> GetCurrentUserAsync(int userId, CancellationToken cancellationToken);
+    Task<ApiResponse<AuthDto>> GetCurrentUserAsync(string userId, CancellationToken cancellationToken);
 
-    Task<ApiResponse<AuthDto>> UpdateUserAsync(int userId, UpdateUserDto request, CancellationToken cancellationToken);
+    Task<ApiResponse<AuthDto>> UpdateUserAsync(string userId, UpdateUserDto request, CancellationToken cancellationToken);
 
-    Task<ApiResponse> ChangePasswordAsync(int userId, ChangePasswordDto request, CancellationToken cancellationToken);
+    Task<ApiResponse> ChangePasswordAsync(string userId, ChangePasswordDto request, CancellationToken cancellationToken);
 
 }

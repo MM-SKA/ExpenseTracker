@@ -13,7 +13,7 @@ namespace Finance.Api.Application.Services;
 internal sealed class CategoryService(ICategoryRepository categoryRepository, ILogger<CategoryService> logger) : ICategoryService
 {
 
-    public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(int userId, CreateCategoryDto request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<CategoryDto>> CreateCategoryAsync(string userId, CreateCategoryDto request, CancellationToken cancellationToken)
     {
         // var userId = User.GetUserId();
 
@@ -27,14 +27,8 @@ internal sealed class CategoryService(ICategoryRepository categoryRepository, IL
             return new ApiResponse<CategoryDto> { Success = false, Message = "Category with this name already exists" };
         }
 
-        var nextCategoryId =
-        await categoryRepository
-            .GetNextCategoryIdAsync(cancellationToken)
-            .ConfigureAwait(false);
-
         var category = new Category
         {
-            Id = nextCategoryId,
             Name = request.Name.Trim(),
             UserId = userId,
             IsSystemCategory = false
@@ -48,14 +42,14 @@ internal sealed class CategoryService(ICategoryRepository categoryRepository, IL
         return response;
     }
 
-    public async Task<List<CategoryDto>> GetCategoriesAsync(int userId, CancellationToken cancellationToken)
+    public async Task<List<CategoryDto>> GetCategoriesAsync(string userId, CancellationToken cancellationToken)
     {
         var categories = await categoryRepository.GetCategoriesAsync(userId, cancellationToken).ConfigureAwait(false);
         var categoryDtos = categories.Select(c => new CategoryDto { Id = c.Id, Name = c.Name, IsSystemCategory = c.IsSystemCategory }).ToList();
         return (categoryDtos);
     }
 
-    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(int userId, int id, UpdateCategoryDto request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(string userId, string id, UpdateCategoryDto request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
         var category = await categoryRepository.GetCategoryByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
@@ -85,7 +79,7 @@ internal sealed class CategoryService(ICategoryRepository categoryRepository, IL
         return (response);
     }
 
-    public async Task<ApiResponse> DeleteCategoryAsync(int userId, int id, CancellationToken cancellationToken)
+    public async Task<ApiResponse> DeleteCategoryAsync(string userId, string id, CancellationToken cancellationToken)
     {
         var category = await categoryRepository.GetCategoryByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
         if (category == null)

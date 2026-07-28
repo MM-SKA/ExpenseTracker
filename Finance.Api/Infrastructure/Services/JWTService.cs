@@ -16,7 +16,7 @@ public class JWTService(IConfiguration config) : IJWTService
     {
         ArgumentNullException.ThrowIfNull(user);
         var claims = new[]{
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(CultureInfo.InvariantCulture)),
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Name, user.FullName),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)

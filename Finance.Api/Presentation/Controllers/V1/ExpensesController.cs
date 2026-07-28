@@ -62,7 +62,7 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
     //update expense endpoint
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateExpenseAsync(int id, UpdateExpenseDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateExpenseAsync(string id, UpdateExpenseDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
         return Ok(await expenseService.UpdateExpenseAsync(userId, id, request, cancellationToken).ConfigureAwait(false));
@@ -71,7 +71,7 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
     //delete expense endpoint
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteExpenseAsync(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteExpenseAsync(string id, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
         return Ok(await expenseService.DeleteExpenseAsync(userId, id, cancellationToken).ConfigureAwait(false));

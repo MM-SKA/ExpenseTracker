@@ -11,8 +11,8 @@ internal sealed class CategoryRepository(
     : ICategoryRepository
 {
     public async Task<Category?> GetCategoryByIdAsync(
-        int categoryId,
-        int userId,
+        string categoryId,
+        string userId,
         CancellationToken cancellationToken)
     {
         return await context.Categories
@@ -25,7 +25,7 @@ internal sealed class CategoryRepository(
 
     public async Task<Category?> GetCategoryByNameAsync(
         string categoryName,
-        int userId,
+        string userId,
         CancellationToken cancellationToken)
     {
         return await context.Categories
@@ -35,8 +35,8 @@ internal sealed class CategoryRepository(
 
     public async Task<bool> CategoryExistsAsync(
         string categoryName,
-        int userId,
-        int? excludeCategoryId,
+        string userId,
+        string? excludeCategoryId,
         CancellationToken cancellationToken)
     {
         return await context.Categories
@@ -45,14 +45,14 @@ internal sealed class CategoryRepository(
                     (c.IsSystemCategory || c.UserId == userId) &&
                     c.Name.ToUpperInvariant().Trim() ==
                     categoryName.ToUpperInvariant().Trim() &&
-                    (!excludeCategoryId.HasValue ||
-                     c.Id != excludeCategoryId.Value),
+                    (string.IsNullOrWhiteSpace(excludeCategoryId) ||
+                     c.Id != excludeCategoryId),
                 cancellationToken)
             .ConfigureAwait(false);
     }
 
     public async Task<List<Category>> GetCategoriesAsync(
-        int userId,
+        string userId,
         CancellationToken cancellationToken)
     {
         return await context.Categories
@@ -89,23 +89,5 @@ internal sealed class CategoryRepository(
         _ = await context.SaveChangesAsync(
                 cancellationToken)
             .ConfigureAwait(false);
-    }
-
-    public async Task<int> GetNextCategoryIdAsync(
-    CancellationToken cancellationToken)
-    {
-        var categoryIds =
-            await context.Categories
-                .AsNoTracking()
-                .Select(c => c.Id)
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-        if (categoryIds.Count == 0)
-        {
-            return 1;
-        }
-
-        return categoryIds.Max() + 1;
     }
 }

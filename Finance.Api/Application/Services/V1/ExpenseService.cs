@@ -7,6 +7,7 @@ using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.Interfaces.V1;
 using Finance.Api.Domain.Entities;
 
+using Microsoft.Azure.Cosmos.Linq;
 using Microsoft.EntityFrameworkCore;
 
 namespace Finance.Api.Application.Services.V1;
@@ -16,7 +17,7 @@ internal sealed class ExpenseServiceV1(
     : IExpenseServiceV1<ExpenseDtoV1>
 {
     public async Task<ApiResponse<ExpenseDtoV1>> CreateExpenseAsync(
-        int userId,
+        string userId,
         CreateExpenseDto request,
         CancellationToken cancellationToken)
     {
@@ -78,8 +79,8 @@ internal sealed class ExpenseServiceV1(
     }
 
     public async Task<ApiResponse<ExpenseDtoV1>> UpdateExpenseAsync(
-        int userId,
-        int id,
+        string userId,
+        string id,
         UpdateExpenseDto request,
         CancellationToken cancellationToken)
     {
@@ -149,8 +150,8 @@ internal sealed class ExpenseServiceV1(
     }
 
     public async Task<ApiResponse> DeleteExpenseAsync(
-        int userId,
-        int id,
+        string userId,
+        string id,
         CancellationToken cancellationToken)
     {
         var expense =
@@ -187,7 +188,7 @@ internal sealed class ExpenseServiceV1(
     }
 
     public async Task<List<ExpenseDtoV1>> GetExpenseAsync(
-        int userId,
+        string userId,
         CancellationToken cancellationToken)
     {
         var expenses =
@@ -210,7 +211,7 @@ internal sealed class ExpenseServiceV1(
     }
 
     public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
-        int userId,
+        string userId,
         FilterExpenseDto filters,
         CancellationToken cancellationToken)
     {
@@ -252,16 +253,16 @@ internal sealed class ExpenseServiceV1(
     }
 
     private IQueryable<Expense> BuildFilteredQuery(
-        int userId,
+        string userId,
         FilterExpenseDto filters)
     {
         var query =
             expenseRepository.GetExpenseQuery(userId);
 
-        if (filters.categoryId.HasValue)
+        if (!filters.categoryId.IsNull())
         {
             query = query.Where(
-                e => e.CategoryId == filters.categoryId.Value);
+                e => e.CategoryId == filters.categoryId);
         }
 
         if (filters.startDate.HasValue)
@@ -395,7 +396,7 @@ internal sealed class ExpenseServiceV1(
 
     public async Task<PaginationResponseDto<ExpenseDtoV1>>
         GetPaginatedExpensesAsync(
-            int userId,
+            string userId,
             int pageNumber,
             int pageSize,
             CancellationToken cancellationToken)
@@ -404,8 +405,8 @@ internal sealed class ExpenseServiceV1(
             expenseRepository.GetExpenseQuery(userId);
 
         var totalRecords =
-            await query
-                .CountAsync(cancellationToken)
+            await EntityFrameworkQueryableExtensions
+                .CountAsync(query, cancellationToken)
                 .ConfigureAwait(false);
 
         var totalPages =
@@ -453,7 +454,7 @@ internal sealed class ExpenseServiceV1(
     }
 
     public async Task<List<ExpenseDtoV1>> GlobalSearchAsync(
-        int userId,
+        string userId,
         SearchRequestDto request,
         CancellationToken cancellationToken)
     {

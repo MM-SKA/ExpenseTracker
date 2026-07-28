@@ -7,38 +7,38 @@ namespace Finance.Api.Application.Interfaces.V1;
 public interface IExpenseServiceV1<T>
 {
     Task<ApiResponse<ExpenseDtoV1>> CreateExpenseAsync(
-        int userId,
+        string userId,
         CreateExpenseDto request,
         CancellationToken cancellationToken);
 
     Task<ApiResponse<ExpenseDtoV1>> UpdateExpenseAsync(
-        int userId,
-        int id,
+        string userId,
+        string id,
         UpdateExpenseDto request,
         CancellationToken cancellationToken);
 
     Task<ApiResponse> DeleteExpenseAsync(
-        int userId,
-        int id,
+        string userId,
+        string id,
         CancellationToken cancellationToken);
 
     Task<List<ExpenseDtoV1>> GetExpenseAsync(
-        int userId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
-        int userId,
+        string userId,
         FilterExpenseDto filters,
         CancellationToken cancellationToken);
 
     Task<PaginationResponseDto<ExpenseDtoV1>> GetPaginatedExpensesAsync(
-        int userId,
+        string userId,
         int pageNumber,
         int pageSize,
         CancellationToken cancellationToken);
 
     Task<List<ExpenseDtoV1>> GlobalSearchAsync(
-        int userId,
+        string userId,
         SearchRequestDto request,
         CancellationToken cancellationToken);
 }

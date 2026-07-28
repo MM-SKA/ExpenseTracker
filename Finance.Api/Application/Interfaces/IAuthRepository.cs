@@ -4,9 +4,6 @@ namespace Finance.Api.Application.Interfaces;
 
 public interface IAuthRepository
 {
-
-    Task<int> GetNextUserIdAsync(
-        CancellationToken cancellationToken);
     Task<bool> EmailExistsAsync(
         string email,
         CancellationToken cancellationToken);
@@ -24,7 +21,7 @@ public interface IAuthRepository
         CancellationToken cancellationToken);
 
     Task<AppUser?> GetUserByIdAsync(
-        int id,
+        string id,
         CancellationToken cancellationToken);
 
     Task SaveChangesAsync(

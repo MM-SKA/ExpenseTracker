@@ -41,7 +41,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     //update category endpoint
 
     [HttpPut("update/{id}")]
-    public async Task<IActionResult> UpdateCategoryAsync(int id, UpdateCategoryDto request, CancellationToken cancellationToken)
+    public async Task<IActionResult> UpdateCategoryAsync(string id, UpdateCategoryDto request, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
         var result = await categoryService.UpdateCategoryAsync(userId, id, request, cancellationToken);
@@ -51,7 +51,7 @@ public class CategoriesController(ICategoryService categoryService) : Controller
     //delete category endpoint
 
     [HttpDelete("delete/{id}")]
-    public async Task<IActionResult> DeleteCategoryAsync(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> DeleteCategoryAsync(string id, CancellationToken cancellationToken)
     {
         var userId = User.GetUserId();
         var result = await categoryService.DeleteCategoryAsync(userId, id, cancellationToken);

@@ -15,7 +15,7 @@ public class CreateExpenseDto
     public decimal Amount { get; set; }
 
     [Required]
-    public int CategoryId { get; set; }
+    public required string CategoryId { get; set; }
 
     [Required]
     public DateTime Date { get; set; }

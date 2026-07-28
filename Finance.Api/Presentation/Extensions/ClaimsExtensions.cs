@@ -7,13 +7,14 @@ public static class ClaimsExtensions
     /// <summary>
     /// Gets the UserId from the current user's claims
     /// </summary>
-    public static int GetUserId(this ClaimsPrincipal user)
+    public static string GetUserId(this ClaimsPrincipal user)
     {
         ArgumentNullException.ThrowIfNull(user);
-        var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
+        var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        Console.WriteLine($"JWT UserId = {userId}");
+        if (!Guid.TryParse(userId, out _))
         {
-            throw new InvalidOperationException("User ID not found in claims or invalid format");
+            throw new InvalidOperationException("Invalid UserID.");
         }
         return userId;
     }

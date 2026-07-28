@@ -4,27 +4,24 @@ namespace Finance.Api.Application.Interfaces;
 
 public interface ICategoryRepository
 {
-    Task<int> GetNextCategoryIdAsync(
-        CancellationToken cancellationToken);
-
     Task<Category?> GetCategoryByIdAsync(
-        int categoryId,
-        int userId,
+        string categoryId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task<Category?> GetCategoryByNameAsync(
         string categoryName,
-        int userId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task<bool> CategoryExistsAsync(
         string categoryName,
-        int userId,
-        int? excludeCategoryId,
+        string userId,
+        string? excludeCategoryId,
         CancellationToken cancellationToken);
 
     Task<List<Category>> GetCategoriesAsync(
-        int userId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task AddCategoryAsync(

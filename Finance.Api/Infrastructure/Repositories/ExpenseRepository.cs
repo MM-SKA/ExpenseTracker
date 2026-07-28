@@ -11,7 +11,7 @@ internal sealed class ExpenseRepository(
     : IExpenseRepository
 {
     public IQueryable<Expense> GetExpenseQuery(
-        int userId)
+        string userId)
     {
         return context.Expenses
             .AsNoTracking()
@@ -20,8 +20,8 @@ internal sealed class ExpenseRepository(
     }
 
     public async Task<Expense?> GetExpenseByIdAsync(
-        int expenseId,
-        int userId,
+        string expenseId,
+        string userId,
         CancellationToken cancellationToken)
     {
         return await context.Expenses
@@ -33,8 +33,8 @@ internal sealed class ExpenseRepository(
     }
 
     public async Task<Category?> GetCategoryByIdAsync(
-        int categoryId,
-        int userId,
+        string categoryId,
+        string userId,
         CancellationToken cancellationToken)
     {
         return await context.Categories

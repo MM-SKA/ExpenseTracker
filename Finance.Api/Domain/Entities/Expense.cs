@@ -5,10 +5,10 @@ namespace Finance.Api.Domain.Entities;
 
 public class Expense
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [Required]
-    public int CategoryId { get; set; }
+    public string CategoryId { get; set; }
 
     public Category Category { get; set; } = null!;
 
@@ -25,7 +25,7 @@ public class Expense
     [MaxLength(100)]
     public string? Location { get; set; }
 
-    public int UserId { get; set; }
+    public string UserId { get; set; }
 
     public AppUser? User { get; set; }
 }

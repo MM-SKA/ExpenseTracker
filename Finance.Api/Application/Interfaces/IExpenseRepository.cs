@@ -4,16 +4,16 @@ namespace Finance.Api.Application.Interfaces;
 
 public interface IExpenseRepository
 {
-    IQueryable<Expense> GetExpenseQuery(int userId);
+    IQueryable<Expense> GetExpenseQuery(string userId);
 
     Task<Expense?> GetExpenseByIdAsync(
-        int expenseId,
-        int userId,
+        string expenseId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task<Category?> GetCategoryByIdAsync(
-        int categoryId,
-        int userId,
+        string categoryId,
+        string userId,
         CancellationToken cancellationToken);
 
     Task AddExpenseAsync(
