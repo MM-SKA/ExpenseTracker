@@ -43,6 +43,7 @@ internal sealed class ExpenseServiceV1(
         var expense = new Expense
         {
             CategoryId = request.CategoryId,
+            CategoryName = category.Name,
             Notes = request.Notes,
             Amount = request.Amount,
             ExpenseDate = DateTime.SpecifyKind(request.Date, DateTimeKind.Utc),
@@ -201,6 +202,7 @@ internal sealed class ExpenseServiceV1(
             .Select(e => new ExpenseDtoV1
             {
                 Id = e.Id,
+                CategoryName = e.CategoryName,
                 Description = e.Notes ?? string.Empty,
                 Amount = e.Amount,
                 Date = e.ExpenseDate,
@@ -259,7 +261,7 @@ internal sealed class ExpenseServiceV1(
         var query =
             expenseRepository.GetExpenseQuery(userId);
 
-        if (!filters.categoryId.IsNull())
+        if (!string.IsNullOrWhiteSpace(filters.categoryId))
         {
             query = query.Where(
                 e => e.CategoryId == filters.categoryId);
@@ -315,7 +317,7 @@ internal sealed class ExpenseServiceV1(
                 e.Location.Contains(filters.Location));
         }
 
-        return query.OrderByDescending(e => e.ExpenseDate).ThenByDescending(e => e.Id);
+        return query.OrderByDescending(e => e.ExpenseDate);
     }
 
     private static FilteredAnalyticsDto CalculateAnalytics(
@@ -358,12 +360,12 @@ internal sealed class ExpenseServiceV1(
                 .GroupBy(e => new
                 {
                     e.CategoryId,
-                    e.Category.Name
+                    e.CategoryName
                 })
                 .Select(g => new CategorySpendDto
                 {
                     CategoryId = g.Key.CategoryId,
-                    CategoryName = g.Key.Name,
+                    CategoryName = g.Key.CategoryName,
                     Amount = g.Sum(e => e.Amount),
                     TransactionCount = g.Count(),
                     Percentage =
@@ -464,7 +466,7 @@ internal sealed class ExpenseServiceV1(
             await expenseRepository
                 .GetExpenseQuery(userId)
                 .Where(e =>
-                    e.Category.Name.Contains(request.Query) ||
+                    e.CategoryName.Contains(request.Query) ||
                     (
                         e.Notes != null &&
                         e.Notes.Contains(request.Query)

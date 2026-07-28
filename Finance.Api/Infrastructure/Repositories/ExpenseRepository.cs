@@ -15,7 +15,6 @@ internal sealed class ExpenseRepository(
     {
         return context.Expenses
             .AsNoTracking()
-            .Include(e => e.Category)
             .Where(e => e.UserId == userId);
     }
 

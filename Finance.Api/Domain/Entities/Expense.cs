@@ -8,9 +8,9 @@ public class Expense
     public string Id { get; set; } = Guid.NewGuid().ToString();
 
     [Required]
-    public string CategoryId { get; set; }
+    public string CategoryId { get; set; } = string.Empty;
 
-    public Category Category { get; set; } = null!;
+    public string CategoryName { get; set; } = string.Empty;
 
     [Column(TypeName = "decimal(18,2)")]
     public decimal Amount { get; set; }
