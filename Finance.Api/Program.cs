@@ -73,6 +73,19 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "Angular",
+        policy =>
+        {
+            _ = policy
+                .WithOrigins(
+                    "http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.AddApiVersioning(options =>
 {
@@ -185,7 +198,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
+app.UseCors("Angular");
 app.UseAuthentication();
 app.UseAuthorization();
 
