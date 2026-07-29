@@ -9,4 +9,6 @@ public sealed class AskExpenseAnswerDto
     public FilterExpenseDto FiltersUsed { get; set; } = new();
 
     public object? Analytics { get; set; }
+
+    public object? Expenses { get; set; }
 }

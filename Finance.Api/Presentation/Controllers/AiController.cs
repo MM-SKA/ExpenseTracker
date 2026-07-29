@@ -2,8 +2,10 @@
 using Finance.Api.Application.Interfaces;
 using Finance.Api.Presentation.Extensions;
 
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Finance.Api.Presentation.Controllers;
 
 [ApiController]
 [Route("api/ai")]
@@ -17,11 +19,18 @@ public sealed class AiController(
         AskExpenseQuestionDto request,
         CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var userId = User.GetUserId();
 
-        //api to send question to llm and receive filters
-        var filters = await aiExpenseService.ExtractFiltersAsync(userId, request.Question, cancellationToken).ConfigureAwait(false);
-        return Ok(filters);
+        var answer =
+            await aiExpenseService
+                .AiExecuteQuestionAsync(
+                    userId,
+                    request.Question,
+                    cancellationToken)
+                .ConfigureAwait(false);
 
+        return Ok(answer);
     }
 }

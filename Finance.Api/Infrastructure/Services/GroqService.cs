@@ -12,7 +12,7 @@ internal sealed class GroqService(
     IOptions<GroqOptions> options)
     : IGroqService
 {
-    private readonly GroqOptions groqOptions =
+    private readonly GroqOptions _groqOptions =
         options.Value;
 
     public async Task<string> AskAsync(
@@ -22,11 +22,11 @@ internal sealed class GroqService(
         httpClient.DefaultRequestHeaders.Authorization =
             new AuthenticationHeaderValue(
                 "Bearer",
-                groqOptions.ApiKey);
+                _groqOptions.ApiKey);
 
         var requestBody = new
         {
-            model = groqOptions.Model,
+            model = _groqOptions.Model,
 
             messages =
                 new[]
@@ -43,14 +43,14 @@ internal sealed class GroqService(
             await httpClient.PostAsJsonAsync(
                 "https://api.groq.com/openai/v1/chat/completions",
                 requestBody,
-                cancellationToken);
+                cancellationToken).ConfigureAwait(false);
 
-        response.EnsureSuccessStatusCode();
+        _ = response.EnsureSuccessStatusCode();
 
         using var json =
             JsonDocument.Parse(
                 await response.Content.ReadAsStringAsync(
-                    cancellationToken));
+                    cancellationToken).ConfigureAwait(false));
 
         return json
             .RootElement
