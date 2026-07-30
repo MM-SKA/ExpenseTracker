@@ -34,21 +34,32 @@ internal sealed class CategoryRepository(
     }
 
     public async Task<bool> CategoryExistsAsync(
-        string categoryName,
-        string userId,
-        string? excludeCategoryId,
-        CancellationToken cancellationToken)
+     string categoryName,
+     string userId,
+     string? excludeCategoryId,
+     CancellationToken cancellationToken)
     {
-        return await context.Categories
-            .AnyAsync(
-                c =>
-                    (c.IsSystemCategory || c.UserId == userId) &&
-                    c.Name.ToUpperInvariant().Trim() ==
-                    categoryName.ToUpperInvariant().Trim() &&
-                    (string.IsNullOrWhiteSpace(excludeCategoryId) ||
-                     c.Id != excludeCategoryId),
-                cancellationToken)
-            .ConfigureAwait(false);
+        var normalizedCategoryName =
+            categoryName.Trim();
+
+        var categories =
+            await context.Categories
+                .Where(c =>
+                    c.UserId == userId ||
+                    c.IsSystemCategory)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        return categories.Any(c =>
+            !string.Equals(
+                c.Id,
+                excludeCategoryId,
+                StringComparison.OrdinalIgnoreCase)
+            &&
+            string.Equals(
+                c.Name.Trim(),
+                normalizedCategoryName,
+                StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task<List<Category>> GetCategoriesAsync(

@@ -23,6 +23,24 @@ public class CategoriesController(ICategoryService categoryService) : Controller
         return Ok(result);
     }
     //------------------------------------------------------------------------------------------------------------------------------------
+    //get a category by id for the user
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetCategoryByIdAsync(
+    string id,
+    CancellationToken cancellationToken)
+    {
+        var userId = User.GetUserId();
+
+        var result = await categoryService
+            .GetCategoryByIdAsync(
+                userId,
+                id,
+                cancellationToken).ConfigureAwait(false);
+
+        return Ok(result);
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------
     //get all categories for the user
 
     [HttpGet("get")]

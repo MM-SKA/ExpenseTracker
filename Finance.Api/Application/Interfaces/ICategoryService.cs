@@ -8,6 +8,8 @@ public interface ICategoryService
 {
     Task<ApiResponse<CategoryDto>> CreateCategoryAsync(string userId, CreateCategoryDto request, CancellationToken cancellationToken);
 
+    Task<ApiResponse<CategoryDto>> GetCategoryByIdAsync(string userId, string id, CancellationToken cancellationToken);
+
     Task<List<CategoryDto>> GetCategoriesAsync(string userId, CancellationToken cancellationToken);
 
     Task<ApiResponse<CategoryDto>> UpdateCategoryAsync(string userId, string id, UpdateCategoryDto request, CancellationToken cancellationToken);

@@ -42,6 +42,16 @@ internal sealed class CategoryService(ICategoryRepository categoryRepository, IL
         return response;
     }
 
+    public async Task<ApiResponse<CategoryDto>> GetCategoryByIdAsync(string userId, string id, CancellationToken cancellationToken)
+    {
+        var category = await categoryRepository.GetCategoryByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
+        if (category == null)
+        {
+            return new ApiResponse<CategoryDto> { Success = false, Message = "Category not found", ErrorCode = ErrorCodes.CategoryNotFound };
+        }
+        return new ApiResponse<CategoryDto> { Success = true, Message = "Category Found", Data = new CategoryDto {Id = category.Id, Name = category.Name }};
+    }
+
     public async Task<List<CategoryDto>> GetCategoriesAsync(string userId, CancellationToken cancellationToken)
     {
         var categories = await categoryRepository.GetCategoriesAsync(userId, cancellationToken).ConfigureAwait(false);
