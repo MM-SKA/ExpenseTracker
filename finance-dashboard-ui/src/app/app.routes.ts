@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { CreateCategory } from './features/categories/create-category/create-category';
 
 import { LoginComponent } from './features/auth/login/login.component';
 import { CategoryList } from './features/categories/category-list/category-list';
@@ -11,10 +12,14 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-  path:'categories',
+    path: 'categories',
 
-  component: CategoryList
+    component: CategoryList
 
+  },
+  {
+    path: 'categories/create',
+    component: CreateCategory
   }
   // {
   // path: 'dashboard',
