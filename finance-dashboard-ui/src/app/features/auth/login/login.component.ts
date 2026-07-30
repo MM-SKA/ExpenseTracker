@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -14,7 +14,6 @@ export class LoginComponent {
   email = '';
 
   password = '';
-
   private authService =
     inject(AuthService);
 
@@ -32,11 +31,11 @@ export class LoginComponent {
 
         localStorage.setItem(
           'token',
-          response.token);
+          response.data.token);
 
         localStorage.setItem(
           'user',
-          JSON.stringify(response.user));
+          JSON.stringify(response.data.user));
 
         console.log(response);
       },

@@ -7,6 +7,7 @@ import { environment } from "../../../environment/environment";
 
 import { LoginRequest } from '../../shared/models/auth/login-request';
 import { LoginResponse } from '../../shared/models/auth/login-response';
+import { ApiResponse } from "../../shared/models/api-response";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +17,8 @@ export class AuthService {
 
   login(
     request: LoginRequest
-  ): Observable<LoginResponse>{
-    return this.http.post<LoginResponse>(
+  ): Observable<ApiResponse<LoginResponse>>{
+    return this.http.post<ApiResponse<LoginResponse>>(
       `${environment.apiUrl}/auth/login`,
       request);
   }
