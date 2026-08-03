@@ -1,1 +1,102 @@
-<p>analytics-dashboard works!</p>
+<div class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Analytics</p>
+      <h1 class="section-title">Expense insights</h1>
+      <p class="subtitle-text">Filter your expenses and view analytics for the selected range.</p>
+    </div>
+  </div>
+
+  <div class="panel-card analytics-filter-panel">
+    <div class="filter-row">
+      <div class="form-field">
+        <label>Category</label>
+        <select [(ngModel)]="filters.categoryId">
+          <option value="">All categories</option>
+          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Start date</label>
+        <input type="date" [(ngModel)]="filters.startDate" />
+      </div>
+      <div class="form-field">
+        <label>End date</label>
+        <input type="date" [(ngModel)]="filters.endDate" />
+      </div>
+      <div class="form-field">
+        <label>Min amount</label>
+        <input type="number" min="0" step="0.01" [(ngModel)]="filters.minAmount" />
+      </div>
+      <div class="form-field">
+        <label>Max amount</label>
+        <input type="number" min="0" step="0.01" [(ngModel)]="filters.maxAmount" />
+      </div>
+      <div class="form-field full-width">
+        <div class="filter-label-row">
+          <label>Search</label>
+          <span class="filter-help">Search by notes, description, or category</span>
+        </div>
+        <input type="text" [(ngModel)]="filters.notes" placeholder="Search analytics..." />
+      </div>
+    </div>
+    <div class="filter-actions">
+      <button class="button-primary" type="button" (click)="updateAnalytics()" [disabled]="isLoading">Search analytics</button>
+      <button class="button-secondary" type="button" (click)="refresh()" [disabled]="isLoading">Reset filters</button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="isLoading">
+    <div class="alert-empty">
+      <strong>Loading analytics...</strong>
+      <p>Please wait while we retrieve the latest data.</p>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="!isLoading">
+    <div class="panel-card analytics-grid" *ngIf="analytics; else noAnalytics">
+      <div class="analytics-card">
+        <p class="eyebrow">Total spent</p>
+        <h2>{{ (analytics?.summary?.totalSpent ?? analytics?.Summary?.TotalSpent) | currency:'USD':'symbol':'1.0-0' }}</h2>
+      </div>
+      <div class="analytics-card">
+        <p class="eyebrow">Transactions</p>
+        <h2>{{ analytics?.summary?.count ?? analytics?.Summary?.Count }}</h2>
+      </div>
+      <div class="analytics-card">
+        <p class="eyebrow">Average</p>
+        <h2>{{ (analytics?.summary?.averageAmount ?? analytics?.Summary?.AverageAmount) | currency:'USD':'symbol':'1.0-0' }}</h2>
+      </div>
+      <div class="analytics-card">
+        <p class="eyebrow">Date range</p>
+        <h2>
+          {{ (analytics?.summary ? (analytics?.dateDistribution?.StartDate ?? analytics?.DateDistribution?.StartDate) : null) | date:'mediumDate' }}
+          -
+          {{ (analytics?.summary ? (analytics?.dateDistribution?.EndDate ?? analytics?.DateDistribution?.EndDate) : null) | date:'mediumDate' }}
+        </h2>
+      </div>
+    </div>
+
+    <div class="panel-card" *ngIf="analytics?.byCategory?.length || analytics?.ByCategory?.length; else noAnalytics">
+      <h2 class="section-title" style="font-size:1.25rem;">Spend by category</h2>
+      <div class="category-grid">
+        <div class="category-card" *ngFor="let item of analytics?.byCategory ?? analytics?.ByCategory">
+          <div class="category-card-row">
+            <div>
+              <strong>{{ item.categoryName ?? item.CategoryName }}</strong>
+              <p class="subtitle-text" style="margin:0">{{ (item.amount ?? item.Amount) | currency:'USD':'symbol':'1.0-0' }}</p>
+            </div>
+            <span>{{ (item.percentage ?? item.Percentage) | number:'1.0-0' }}%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noAnalytics>
+    <div class="alert-empty">
+      <strong>No analytics available</strong>
+      <p>Make sure you have expenses and refresh the dashboard.</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,9 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { CategoryService } from '../../../core/services/category.service';
+import { RegisterRequest } from '../../../shared/models/auth/register-request';
 
 @Component({
   selector: 'app-register',
-  imports: [],
+  standalone: true,
+  imports: [FormsModule],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
-export class Register {}
+export class Register {
+  fullName = '';
+  email = '';
+  password = '';
+  phoneNumber = '';
+
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  private categoryService = inject(CategoryService);
+
+  register(): void {
+    const request: RegisterRequest = {
+      fullName: this.fullName,
+      email: this.email,
+      password: this.password,
+      phoneNumber: this.phoneNumber,
+    };
+
+    this.authService.register(request).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        this.categoryService.getCategories(true).subscribe({
+          next: () => this.router.navigate(['/expenses']),
+          error: () => this.router.navigate(['/expenses'])
+        });
+      },
+      error: (error) => console.error(error)
+    });
+  }
+}

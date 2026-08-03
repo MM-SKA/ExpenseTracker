@@ -1,11 +1,24 @@
-<nav style="padding:12px; border-bottom:1px solid #ddd; display:flex; gap:12px; align-items:center">
-	<a routerLink="/">Login</a>
-	<a routerLink="/categories">Categories</a>
-	<a routerLink="/expenses">Expenses</a>
-	<a routerLink="/expenses/create">Add Expense</a>
-	<a routerLink="/analytics">Analytics</a>
-</nav>
+<div class="app-shell">
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark">F</div>
+      <div>
+        <div class="brand-title">Finance Dashboard</div>
+        <div class="brand-subtitle">Premium expense tracking for your money goals</div>
+      </div>
+    </div>
 
-<div style="padding:16px">
-	<router-outlet></router-outlet>
+    <nav class="app-nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+      <a routerLink="/expenses" routerLinkActive="active">Expenses</a>
+      <a routerLink="/expenses/create" routerLinkActive="active">Create</a>
+      <a routerLink="/categories" routerLinkActive="active">Categories</a>
+      <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+    </nav>
+  </header>
+
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
 </div>

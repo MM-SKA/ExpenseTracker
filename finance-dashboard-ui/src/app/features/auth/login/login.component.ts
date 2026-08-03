@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,10 @@ export class LoginComponent {
   email = '';
 
   password = '';
+  private router = inject(Router);
   private authService =
     inject(AuthService);
+  private categoryService = inject(CategoryService);
 
   login(): void {
 
@@ -37,7 +40,10 @@ export class LoginComponent {
           'user',
           JSON.stringify(response.data.user));
 
-        console.log(response);
+        this.categoryService.getCategories(true).subscribe({
+          next: () => this.router.navigate(['/expenses']),
+          error: () => this.router.navigate(['/expenses'])
+        });
       },
 
       error: (error) => {

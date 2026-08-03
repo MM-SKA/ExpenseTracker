@@ -30,4 +30,8 @@ export class ExpenseService {
 
   }
 
+  filterExpenses(filter: any) {
+    return this.http.post(`${environment.apiUrl}/expenses/filter`, filter);
+  }
+
 }

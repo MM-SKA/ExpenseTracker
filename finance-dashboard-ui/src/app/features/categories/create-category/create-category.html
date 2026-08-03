@@ -1,37 +1,18 @@
-<div class="container mt-4">
+<div class="page-card" style="max-width:640px; margin:0 auto;">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">New category</p>
+      <h1 class="section-title">Create a category</h1>
+      <p class="subtitle-text">Add a custom category to classify your expenses faster.</p>
+    </div>
+  </div>
 
-    <div class="card">
-
-        <div class="card-header">
-
-            <h4>Add Category</h4>
-
-        </div>
-
-        <div class="card-body">
-
-            <div class="mb-3">
-
-                <label>
-                    Category Name
-                </label>
-
-                <input
-                    class="form-control"
-                    [(ngModel)]="name">
-
-            </div>
-
-            <button
-                class="btn btn-primary"
-                (click)="createCategory()">
-
-                Save
-
-            </button>
-
-        </div>
-
+  <div class="panel-card">
+    <div class="form-field">
+      <label>Category name</label>
+      <input class="form-control" [(ngModel)]="name" placeholder="Subscription" />
     </div>
 
+    <button class="button-primary" (click)="createCategory()">Save category</button>
+  </div>
 </div>

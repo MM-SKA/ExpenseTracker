@@ -1,31 +1,39 @@
-<div class="page">
-	<h2>Add Expense</h2>
+<div class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">New expense</p>
+      <h1 class="section-title">Add a purchase</h1>
+      <p class="subtitle-text">Capture expenses with category, amount, and date for better reporting.</p>
+    </div>
+  </div>
 
-	<form (ngSubmit)="save()">
-		<div>
-			<label>Category</label>
-			<select name="category" [(ngModel)]="categoryId">
-				<option *ngFor="let c of categories" [value]="c.id">{{c.name}}</option>
-			</select>
-		</div>
-		<div>
-			<label>Description</label>
-			<input name="description" [(ngModel)]="description" />
-		</div>
+  <div class="panel-card">
+    <form (ngSubmit)="save()">
+      <div class="form-field">
+        <label>Category</label>
+        <select name="category" [(ngModel)]="categoryId" [disabled]="isLoadingCategories || categories.length === 0">
+          <option value="" disabled selected *ngIf="isLoadingCategories">Loading categories...</option>
+          <option value="" disabled *ngIf="!isLoadingCategories && categories.length === 0">No categories available</option>
+          <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+        </select>
+      </div>
 
-		<div>
-			<label>Amount</label>
-			<input name="amount" type="number" step="0.01" [(ngModel)]="amount" />
-		</div>
+      <div class="form-field">
+        <label>Description</label>
+        <input name="description" [(ngModel)]="description" placeholder="Coffee, groceries, subscription" />
+      </div>
 
-		<div>
-			<label>Date</label>
-			<input name="date" type="date" [(ngModel)]="date" />
-		</div>
+      <div class="form-field">
+        <label>Amount</label>
+        <input name="amount" type="number" step="0.01" [(ngModel)]="amount" placeholder="0.00" />
+      </div>
 
-		<div style="margin-top:12px">
-			<button type="submit">Save</button>
-		</div>
-	</form>
+      <div class="form-field">
+        <label>Date</label>
+        <input name="date" type="date" [(ngModel)]="date" />
+      </div>
 
+      <button class="button-primary" type="submit">Save expense</button>
+    </form>
+  </div>
 </div>

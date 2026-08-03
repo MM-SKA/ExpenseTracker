@@ -1,1 +1,33 @@
-<p>register works!</p>
+<div class="page-card">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Create account</p>
+      <h1 class="section-title">Register to get started</h1>
+      <p class="subtitle-text">Sign up now to manage categories, expenses, and analytics in one sleek dashboard.</p>
+    </div>
+  </div>
+
+  <div class="panel-card form-panel">
+    <div class="form-field">
+      <label>Full name</label>
+      <input type="text" [(ngModel)]="fullName" placeholder="Jane Doe" />
+    </div>
+
+    <div class="form-field">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="form-field">
+      <label>Password</label>
+      <input type="password" [(ngModel)]="password" placeholder="Enter a secure password" />
+    </div>
+
+    <div class="form-field">
+      <label>Phone number</label>
+      <input type="tel" [(ngModel)]="phoneNumber" placeholder="1234567890" />
+    </div>
+
+    <button class="button-primary" (click)="register()">Register</button>
+  </div>
+</div>

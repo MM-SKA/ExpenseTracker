@@ -50,12 +50,17 @@ export class ExpenseList {
   }
 
   filtered(): any[] {
+    const filter = this.filterText?.trim().toLowerCase();
     return this.expenses.filter(e => {
-      if (this.filterText && !e.description.toLowerCase().includes(this.filterText.toLowerCase())) return false;
+      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) return false;
       if (this.startDate && e.date < this.startDate) return false;
       if (this.endDate && e.date > this.endDate) return false;
       return true;
     });
+  }
+
+  onFilterChange(): void {
+    // Change detection is triggered by ngModel changes.
   }
 
   clearFilter(): void {

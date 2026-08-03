@@ -18,6 +18,7 @@ export class CreateExpense {
   description = '';
   amount = '';
   date = '';
+  isLoadingCategories = true;
 
   private router = inject(Router);
   private expenseService = inject(ExpenseService);
@@ -26,13 +27,22 @@ export class CreateExpense {
   categories: Category[] = [];
 
   ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  private loadCategories(): void {
+    this.isLoadingCategories = true;
     this.categoryService.getCategories().subscribe({
       next: (response: any) => {
         const data = response?.data ?? response;
         this.categories = Array.isArray(data) ? data : [];
-        if (this.categories.length) this.categoryId = this.categories[0].id ?? this.categories[0].id ?? '';
+        this.categoryId = this.categories.length ? this.categories[0].id ?? '' : '';
+        this.isLoadingCategories = false;
       },
-      error: () => (this.categories = [])
+      error: () => {
+        this.categories = [];
+        this.isLoadingCategories = false;
+      }
     });
   }
 
