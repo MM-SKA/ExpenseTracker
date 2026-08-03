@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -13,16 +13,16 @@ import { Category } from '../../../shared/models/category/category';
   templateUrl: './create-expense.html',
   styleUrl: './create-expense.css',
 })
-export class CreateExpense {
+export class CreateExpense implements OnInit {
 
   description = '';
   amount = '';
   date = '';
   isLoadingCategories = true;
 
-  private router = inject(Router);
-  private expenseService = inject(ExpenseService);
-  private categoryService = inject(CategoryService);
+  readonly router = inject(Router);
+  readonly expenseService = inject(ExpenseService);
+  readonly categoryService = inject(CategoryService);
   categoryId = '';
   categories: Category[] = [];
 
@@ -51,7 +51,7 @@ export class CreateExpense {
     if (token) {
       this.expenseService.createExpense({
         categoryId: this.categoryId,
-        amount: parseFloat(this.amount) || 0,
+        amount: Number.parseFloat(this.amount) || 0,
         notes: this.description,
         date: this.date,
         location: ''
@@ -69,7 +69,7 @@ export class CreateExpense {
       } catch {
         list = [];
       }
-      list.push({ id: Date.now(), description: this.description, amount: parseFloat(this.amount) || 0, date: this.date });
+      list.push({ id: Date.now(), description: this.description, amount: Number.parseFloat(this.amount) || 0, date: this.date });
       try {
         localStorage.setItem('expenses', JSON.stringify(list));
       } catch {

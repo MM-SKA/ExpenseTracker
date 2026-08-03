@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ExpenseService } from '../../../core/services/expense';
@@ -12,7 +12,7 @@ import { Category } from '../../../shared/models/category/category';
   templateUrl: './analytics-dashboard.html',
   styleUrl: './analytics-dashboard.css',
 })
-export class AnalyticsDashboard {
+export class AnalyticsDashboard implements OnInit {
   analytics: any = null;
   isLoading = false;
   filters = {
@@ -25,8 +25,8 @@ export class AnalyticsDashboard {
   };
   categories: Category[] = [];
 
-  private expenseService = inject(ExpenseService);
-  private categoryService = inject(CategoryService);
+  readonly expenseService = inject(ExpenseService);
+  readonly categoryService = inject(CategoryService);
 
   ngOnInit(): void {
     this.loadCategories();

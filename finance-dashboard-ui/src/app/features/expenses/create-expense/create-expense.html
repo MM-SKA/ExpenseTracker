@@ -10,8 +10,8 @@
   <div class="panel-card">
     <form (ngSubmit)="save()">
       <div class="form-field">
-        <label>Category</label>
-        <select name="category" [(ngModel)]="categoryId" [disabled]="isLoadingCategories || categories.length === 0">
+        <label for="category-list">Category</label>
+        <select id="category-list" name="category" [(ngModel)]="categoryId" [disabled]="isLoadingCategories || categories.length === 0">
           <option value="" disabled selected *ngIf="isLoadingCategories">Loading categories...</option>
           <option value="" disabled *ngIf="!isLoadingCategories && categories.length === 0">No categories available</option>
           <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
@@ -19,18 +19,18 @@
       </div>
 
       <div class="form-field">
-        <label>Description</label>
-        <input name="description" [(ngModel)]="description" placeholder="Coffee, groceries, subscription" />
+        <label for="description-input">Description</label>
+        <input id="description-input" name="description" [(ngModel)]="description" placeholder="Coffee, groceries, subscription" />
       </div>
 
       <div class="form-field">
-        <label>Amount</label>
-        <input name="amount" type="number" step="0.01" [(ngModel)]="amount" placeholder="0.00" />
+        <label for="amount-input">Amount</label>
+        <input id="amount-input" name="amount" type="number" step="0.01" [(ngModel)]="amount" placeholder="0.00" />
       </div>
 
       <div class="form-field">
-        <label>Date</label>
-        <input name="date" type="date" [(ngModel)]="date" />
+        <label for="date-input">Date</label>
+        <input id="date-input" name="date" type="date" [(ngModel)]="date" />
       </div>
 
       <button class="button-primary" type="submit">Save expense</button>

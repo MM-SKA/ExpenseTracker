@@ -10,34 +10,34 @@
   <div class="panel-card analytics-filter-panel">
     <div class="filter-row">
       <div class="form-field">
-        <label>Category</label>
-        <select [(ngModel)]="filters.categoryId">
+        <label for="category-list">Category</label>
+        <select id="category-list" [(ngModel)]="filters.categoryId">
           <option value="">All categories</option>
           <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
         </select>
       </div>
       <div class="form-field">
-        <label>Start date</label>
-        <input type="date" [(ngModel)]="filters.startDate" />
+        <label for="startDate-input">Start date</label>
+        <input id="startDate-input" type="date" [(ngModel)]="filters.startDate" />
       </div>
       <div class="form-field">
-        <label>End date</label>
-        <input type="date" [(ngModel)]="filters.endDate" />
+        <label for="endDate-input">End date</label>
+        <input id="endDate-input" type="date" [(ngModel)]="filters.endDate" />
       </div>
       <div class="form-field">
-        <label>Min amount</label>
-        <input type="number" min="0" step="0.01" [(ngModel)]="filters.minAmount" />
+        <label for="minAmount-input">Min amount</label>
+        <input id="minAmount-input" type="number" min="0" step="0.01" [(ngModel)]="filters.minAmount" />
       </div>
       <div class="form-field">
-        <label>Max amount</label>
-        <input type="number" min="0" step="0.01" [(ngModel)]="filters.maxAmount" />
+        <label for="maxAmount-input">Max amount</label>
+        <input id="maxAmount-input" type="number" min="0" step="0.01" [(ngModel)]="filters.maxAmount" />
       </div>
       <div class="form-field full-width">
         <div class="filter-label-row">
-          <label>Search</label>
+          <label for="notes-input">Search</label>
           <span class="filter-help">Search by notes, description, or category</span>
         </div>
-        <input type="text" [(ngModel)]="filters.notes" placeholder="Search analytics..." />
+        <input id="notes-input" type="text" [(ngModel)]="filters.notes" placeholder="Search analytics..." />
       </div>
     </div>
     <div class="filter-actions">

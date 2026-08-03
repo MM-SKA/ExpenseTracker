@@ -56,24 +56,38 @@
 
 .secondary-button {
   padding: 0.95rem 1.2rem;
-  background: rgba(148, 163, 184, 0.12);
-  color: #cbd5e1;
+
+  background: #334155;
+  color: #f8fafc;
+
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 8px;
+
   cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
 .secondary-button:hover {
-  background: rgba(148, 163, 184, 0.22);
+  background: rgba(148, 163, 184, 0.28);
 }
 
 .delete-button {
   padding: 0.6rem 1rem;
-  background: rgba(248, 113, 113, 0.16);
-  color: #f8fafc;
+
+  background: #7f1d1d;
+  color: #fef2f2;
+
+  border: 1px solid #991b1b;
+  border-radius: 8px;
+
   cursor: pointer;
+
+  transition: all 0.2s ease;
 }
 
 .delete-button:hover {
-  background: rgba(248, 113, 113, 0.28);
+  background: #991b1b;
 }
 
 .expense-filters {

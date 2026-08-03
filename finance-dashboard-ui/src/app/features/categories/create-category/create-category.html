@@ -9,8 +9,8 @@
 
   <div class="panel-card">
     <div class="form-field">
-      <label>Category name</label>
-      <input class="form-control" [(ngModel)]="name" placeholder="Subscription" />
+      <label for="category-input">Category name</label>
+      <input id="category-input" class="form-control" [(ngModel)]="name" placeholder="Subscription" />
     </div>
 
     <button class="button-primary" (click)="createCategory()">Save category</button>

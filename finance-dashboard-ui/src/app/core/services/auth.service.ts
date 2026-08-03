@@ -14,7 +14,7 @@ import { ApiResponse } from '../../shared/models/api-response';
   providedIn: 'root'
 })
 export class AuthService {
-  private http = inject(HttpClient);
+  readonly http = inject(HttpClient);
 
   login(
     request: LoginRequest

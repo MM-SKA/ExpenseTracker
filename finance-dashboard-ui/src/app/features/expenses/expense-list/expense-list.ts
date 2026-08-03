@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,7 +11,7 @@ import { ExpenseService } from '../../../core/services/expense';
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
 })
-export class ExpenseList {
+export class ExpenseList implements OnInit {
 
   expenses: any[] = [];
 
@@ -19,8 +19,8 @@ export class ExpenseList {
   startDate = '';
   endDate = '';
 
-  private router = inject(Router);
-  private expenseService = inject(ExpenseService);
+  readonly router = inject(Router);
+  readonly expenseService = inject(ExpenseService);
 
   ngOnInit(): void {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;

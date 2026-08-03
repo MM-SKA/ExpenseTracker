@@ -197,8 +197,8 @@ textarea {
 }
 
 .button-secondary {
-  background: rgba(148, 163, 184, 0.14);
-  color: #cbd5e1;
+  background: #334155;
+  color: #f8fafc;
   padding: 0.95rem 1.2rem;
 }
 
@@ -214,9 +214,20 @@ svg,
 }
 
 .button-danger {
-  background: rgba(248, 113, 113, 0.18);
-  color: #fff;
+  background: #7f1d1d;
+  color: #fef2f2;
+
   padding: 0.95rem 1.1rem;
+
+  border: 1px solid #991b1b;
+
+  border-radius: 8px;
+
+  transition: all 0.2s ease;
+}
+
+.button-danger:hover {
+  background: #991b1b;
 }
 
 .button-primary:hover,

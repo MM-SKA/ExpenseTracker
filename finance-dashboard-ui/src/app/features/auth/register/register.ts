@@ -18,9 +18,9 @@ export class Register {
   password = '';
   phoneNumber = '';
 
-  private router = inject(Router);
-  private authService = inject(AuthService);
-  private categoryService = inject(CategoryService);
+  readonly router = inject(Router);
+  readonly authService = inject(AuthService);
+  readonly categoryService = inject(CategoryService);
 
   register(): void {
     const request: RegisterRequest = {

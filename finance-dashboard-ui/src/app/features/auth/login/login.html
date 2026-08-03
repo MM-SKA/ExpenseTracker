@@ -9,8 +9,9 @@
     <p class="login-subtitle">Sign in to manage your expenses with a sleek, premium view.</p>
 
     <div class="field">
-      <label>Email</label>
+      <label for="email-input">Email</label>
       <input
+        id="email-input"
         class="field-input"
         name="email"
         type="email"
@@ -19,13 +20,14 @@
     </div>
 
     <div class="field">
-      <label>Password</label>
+      <label for="password-input">Password</label>
       <input
+        id="password-input"
         class="field-input"
         name="password"
         type="password"
         placeholder="Enter your password"
-        [(ngModel)]="password">
+        [(ngModel)]="password" id="password">
     </div>
 
     <button

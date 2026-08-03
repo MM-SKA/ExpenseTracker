@@ -11,9 +11,9 @@ import { environment } from '../../../environment/environment';
   providedIn: 'root'
 })
 export class CategoryService {
-  private http = inject(HttpClient);
+  readonly http = inject(HttpClient);
   private categoriesCache: Category[] | null = null;
-  private storageKey = 'categories_cache';
+  readonly storageKey = 'categories_cache';
 
   getCategories(forceRefresh = false): Observable<Category[]> {
     if (!forceRefresh && this.categoriesCache?.length) {

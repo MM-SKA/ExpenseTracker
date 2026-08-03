@@ -10,7 +10,7 @@ import { CreateExpenseRequest } from '../../shared/models/expense/create-expense
 })
 export class ExpenseService {
 
-  private http =
+  readonly http =
     inject(HttpClient);
 
   createExpense(

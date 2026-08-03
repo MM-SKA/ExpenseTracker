@@ -15,10 +15,10 @@ export class LoginComponent {
   email = '';
 
   password = '';
-  private router = inject(Router);
-  private authService =
+  readonly router = inject(Router);
+  readonly authService =
     inject(AuthService);
-  private categoryService = inject(CategoryService);
+  readonly categoryService = inject(CategoryService);
 
   login(): void {
 
