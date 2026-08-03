@@ -1,1 +1,11 @@
-<router-outlet></router-outlet>
+<nav style="padding:12px; border-bottom:1px solid #ddd; display:flex; gap:12px; align-items:center">
+	<a routerLink="/">Login</a>
+	<a routerLink="/categories">Categories</a>
+	<a routerLink="/expenses">Expenses</a>
+	<a routerLink="/expenses/create">Add Expense</a>
+	<a routerLink="/analytics">Analytics</a>
+</nav>
+
+<div style="padding:16px">
+	<router-outlet></router-outlet>
+</div>

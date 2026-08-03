@@ -1,1 +1,30 @@
-<p>expense-list works!</p>
+<div class="page">
+	<h2>Expenses</h2>
+
+	<div class="filters">
+		<input placeholder="Search description" [(ngModel)]="filterText" />
+		<input type="date" [(ngModel)]="startDate" />
+		<input type="date" [(ngModel)]="endDate" />
+		<button (click)="clearFilter()">Clear</button>
+	</div>
+
+	<div style="margin-top:12px">
+		<a routerLink="/expenses/create">Add Expense</a>
+	</div>
+
+	<table style="width:100%; margin-top:12px; border-collapse:collapse">
+		<tr style="text-align:left; border-bottom:1px solid #ccc">
+			<th>Description</th>
+			<th>Amount</th>
+			<th>Date</th>
+			<th></th>
+		</tr>
+		<tr *ngFor="let e of filtered()" style="border-bottom:1px solid #eee">
+			<td>{{e.description}}</td>
+			<td>{{e.amount}}</td>
+			<td>{{e.date}}</td>
+			<td><button (click)="delete(e.id)">Delete</button></td>
+		</tr>
+	</table>
+
+</div>
