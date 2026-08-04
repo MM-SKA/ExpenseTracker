@@ -1,40 +1,114 @@
 <div class="page-card">
+
+  <!-- Header -->
   <div class="page-header">
-    <div>
+
+    <div class="header-content">
       <p class="eyebrow">Categories</p>
-      <h1 class="section-title">Organize your expense categories</h1>
-      <p class="subtitle-text">Your categories help keep expenses clean, sorted, and easy to analyze.</p>
+
+      <h1 class="section-title">
+        Organize your Expense Categories
+      </h1>
+
+      <p class="subtitle-text">
+        Create and manage categories to keep every expense organized and easier to analyze.
+      </p>
     </div>
-    <button class="button-primary" routerLink="/categories/create">New category</button>
+
+    <button class="button-primary" routerLink="/categories/create">
+
+      + New Category
+
+    </button>
+
   </div>
+
   @if(isLoading){
+
   <div class="alert-empty">
-    <p>Loading categories...</p>
+
+    <div class="loading-spinner"></div>
+
+    <h3>Loading Categories</h3>
+
+    <p>Please wait while we fetch your categories.</p>
+
   </div>
+
   }
 
-  @if (!isLoading) {
-  @if (categories.length) {
+  @if(!isLoading){
+
+  @if(categories.length){
+
   <div class="category-grid">
-    @for (category of categories; track category.id) {
+
+    @for(category of categories; track category.id){
+
     <div class="category-card">
+
       <div class="category-card-row">
-        <div>
-          <strong>{{ category.name }}</strong>
-          <p class="subtitle-text" style="margin:0">
-            {{ category.isSystemCategory ? 'System category' : 'Custom category' }}
-          </p>
+
+        <div class="category-info">
+
+          <div class="category-icon">
+            🏷️
+          </div>
+
+          <div>
+
+            <strong>
+              {{ category.name }}
+            </strong>
+
+            <p class="subtitle-text">
+              {{ category.isSystemCategory ? 'System Category' : 'Custom Category' }}
+            </p>
+
+          </div>
+
         </div>
-        <button class="button-secondary" (click)="editCategory(category.id)">Edit</button>
+
+        <button class="edit-button" type="button" (click)="editCategory(category.id)">
+
+          <span class="edit-icon">✏️</span>
+
+          <span>Edit</span>
+
+        </button>
+
       </div>
+
     </div>
+
     }
+
   </div>
-  } @else {
+
+  }
+
+  @else{
+
   <div class="alert-empty">
-    <strong>No categories yet</strong>
-    <p>Add a category to start tagging your expenses.</p>
+
+    <div class="empty-icon">
+      📂
+    </div>
+
+    <h3>No Categories Yet</h3>
+
+    <p>Create your first category to start organizing expenses.</p>
+
+    <button class="button-primary" routerLink="/categories/create">
+
+      Create Category
+
+    </button>
+
   </div>
+
   }
+
   }
+
 </div>

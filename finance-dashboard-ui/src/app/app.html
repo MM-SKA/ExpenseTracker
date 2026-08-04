@@ -9,12 +9,17 @@
     </div>
 
     <nav class="app-nav">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
-      <a routerLink="/register" routerLinkActive="active">Register</a>
+      @if (isAuthenticated()) {
       <a routerLink="/expenses" routerLinkActive="active">Expenses</a>
       <a routerLink="/expenses/create" routerLinkActive="active">Create</a>
       <a routerLink="/categories" routerLinkActive="active">Categories</a>
       <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+      <button class="signout-button" type="button" (click)="signOut()">Sign out</button>
+      <span class="user-chip">{{ authUser()?.fullName }}</span>
+      } @else {
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+      }
     </nav>
   </header>
 

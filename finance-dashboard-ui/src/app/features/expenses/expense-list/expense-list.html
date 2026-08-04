@@ -1,66 +1,133 @@
-<div class="expense-shell">
-  <div class="expense-header">
+<div class="container py-5">
+  <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start gap-3 mb-4">
     <div>
       <p class="eyebrow">Expenses</p>
-      <h1>Your expense overview</h1>
-      <p class="subtitle">Track, filter, and manage your spending in a smooth, premium interface.</p>
+      <h1 class="display-5 fw-semibold mb-2">Your expense overview</h1>
+      <p class="text-muted mb-0">Track your spending with smarter filters and newest items at the top.</p>
     </div>
-
-    <a class="primary-button" routerLink="/expenses/create">Add expense</a>
+    <a class="btn btn-primary btn-lg" routerLink="/expenses/create">Add expense</a>
   </div>
 
-  <div class="expense-filters">
-    <label>
-      Search description
-      <input class="filter-input" name="filterText" placeholder="Search description" [(ngModel)]="filterText"
-        (ngModelChange)="onFilterChange()" />
-    </label>
+  <div class="row gy-4">
+    <div class="col-12 col-xl-4">
+      <div class="card filter-card shadow-lg h-100 border-0">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-4">
+            <div>
+              <span class="badge rounded-pill bg-primary-subtle text-primary">Filters</span>
+            </div>
+            <small class="text-muted">Newest first</small>
+          </div>
 
-    <label>
-      Start date
-      <input class="filter-input" name="startDate" type="date" [(ngModel)]="startDate"
-        (ngModelChange)="onFilterChange()" />
-    </label>
+          <div class="mb-4 input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
+            <label for="filterText" class="input-group-text input-icon">🔎</label>
+            <input id="filterText" class="form-control input-dark border-0" name="filterText" placeholder="Search description or note" [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
+          </div>
 
-    <label>
-      End date
-      <input class="filter-input" name="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="onFilterChange()" />
-    </label>
+          <div class="row g-3">
+            <div class="col-6">
+              <label for="startDate" class="form-label text-white-50 mb-2">From</label>
+              <div class="input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
+                <span class="input-group-text input-icon">📅</span>
+                <input id="startDate" class="form-control input-dark border-0" name="startDate" type="date" [(ngModel)]="startDate" (ngModelChange)="onFilterChange()" />
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="endDate" class="form-label text-white-50 mb-2">To</label>
+              <div class="input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
+                <span class="input-group-text input-icon">📅</span>
+                <input id="endDate" class="form-control input-dark border-0" name="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="onFilterChange()" />
+              </div>
+            </div>
+          </div>
 
-    <button class="secondary-button" (click)="clearFilter()">Clear</button>
-  </div>
-
-  <div class="expense-card">
-    @if (filtered().length) {
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Description</th>
-            <th>Amount</th>
-            <th>Date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (e of filtered(); track e.id) {
-          <tr>
-            <td>{{ e.description }}</td>
-            <td>{{ e.amount | currency:'USD':'symbol':'1.0-0' }}</td>
-            <td>{{ e.date }}</td>
-            <td>
-              <button class="delete-button" (click)="delete(e.id)">Delete</button>
-            </td>
-          </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-    } @else {
-      <div class="empty-state">
-        <p>No expenses match your current view.</p>
-        <span>Use the filters above or add your first expense to see your spending.</span>
+          <button class="btn btn-outline-light btn-lg w-100 mt-4" type="button" (click)="clearFilter()">Clear filters</button>
+        </div>
       </div>
-    }
+    </div>
+
+    <div class="col-12 col-xl-8">
+      @if (filtered().length) {
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="stat-card card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="stat-label">Total</div>
+              <div class="stat-value">{{ getTotalAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="stat-label">Count</div>
+              <div class="stat-value">{{ filtered().length }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="stat-label">Average</div>
+              <div class="stat-value">{{ getAverageAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="stat-card card border-0 shadow-sm">
+            <div class="card-body">
+              <div class="stat-label">Highest</div>
+              <div class="stat-value">{{ (filtered() | slice:0:1)[0]?.amount || 0 | currency:'USD':'symbol':'1.0-0' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+      <div class="card table-card shadow-lg border-0">
+        <div class="card-body p-0">
+          @if (filtered().length) {
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Location</th>
+                  <th class="text-end">Amount</th>
+                  <th class="text-center">Date</th>
+                  <th class="text-center">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (e of filtered(); track e.id) {
+                <tr class="expense-row">
+                  <td>
+                    <div class="fw-semibold d-flex align-items-center gap-2">
+                      <span class="expense-icon">💳</span>
+                      {{ e.description }}
+                    </div>
+                  </td>
+                  <td>
+                    <div>{{ e.location || '—' }}</div>
+                  </td>
+                  <td class="text-end"><span class="badge rounded-pill" [ngClass]="getAmountBadgeClass(e.amount)">{{ e.amount | currency:'USD':'symbol':'1.0-0' }}</span></td>
+                  <td class="text-center"><small >{{ e.date }}</small></td>
+                  <td class="text-center">
+                    <button class="btn btn-sm btn-outline-danger btn-action" type="button" (click)="delete(e.id)" title="Delete expense">🗑️</button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+          } @else {
+          <div class="empty-state card-body text-center text-muted py-5">
+            <div class="empty-icon mb-3">📭</div>
+            <p class="h5 mb-2">No expenses match your filters.</p>
+            <p class="mb-0">Try adjusting the dates or add a new expense to get started.</p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
   </div>
 </div>

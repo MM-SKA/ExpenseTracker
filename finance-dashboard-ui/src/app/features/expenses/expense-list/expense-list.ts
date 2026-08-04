@@ -28,7 +28,7 @@ export class ExpenseList implements OnInit {
       this.expenseService.getExpenses().subscribe({
         next: (response: any) => {
           const data = response?.data ?? response;
-          this.expenses = Array.isArray(data) ? data : [];
+          this.expenses = this.sortExpenses(Array.isArray(data) ? data : []);
         },
         error: () => this.load()
       });
@@ -40,13 +40,24 @@ export class ExpenseList implements OnInit {
   load(): void {
     if (typeof localStorage !== 'undefined') {
       try {
-        this.expenses = JSON.parse(localStorage.getItem('expenses') || '[]');
+        this.expenses = this.sortExpenses(JSON.parse(localStorage.getItem('expenses') || '[]'));
       } catch {
         this.expenses = [];
       }
     } else {
       this.expenses = [];
     }
+  }
+
+  private sortExpenses(expenses: any[]): any[] {
+    return [...expenses].sort((a, b) => {
+      const aTime = Date.parse(a?.date ?? '');
+      const bTime = Date.parse(b?.date ?? '');
+      if (!Number.isNaN(aTime) && !Number.isNaN(bTime)) {
+        return bTime - aTime;
+      }
+      return (b?.id ?? 0) - (a?.id ?? 0);
+    });
   }
 
   filtered(): any[] {
@@ -57,6 +68,28 @@ export class ExpenseList implements OnInit {
       if (this.endDate && e.date > this.endDate) {return false;}
       return true;
     });
+  }
+
+  getTotalAmount(): number {
+    return this.filtered().reduce((sum, e) => sum + (e.amount ?? 0), 0);
+  }
+
+  getAverageAmount(): number {
+    const filtered = this.filtered();
+    if (filtered.length === 0) {
+      return 0;
+    }
+    return this.getTotalAmount() / filtered.length;
+  }
+
+  getAmountBadgeClass(amount: number): string {
+    if (amount > 50) {
+      return 'bg-danger';
+    }
+    if (amount > 20) {
+      return 'bg-warning';
+    }
+    return 'bg-success';
   }
 
   onFilterChange(): void {

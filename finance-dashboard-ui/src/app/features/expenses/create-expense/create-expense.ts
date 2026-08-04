@@ -18,6 +18,7 @@ export class CreateExpense implements OnInit {
   description = '';
   amount = '';
   date = '';
+  location = '';
   isLoadingCategories = true;
 
   readonly router = inject(Router);
@@ -54,7 +55,7 @@ export class CreateExpense implements OnInit {
         amount: Number.parseFloat(this.amount) || 0,
         notes: this.description,
         date: this.date,
-        location: ''
+        location: this.location
       }).subscribe({ next: () => this.router.navigate(['/expenses']), error: () => this.saveToLocal() });
     } else {
       this.saveToLocal();
@@ -69,7 +70,7 @@ export class CreateExpense implements OnInit {
       } catch {
         list = [];
       }
-      list.push({ id: Date.now(), description: this.description, amount: Number.parseFloat(this.amount) || 0, date: this.date });
+      list.push({ id: Date.now(), description: this.description, amount: Number.parseFloat(this.amount) || 0, date: this.date, location: this.location });
       try {
         localStorage.setItem('expenses', JSON.stringify(list));
       } catch {
