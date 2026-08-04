@@ -1,17 +1,18 @@
 import {
   Component,
   inject,
-  ChangeDetectorRef
-} from "@angular/core";
+  ChangeDetectorRef,
+  OnInit
+} from '@angular/core';
 
-import { CommonModule } from "@angular/common";
-import { Router } from "@angular/router";
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { CategoryService }
-from "../../../core/services/category.service";
+from '../../../core/services/category.service';
 
 import { Category }
-from "../../../shared/models/category/category";
+from '../../../shared/models/category/category';
 
 @Component({
   selector: 'app-category-list',
@@ -20,18 +21,18 @@ from "../../../shared/models/category/category";
   templateUrl: './category-list.html',
   styleUrl: './category-list.css'
 })
-export class CategoryList {
+export class CategoryList implements OnInit {
 
   categories: Category[] = [];
 
   isLoading = true;
 
-  private router = inject(Router);
+  readonly router = inject(Router);
 
-  private categoryService =
+  readonly categoryService =
     inject(CategoryService);
 
-  private cdr =
+  readonly cdr =
     inject(ChangeDetectorRef);
 
   ngOnInit(): void {

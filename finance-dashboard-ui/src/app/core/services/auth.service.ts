@@ -1,9 +1,9 @@
-import { inject ,Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { inject ,Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import { Observable } from "rxjs";
+import { Observable } from 'rxjs';
 
-import { environment } from "../../../environment/environment";
+import { environment } from '../../../environment/environment';
 
 import { LoginRequest } from '../../shared/models/auth/login-request';
 import { RegisterRequest } from '../../shared/models/auth/register-request';

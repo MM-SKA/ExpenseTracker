@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { CategoryService } from '../../../core/services/category.service';
   styleUrl: './update-category.css',
   standalone: true
 })
-export class UpdateCategory {
+export class UpdateCategory implements OnInit {
   id = '';
   name = '';
   private route =
@@ -19,7 +19,7 @@ export class UpdateCategory {
 
   private router =
     inject(Router);
-    
+
   private categoryService =
     inject(CategoryService);
 

@@ -52,9 +52,9 @@ export class ExpenseList implements OnInit {
   filtered(): any[] {
     const filter = this.filterText?.trim().toLowerCase();
     return this.expenses.filter(e => {
-      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) return false;
-      if (this.startDate && e.date < this.startDate) return false;
-      if (this.endDate && e.date > this.endDate) return false;
+      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) {return false;}
+      if (this.startDate && e.date < this.startDate) {return false;}
+      if (this.endDate && e.date > this.endDate) {return false;}
       return true;
     });
   }

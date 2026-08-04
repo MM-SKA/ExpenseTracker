@@ -1,59 +1,68 @@
-# FinanceDashboardUi
+# Finance Dashboard UI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
+Angular frontend for the Personal Finance Dashboard.
 
-## Development server
+## Overview
 
-To start a local development server, run:
+This project is the client application for managing user authentication, categories, and expenses.
 
-```bash
-ng serve
-```
+## Features
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- User registration and login
+- JWT authentication
+- Category creation and caching
+- Expense creation and list display
+- Expense filtering by text and date range
+- Offline expense storage with local fallback
 
-## Code scaffolding
+## Development
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Install dependencies and start the local server:
 
 ```bash
-ng generate --help
+npm install
+npm start
 ```
 
-## Building
+Open the browser at `http://localhost:4200/`.
 
-To build the project run:
+## Scripts
+
+- `npm start` — run development server
+- `npm test` — run unit tests
+- `npm run build` — build the app
+- `npm run watch` — build continuously during development
+- `npm run serve:ssr:finance-dashboard-ui` — run SSR server build
+
+## Local storage usage
+
+The UI stores the following keys in browser `localStorage`:
+
+- `token` — JWT token used for authenticated API requests
+- `user` — authenticated user object stored as JSON
+- `categories_cache` — cached category list used by `CategoryService`
+- `expenses` — offline expense drafts or expenses saved locally when the API is unavailable or the user is not authenticated
+
+## Notes
+
+- The `authInterceptor` sends `Authorization: Bearer <token>` when the token exists.
+- Local expense storage is used as a fallback when API calls fail or no token is present.
+- Category caching helps reduce API requests and improve performance.
+
+## Build
 
 ```bash
-ng build
+npm run build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+This compiles the app and outputs artifacts to `dist/`.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Testing
 
 ```bash
-ng test
+npm test
 ```
 
-## Running end-to-end tests
+## Resources
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+For Angular CLI docs, see [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli).

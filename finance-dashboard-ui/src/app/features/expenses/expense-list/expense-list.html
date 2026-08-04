@@ -12,68 +12,55 @@
   <div class="expense-filters">
     <label>
       Search description
-      <input
-        class="filter-input"
-        name="filterText"
-        placeholder="Search description"
-        [(ngModel)]="filterText"
+      <input class="filter-input" name="filterText" placeholder="Search description" [(ngModel)]="filterText"
         (ngModelChange)="onFilterChange()" />
     </label>
 
     <label>
       Start date
-      <input
-        class="filter-input"
-        name="startDate"
-        type="date"
-        [(ngModel)]="startDate"
+      <input class="filter-input" name="startDate" type="date" [(ngModel)]="startDate"
         (ngModelChange)="onFilterChange()" />
     </label>
 
     <label>
       End date
-      <input
-        class="filter-input"
-        name="endDate"
-        type="date"
-        [(ngModel)]="endDate"
-        (ngModelChange)="onFilterChange()" />
+      <input class="filter-input" name="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="onFilterChange()" />
     </label>
 
     <button class="secondary-button" (click)="clearFilter()">Clear</button>
   </div>
 
   <div class="expense-card">
-    <ng-container *ngIf="filtered().length; else noExpenses">
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let e of filtered()">
-              <td>{{ e.description }}</td>
-              <td>{{ e.amount | currency:'USD':'symbol':'1.0-0' }}</td>
-              <td>{{ e.date }}</td>
-              <td>
-                <button class="delete-button" (click)="delete(e.id)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </ng-container>
-
-    <ng-template #noExpenses>
+    @if (filtered().length) {
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of filtered(); track e.id) {
+          <tr>
+            <td>{{ e.description }}</td>
+            <td>{{ e.amount | currency:'USD':'symbol':'1.0-0' }}</td>
+            <td>{{ e.date }}</td>
+            <td>
+              <button class="delete-button" (click)="delete(e.id)">Delete</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    } @else {
       <div class="empty-state">
         <p>No expenses match your current view.</p>
         <span>Use the filters above or add your first expense to see your spending.</span>
       </div>
-    </ng-template>
+    }
   </div>
 </div>

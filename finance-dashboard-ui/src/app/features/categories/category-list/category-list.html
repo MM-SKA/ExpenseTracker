@@ -7,31 +7,34 @@
     </div>
     <button class="button-primary" routerLink="/categories/create">New category</button>
   </div>
-
-  <div *ngIf="isLoading" class="alert-empty">
+  @if(isLoading){
+  <div class="alert-empty">
     <p>Loading categories...</p>
   </div>
+  }
 
-  <div *ngIf="!isLoading">
-    <div *ngIf="categories.length; else noCategories">
-      <div class="category-grid">
-        <div class="category-card" *ngFor="let category of categories">
-          <div class="category-card-row">
-            <div>
-              <strong>{{ category.name }}</strong>
-              <p class="subtitle-text" style="margin:0">{{ category.isSystemCategory ? 'System category' : 'Custom category' }}</p>
-            </div>
-            <button class="button-secondary" (click)="editCategory(category.id)">Edit</button>
-          </div>
+  @if (!isLoading) {
+  @if (categories.length) {
+  <div class="category-grid">
+    @for (category of categories; track category.id) {
+    <div class="category-card">
+      <div class="category-card-row">
+        <div>
+          <strong>{{ category.name }}</strong>
+          <p class="subtitle-text" style="margin:0">
+            {{ category.isSystemCategory ? 'System category' : 'Custom category' }}
+          </p>
         </div>
+        <button class="button-secondary" (click)="editCategory(category.id)">Edit</button>
       </div>
     </div>
-
-    <ng-template #noCategories>
-      <div class="alert-empty">
-        <strong>No categories yet</strong>
-        <p>Add a category to start tagging your expenses.</p>
-      </div>
-    </ng-template>
+    }
   </div>
+  } @else {
+  <div class="alert-empty">
+    <strong>No categories yet</strong>
+    <p>Add a category to start tagging your expenses.</p>
+  </div>
+  }
+  }
 </div>

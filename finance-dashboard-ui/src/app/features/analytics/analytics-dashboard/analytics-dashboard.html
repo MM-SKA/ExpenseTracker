@@ -13,7 +13,11 @@
         <label for="category-list">Category</label>
         <select id="category-list" [(ngModel)]="filters.categoryId">
           <option value="">All categories</option>
-          <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+          @for (category of categories; track category.id) {
+          <option [value]="category.id">
+            {{ category.name }}
+          </option>
+          }
         </select>
       </div>
       <div class="form-field">
@@ -41,57 +45,81 @@
       </div>
     </div>
     <div class="filter-actions">
-      <button class="button-primary" type="button" (click)="updateAnalytics()" [disabled]="isLoading">Search analytics</button>
+      <button class="button-primary" type="button" (click)="updateAnalytics()" [disabled]="isLoading">Search
+        analytics</button>
       <button class="button-secondary" type="button" (click)="refresh()" [disabled]="isLoading">Reset filters</button>
     </div>
   </div>
 
-  <ng-container *ngIf="isLoading">
-    <div class="alert-empty">
-      <strong>Loading analytics...</strong>
-      <p>Please wait while we retrieve the latest data.</p>
-    </div>
-  </ng-container>
+  @if (isLoading) {
+  <div class="alert-empty">
+    <strong>Loading analytics...</strong>
+    <p>Please wait while we retrieve the latest data.</p>
+  </div>
+  }
 
-  <ng-container *ngIf="!isLoading">
-    <div class="panel-card analytics-grid" *ngIf="analytics; else noAnalytics">
-      <div class="analytics-card">
-        <p class="eyebrow">Total spent</p>
-        <h2>{{ (analytics?.summary?.totalSpent ?? analytics?.Summary?.TotalSpent) | currency:'USD':'symbol':'1.0-0' }}</h2>
-      </div>
-      <div class="analytics-card">
-        <p class="eyebrow">Transactions</p>
-        <h2>{{ analytics?.summary?.count ?? analytics?.Summary?.Count }}</h2>
-      </div>
-      <div class="analytics-card">
-        <p class="eyebrow">Average</p>
-        <h2>{{ (analytics?.summary?.averageAmount ?? analytics?.Summary?.AverageAmount) | currency:'USD':'symbol':'1.0-0' }}</h2>
-      </div>
-      <div class="analytics-card">
-        <p class="eyebrow">Date range</p>
-        <h2>
-          {{ (analytics?.summary ? (analytics?.dateDistribution?.StartDate ?? analytics?.DateDistribution?.StartDate) : null) | date:'mediumDate' }}
-          -
-          {{ (analytics?.summary ? (analytics?.dateDistribution?.EndDate ?? analytics?.DateDistribution?.EndDate) : null) | date:'mediumDate' }}
-        </h2>
-      </div>
+  @if(!isLoading){
+  @if (analytics) {
+  <div class="panel-card analytics-grid">
+    <div class="analytics-card">
+      <p class="eyebrow">Total spent</p>
+      <h2>
+        {{ (analytics.summary?.totalSpent ?? analytics.Summary?.TotalSpent) | currency:'USD':'symbol':'1.0-0' }}
+      </h2>
     </div>
 
-    <div class="panel-card" *ngIf="analytics?.byCategory?.length || analytics?.ByCategory?.length; else noAnalytics">
-      <h2 class="section-title" style="font-size:1.25rem;">Spend by category</h2>
-      <div class="category-grid">
-        <div class="category-card" *ngFor="let item of analytics?.byCategory ?? analytics?.ByCategory">
-          <div class="category-card-row">
-            <div>
-              <strong>{{ item.categoryName ?? item.CategoryName }}</strong>
-              <p class="subtitle-text" style="margin:0">{{ (item.amount ?? item.Amount) | currency:'USD':'symbol':'1.0-0' }}</p>
-            </div>
-            <span>{{ (item.percentage ?? item.Percentage) | number:'1.0-0' }}%</span>
+    <div class="analytics-card">
+      <p class="eyebrow">Transactions</p>
+      <h2>{{ analytics.summary?.count ?? analytics.Summary?.Count }}</h2>
+    </div>
+
+    <div class="analytics-card">
+      <p class="eyebrow">Average</p>
+      <h2>
+        {{ (analytics.summary?.averageAmount ?? analytics.Summary?.AverageAmount) | currency:'USD':'symbol':'1.0-0' }}
+      </h2>
+    </div>
+
+    <div class="analytics-card">
+      <p class="eyebrow">Date range</p>
+      <h2>
+        {{ (analytics.dateDistribution?.StartDate ?? analytics.DateDistribution?.StartDate) | date:'mediumDate' }}
+        -
+        {{ (analytics.dateDistribution?.EndDate ?? analytics.DateDistribution?.EndDate) | date:'mediumDate' }}
+      </h2>
+    </div>
+  </div>
+  } @else {
+  <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
+  }
+
+  @if ((analytics?.byCategory?.length ?? analytics?.ByCategory?.length)) {
+  <div class="panel-card">
+    <h2 class="section-title" style="font-size:1.25rem;">Spend by category</h2>
+
+    <div class="category-grid">
+      @for (item of (analytics?.byCategory ?? analytics?.ByCategory); track (item.categoryName ?? item.CategoryName)) {
+      <div class="category-card">
+        <div class="category-card-row">
+          <div>
+            <strong>{{ item.categoryName ?? item.CategoryName }}</strong>
+            <p class="subtitle-text" style="margin:0">
+              {{ (item.amount ?? item.Amount) | currency:'USD':'symbol':'1.0-0' }}
+            </p>
           </div>
+
+          <span>
+            {{ (item.percentage ?? item.Percentage) | number:'1.0-0' }}%
+          </span>
         </div>
       </div>
+      }
     </div>
-  </ng-container>
+  </div>
+  } @else {
+  <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
+  }
+  }
 
   <ng-template #noAnalytics>
     <div class="alert-empty">

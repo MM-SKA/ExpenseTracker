@@ -11,16 +11,24 @@
     <form (ngSubmit)="save()">
       <div class="form-field">
         <label for="category-list">Category</label>
-        <select id="category-list" name="category" [(ngModel)]="categoryId" [disabled]="isLoadingCategories || categories.length === 0">
-          <option value="" disabled selected *ngIf="isLoadingCategories">Loading categories...</option>
-          <option value="" disabled *ngIf="!isLoadingCategories && categories.length === 0">No categories available</option>
-          <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+        <select id="category-list" name="category" [(ngModel)]="categoryId"
+          [disabled]="isLoadingCategories || categories.length === 0">
+          @if (isLoadingCategories) {
+          <option value="" disabled selected>Loading categories...</option>
+          }
+          @if (!isLoadingCategories && categories.length === 0) {
+          <option value="" disabled>No categories available</option>
+          }
+          @for (c of categories; track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+          }
         </select>
       </div>
 
       <div class="form-field">
         <label for="description-input">Description</label>
-        <input id="description-input" name="description" [(ngModel)]="description" placeholder="Coffee, groceries, subscription" />
+        <input id="description-input" name="description" [(ngModel)]="description"
+          placeholder="Coffee, groceries, subscription" />
       </div>
 
       <div class="form-field">
