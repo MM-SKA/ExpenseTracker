@@ -41,4 +41,9 @@ public interface IExpenseServiceV1<T>
         string userId,
         SearchRequestDto request,
         CancellationToken cancellationToken);
+
+    Task<ApiResponse<ExpenseDtoV1>> GetExpenseByIdAsync(
+        string userId,
+        string id,
+        CancellationToken cancellationToken);
 }

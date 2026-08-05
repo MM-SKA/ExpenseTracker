@@ -59,6 +59,24 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
         return Ok(await expenseService.GetExpenseAsync(userId, cancellationToken).ConfigureAwait(false));
     }
     //------------------------------------------------------------------------------------------------------------------------------------
+    //get expense by id endpoint
+
+    [HttpGet("get/{id}")]
+    public async Task<IActionResult> GetExpenseByIdAsync(
+    string id,
+    CancellationToken cancellationToken)
+    {
+        var userId = User.GetUserId();
+
+        var result = await expenseService
+            .GetExpenseByIdAsync(
+                userId,
+                id,
+                cancellationToken).ConfigureAwait(false);
+
+        return Ok(result);
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------
     //update expense endpoint
 
     [HttpPut("update/{id}")]

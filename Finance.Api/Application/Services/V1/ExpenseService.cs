@@ -492,4 +492,35 @@ internal sealed class ExpenseServiceV1(
             })
         ];
     }
+
+    public async Task<ApiResponse<ExpenseDtoV1>> GetExpenseByIdAsync(string userId, string id, CancellationToken cancellationToken)
+    {
+        var expense = await expenseRepository.GetExpenseByIdAsync(id, userId, cancellationToken).ConfigureAwait(false);
+        if (expense == null)
+        {
+            return new ApiResponse<ExpenseDtoV1>
+            {
+                Success = false,
+                Message = "Expense not found",
+                ErrorCode = ErrorCodes.ExpenseNotFound
+            };
+        }
+
+        var expenseDto = new ExpenseDtoV1
+        {
+            Id = expense.Id,
+            Description = expense.Notes ?? string.Empty,
+            Amount = expense.Amount,
+            Date = expense.ExpenseDate,
+            CategoryId = expense.CategoryId,
+            Location = expense.Location
+        };
+
+        return new ApiResponse<ExpenseDtoV1>
+        {
+            Success = true,
+            Message = "Expense fetched successfully",
+            Data = expenseDto
+        };
+    }
 }

@@ -21,7 +21,8 @@
 
           <div class="mb-4 input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
             <label for="filterText" class="input-group-text input-icon">🔎</label>
-            <input id="filterText" class="form-control input-dark border-0" name="filterText" placeholder="Search description or note" [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
+            <input id="filterText" class="form-control input-dark border-0" name="filterText"
+              placeholder="Search description or note" [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
           </div>
 
           <div class="row g-3">
@@ -29,19 +30,22 @@
               <label for="startDate" class="form-label text-white-50 mb-2">From</label>
               <div class="input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
                 <span class="input-group-text input-icon">📅</span>
-                <input id="startDate" class="form-control input-dark border-0" name="startDate" type="date" [(ngModel)]="startDate" (ngModelChange)="onFilterChange()" />
+                <input id="startDate" class="form-control input-dark border-0" name="startDate" type="date"
+                  [(ngModel)]="startDate" (ngModelChange)="onFilterChange()" />
               </div>
             </div>
             <div class="col-6">
               <label for="endDate" class="form-label text-white-50 mb-2">To</label>
               <div class="input-group input-group-lg rounded-4 overflow-hidden border border-secondary bg-dark">
                 <span class="input-group-text input-icon">📅</span>
-                <input id="endDate" class="form-control input-dark border-0" name="endDate" type="date" [(ngModel)]="endDate" (ngModelChange)="onFilterChange()" />
+                <input id="endDate" class="form-control input-dark border-0" name="endDate" type="date"
+                  [(ngModel)]="endDate" (ngModelChange)="onFilterChange()" />
               </div>
             </div>
           </div>
 
-          <button class="btn btn-outline-light btn-lg w-100 mt-4" type="button" (click)="clearFilter()">Clear filters</button>
+          <button class="btn btn-outline-light btn-lg w-100 mt-4" type="button" (click)="clearFilter()">Clear
+            filters</button>
         </div>
       </div>
     </div>
@@ -77,7 +81,8 @@
           <div class="stat-card card border-0 shadow-sm">
             <div class="card-body">
               <div class="stat-label">Highest</div>
-              <div class="stat-value">{{ (filtered() | slice:0:1)[0]?.amount || 0 | currency:'USD':'symbol':'1.0-0' }}</div>
+              <div class="stat-value">{{ (filtered() | slice:0:1)[0]?.amount || 0 | currency:'USD':'symbol':'1.0-0' }}
+              </div>
             </div>
           </div>
         </div>
@@ -109,10 +114,13 @@
                   <td>
                     <div>{{ e.location || '—' }}</div>
                   </td>
-                  <td class="text-end"><span class="badge rounded-pill" [ngClass]="getAmountBadgeClass(e.amount)">{{ e.amount | currency:'USD':'symbol':'1.0-0' }}</span></td>
-                  <td class="text-center"><small >{{ e.date }}</small></td>
+                  <td class="text-end"><span class="badge rounded-pill" [ngClass]="getAmountBadgeClass(e.amount)">{{
+                      e.amount | currency:'USD':'symbol':'1.0-0' }}</span></td>
+                  <td class="text-center"><small>{{ e.date }}</small></td>
                   <td class="text-center">
-                    <button class="btn btn-sm btn-outline-danger btn-action" type="button" (click)="delete(e.id)" title="Delete expense">🗑️</button>
+                    <button class="btn btn-sm btn-outline-danger btn-action" type="button" (click)="delete(e.id)"
+                      title="Delete expense">🗑️</button>
+                    <button class="edit-button"> Edit</button>
                   </td>
                 </tr>
                 }
