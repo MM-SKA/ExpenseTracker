@@ -1,19 +1,20 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { AuthUser } from './shared/models/auth/auth-user';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ScrollTopComponent } from './shared/components/scroll-top/scroll-top';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ScrollTopComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
   protected readonly title = signal('finance-dashboard-ui');
-  readonly authUser = signal<AuthUser | null>(this.loadUser());
-  readonly isAuthenticated = computed(() => !!this.authUser());
-  readonly userInitial = computed(() => this.authUser()?.fullName?.charAt(0).toUpperCase() ?? 'F');
-  readonly router = inject(Router);
+  public readonly authUser = signal<AuthUser | null>(this.loadUser());
+  public readonly isAuthenticated = computed(() => !!this.authUser());
+  public readonly userInitial = computed(() => this.authUser()?.fullName?.charAt(0).toUpperCase() ?? 'F');
+  public readonly router = inject(Router);
 
   constructor() {
     this.router.events.subscribe((event) => {
@@ -23,13 +24,13 @@ export class App {
     });
   }
 
-  signOut(): void {
-    if (typeof localStorage !== 'undefined') {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-    }
+  public signOut(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.authUser.set(null);
-    this.router.navigate(['/']);
+    void this.router.navigateByUrl('/', {
+      replaceUrl: true
+    });
   }
 
   private loadUser(): AuthUser | null {

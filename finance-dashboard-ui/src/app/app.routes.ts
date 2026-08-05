@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/guards/auth-guard';
 import { CreateCategory } from './features/categories/create-category/create-category';
 import { LoginComponent } from './features/auth/login/login.component';
 import { Register } from './features/auth/register/register';
@@ -19,26 +20,32 @@ export const routes: Routes = [
   },
   {
     path: 'categories',
-    component: CategoryList
+    component: CategoryList,
+    canActivate: [authGuard]
   },
   {
     path: 'categories/create',
-    component: CreateCategory
+    component: CreateCategory,
+    canActivate: [authGuard]
   },
   {
     path: 'categories/edit/:id',
-    component: UpdateCategory
+    component: UpdateCategory,
+    canActivate: [authGuard]
   },
   {
     path: 'expenses',
-    component: ExpenseList
+    component: ExpenseList,
+    canActivate: [authGuard]
   },
   {
     path: 'expenses/create',
-    component: CreateExpense
+    component: CreateExpense,
+    canActivate: [authGuard]
   },
   {
     path: 'analytics',
-    component: AnalyticsDashboard
+    component: AnalyticsDashboard,
+    canActivate: [authGuard]
   }
 ];

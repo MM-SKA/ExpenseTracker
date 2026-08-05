@@ -31,7 +31,14 @@ textarea {
 }
 
 .app-shell {
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.app-content {
+  flex: 1;
+  overflow: auto;
 }
 
 .app-header {

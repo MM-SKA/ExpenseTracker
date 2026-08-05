@@ -107,7 +107,9 @@ builder.Services.AddDbContext<FinanceDbContext>(
         options.UseCosmos(
             builder.Configuration["CosmosDb:AccountEndpoint"]!,
             builder.Configuration["CosmosDb:AccountKey"]!,
-            builder.Configuration["CosmosDb:DatabaseName"]!));
+            builder.Configuration["CosmosDb:DatabaseName"]!,
+            cosmosOptions => cosmosOptions.ConnectionMode(Microsoft.Azure.Cosmos.ConnectionMode.Gateway)
+            ));
 
 var app = builder.Build();
 

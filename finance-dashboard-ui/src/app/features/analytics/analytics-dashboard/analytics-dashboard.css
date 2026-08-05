@@ -2,13 +2,13 @@
    PAGE
 ========================== */
 
-.page-card {
-    width: 100%;
-    max-width: 1400px;
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.page-card{
+    width:min(100%,1400px);
+    margin:auto;
+    padding-inline:clamp(.75rem,2vw,2rem);
+    display:flex;
+    flex-direction:column;
+    gap:clamp(1rem,2vw,2rem);
 }
 
 /* ==========================
