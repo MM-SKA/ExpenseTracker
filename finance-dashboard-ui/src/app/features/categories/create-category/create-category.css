@@ -1,309 +1,138 @@
-/* ===========================
-   Page
-=========================== */
+/* ── Create / Edit Category — shared ─────── */
 
-.create-category-page{
-
-    max-width:650px;
-
-    margin:auto;
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:2rem;
-
+.cf-page {
+  padding: 1.75rem 1.5rem;
+  max-width: 520px;
+  margin: 0 auto;
 }
 
-/* ===========================
-   Header
-=========================== */
-
-.page-header{
-
-    text-align:left;
-
+/* ── Header ───────────────────────────────── */
+.cf-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 0.3rem;
 }
 
-.eyebrow{
-
-    text-transform:uppercase;
-
-    letter-spacing:.2em;
-
-    color:#94a3b8;
-
-    font-size:.78rem;
-
-    margin-bottom:.6rem;
-
+.cf-title {
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.03em;
 }
 
-.section-title{
-
-    margin:.2rem 0 .8rem;
-
-    color:#fff;
-
-    font-size:2.3rem;
-
-    font-weight:700;
-
+.cf-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 1.5rem;
+  line-height: 1.55;
 }
 
-.subtitle-text{
-
-    color:#94a3b8;
-
-    line-height:1.7;
-
-    max-width:520px;
-
+/* ── Card ─────────────────────────────────── */
+.cf-card {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-/* ===========================
-   Panel
-=========================== */
-
-.category-panel{
-
-    background:linear-gradient(
-        180deg,
-        #1e293b,
-        #111827
-    );
-
-    border:1px solid rgba(124,58,237,.15);
-
-    border-radius:24px;
-
-    padding:2rem;
-
-    position:relative;
-
-    overflow:hidden;
-
-    box-shadow:0 18px 35px rgba(0,0,0,.22);
-
+.cf-card::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #fff;
 }
 
-.category-panel::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    width:5px;
-
-    height:100%;
-
-    background:#7c3aed;
-
+.cf-card-body {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
 }
 
-/* ===========================
-   Icon
-=========================== */
-
-.category-icon{
-
-    width:72px;
-
-    height:72px;
-
-    margin:0 auto 1.8rem;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:18px;
-
-    font-size:2rem;
-
-    background:rgba(124,58,237,.15);
-
-    color:#fff;
-
+/* ── Icon block ───────────────────────────── */
+.cf-icon-block {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-/* ===========================
-   Form
-=========================== */
-
-.form-field{
-
-    display:flex;
-
-    flex-direction:column;
-
-    gap:.7rem;
-
+.cf-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.09);
+  display: grid;
+  place-items: center;
+  font-size: 1.3rem;
 }
 
-.form-field label{
-
-    color:#cbd5e1;
-
-    font-weight:500;
-
+.cf-icon-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.45);
 }
 
-.form-field input{
-
-    width:100%;
-
-    padding:1rem 1.2rem;
-
-    border-radius:16px;
-
-    border:1px solid rgba(148,163,184,.15);
-
-    background:#0f172a;
-
-    color:#fff;
-
-    outline:none;
-
-    transition:.25s;
-
+/* ── Field ────────────────────────────────── */
+.cf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
-.form-field input::placeholder{
-
-    color:#64748b;
-
+.cf-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
 }
 
-.form-field input:focus{
-
-    border-color:#7c3aed;
-
-    box-shadow:0 0 0 4px rgba(124,58,237,.15);
-
+.cf-input {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 3px;
+  border: 1px solid rgba(255,255,255,0.09);
+  background: #111;
+  color: #fff;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* ===========================
-   Button
-=========================== */
+.cf-input::placeholder { color: rgba(255,255,255,0.22); }
 
-.save-button{
-
-    width:100%;
-
-    margin-top:1.75rem;
-
-    padding:1rem;
-
-    border:none;
-
-    border-radius:16px;
-
-    background:linear-gradient(
-        135deg,
-        #7c3aed,
-        #2563eb
-    );
-
-    color:white;
-
-    font-weight:600;
-
-    font-size:1rem;
-
-    transition:.25s;
-
+.cf-input:focus {
+  border-color: rgba(255,255,255,0.32);
+  box-shadow: 0 0 0 3px rgba(255,255,255,0.05);
+  background: #161616;
 }
 
-.save-button:hover{
-
-    transform:translateY(-2px);
-
-    box-shadow:0 12px 24px rgba(37,99,235,.25);
-
+/* ── Submit ───────────────────────────────── */
+.cf-submit {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 3px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  margin-top: 0.25rem;
 }
 
-/* ===========================
-   Tablet
-=========================== */
+.cf-submit:hover { opacity: 0.86; transform: translateY(-1px); }
+.cf-submit:active { transform: translateY(0); }
 
-@media(max-width:768px){
-
-    .section-title{
-
-        font-size:2rem;
-
-    }
-
-    .category-panel{
-
-        padding:1.5rem;
-
-    }
-
-}
-
-/* ===========================
-   Mobile
-=========================== */
-
-@media(max-width:576px){
-
-    .create-category-page{
-
-        gap:1.5rem;
-
-    }
-
-    .section-title{
-
-        font-size:1.75rem;
-
-    }
-
-    .subtitle-text{
-
-        font-size:.9rem;
-
-    }
-
-    .category-panel{
-
-        padding:1.25rem;
-
-        border-radius:18px;
-
-    }
-
-    .category-icon{
-
-        width:60px;
-
-        height:60px;
-
-        font-size:1.6rem;
-
-        margin-bottom:1.2rem;
-
-    }
-
-    .form-field input{
-
-        padding:.9rem 1rem;
-
-    }
-
-    .save-button{
-
-        margin-top:1.3rem;
-
-    }
-
+@media (max-width: 480px) {
+  .cf-page { padding: 1rem; }
 }

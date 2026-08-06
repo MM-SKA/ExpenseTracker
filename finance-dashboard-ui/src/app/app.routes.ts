@@ -9,6 +9,7 @@ import { AnalyticsDashboard } from './features/analytics/analytics-dashboard/ana
 import { CreateExpense } from './features/expenses/create-expense/create-expense';
 import { ExpenseList } from './features/expenses/expense-list/expense-list';
 import { EditExpense } from './features/expenses/edit-expense/edit-expense';
+import { AiChat } from './features/ai/ai-chat/ai-chat';
 
 export const routes: Routes = [
   {
@@ -22,17 +23,17 @@ export const routes: Routes = [
   {
     path: 'categories',
     component: CategoryList,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'categories/create',
     component: CreateCategory,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'categories/edit/:id',
     component: UpdateCategory,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'expenses',
@@ -42,7 +43,7 @@ export const routes: Routes = [
   {
     path: 'expenses/create',
     component: CreateExpense,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'analytics',
@@ -50,8 +51,13 @@ export const routes: Routes = [
     // canActivate: [authGuard]
   },
   {
+    path: 'ai',
+    component: AiChat,
+    canActivate: [authGuard]
+  },
+  {
     path: 'expenses/edit/:id',
     component: EditExpense,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   }
 ];

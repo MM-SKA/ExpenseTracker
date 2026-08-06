@@ -1,55 +1,60 @@
 <div class="auth-shell">
   <div class="auth-panel">
     <div class="auth-panel-body">
-      <div class="auth-brand d-flex align-items-center ">
+
+      <!-- Brand -->
+      <div class="auth-brand">
         <div class="brand-mark-sm">F</div>
         <div>
-          <span class="h4 fw-semibold mb-0 d-block">Finance Dashboard</span>
-          <small class="text-muted">Premium expense tracking</small>
+          <div class="brand-name">Finance Dashboard</div>
+          <div class="brand-tagline">Premium expense tracking</div>
         </div>
       </div>
 
-      <div class="auth-header mb-4">
-        <p class="eyebrow">Welcome back</p>
-        <h1 class="auth-title mb-2">Sign in to your workspace</h1>
-        <p class="auth-subtitle mb-0">Securely access your expenses, categories, and analytics in one place.</p>
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="eyebrow">✦ Welcome back</div>
+        <h1 class="auth-title">Sign in to your <span>workspace</span></h1>
+        <p class="auth-subtitle">Securely access your expenses, categories, and analytics in one place.</p>
       </div>
 
+      <!-- Form -->
       <form class="auth-form" (ngSubmit)="login()">
-        <div class="mb-4">
-          <label for="email-input" class="form-label">Email</label>
-          <div class="input-group auth-input-group rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">✉️</span>
+
+        <div class="field-group">
+          <label for="email-input" class="form-label">Email address</label>
+          <div class="input-wrap">
+            <span class="input-icon-el">✉</span>
             <input
               id="email-input"
-              class="form-control input-dark border-0"
+              class="field-input"
               name="email"
               type="email"
+              autocomplete="email"
               placeholder="you@example.com"
               [(ngModel)]="email">
           </div>
         </div>
 
-        <div class="mb-4">
+        <div class="field-group">
           <label for="password-input" class="form-label">Password</label>
-          <div class="input-group input-group-lg rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">🔒</span>
+          <div class="input-wrap">
+            <span class="input-icon-el">🔒</span>
             <input
               id="password-input"
-              class="form-control input-dark border-0"
+              class="field-input"
               name="password"
               type="password"
+              autocomplete="current-password"
               placeholder="Enter your password"
               [(ngModel)]="password">
           </div>
         </div>
 
-        <div class="d-grid mb-3">
-          <button class="btn btn-primary btn-lg" type="submit">Continue</button>
-        </div>
+        <button class="btn-submit" type="submit">Continue →</button>
       </form>
 
-      <p class="auth-footer text-center text-muted mb-0">Don’t have an account? <a routerLink="/register">Register now</a></p>
+      <p class="auth-footer-link">Don't have an account? <a routerLink="/register">Create one free</a></p>
     </div>
   </div>
 </div>
