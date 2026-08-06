@@ -1,0 +1,40 @@
+<div class="page">
+
+  <h2>Edit Expense</h2>
+
+  <form (ngSubmit)="updateExpense()">
+
+    <div>
+      <label for="category-dropdown">Category</label>
+      <select id="category-dropdown" name="category" [(ngModel)]="categoryId">
+        @for(category of categories; track category.id)
+        {
+        <option [value]="category.id">{{ category.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div>
+      <label for="notes-input">Notes</label>
+      <input id="notes-input" name="notes" [(ngModel)]="notes">
+    </div>
+
+    <div>
+      <label for="amount-input">Amount</label>
+      <input id="amount-input" type="number" step="0.01" name="amount" [(ngModel)]="amount">
+    </div>
+
+    <div>
+      <label for="date-input">Date</label>
+      <input id="date-input" type="date" name="date" [(ngModel)]="date">
+    </div>
+
+    <div>
+      <label for="location-input">Location</label>
+      <input id="location-input" name="location" [(ngModel)]="location">
+    </div>
+
+    <button type="submit">Update Expense</button>
+  </form>
+
+</div>

@@ -75,21 +75,14 @@ export class CategoryService {
     }
   }
 
-  createCategory(
-    request: CreateCategoryRequest
-  ) {
-
+  createCategory(request: CreateCategoryRequest) {
     return this.http.post(
       `${environment.apiUrl}/categories/create`,
       request
     );
   }
 
-  updateCategory(
-    id: string,
-    request: UpdateCategoryRequest
-  ) {
-
+  updateCategory(id: string, request: UpdateCategoryRequest) {
     return this.http.put(
       `${environment.apiUrl}/categories/update/${id}`,
       request
@@ -97,10 +90,13 @@ export class CategoryService {
   }
 
   getCategoryById(id: string) {
-
     return this.http.get<Category>(
       `${environment.apiUrl}/categories/${id}`
     );
+  }
 
+  refreshCategoriesCache(): void {
+    this.getCategories(true)
+      .subscribe();
   }
 }

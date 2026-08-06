@@ -8,6 +8,7 @@ import { UpdateCategory } from './features/categories/update-category/update-cat
 import { AnalyticsDashboard } from './features/analytics/analytics-dashboard/analytics-dashboard';
 import { CreateExpense } from './features/expenses/create-expense/create-expense';
 import { ExpenseList } from './features/expenses/expense-list/expense-list';
+import { EditExpense } from './features/expenses/edit-expense/edit-expense';
 
 export const routes: Routes = [
   {
@@ -46,6 +47,11 @@ export const routes: Routes = [
   {
     path: 'analytics',
     component: AnalyticsDashboard,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'expenses/edit/:id',
+    component: EditExpense,
     canActivate: [authGuard]
   }
 ];

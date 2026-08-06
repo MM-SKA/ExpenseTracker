@@ -46,7 +46,6 @@ export class UpdateCategory implements OnInit {
   }
 
   updateCategory(): void {
-
     this.categoryService
       .updateCategory(
         this.id,
@@ -55,17 +54,17 @@ export class UpdateCategory implements OnInit {
         }
       )
       .subscribe({
-
         next: () => {
-
-          this.router.navigate(
-            ['/categories']
-          );
-
+          this.categoryService.refreshCategories()
+            .subscribe({
+              next: () => {
+                this.router.navigate(
+                  ['/categories']
+                );
+              }
+            });
         },
-
         error: console.error
-
       });
 
   }
