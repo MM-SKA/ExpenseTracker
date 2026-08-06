@@ -118,9 +118,11 @@
                       e.amount | currency:'USD':'symbol':'1.0-0' }}</span></td>
                   <td class="text-center"><small>{{ e.date }}</small></td>
                   <td class="text-center">
+                    <button class="btn btn-sm btn-outline-primary me-2" type="button" (click)="editExpense(e.id)">
+                      ✏️ Edit
+                    </button>
                     <button class="btn btn-sm btn-outline-danger btn-action" type="button" (click)="delete(e.id)"
                       title="Delete expense">🗑️</button>
-                    <button class="edit-button"> Edit</button>
                   </td>
                 </tr>
                 }

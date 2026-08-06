@@ -14,13 +14,13 @@ import { CategoryService } from '../../../core/services/category.service';
 export class UpdateCategory implements OnInit {
   id = '';
   name = '';
-  private route =
+  private readonly route =
     inject(ActivatedRoute);
 
-  private router =
+  private readonly router =
     inject(Router);
 
-  private categoryService =
+  private readonly categoryService =
     inject(CategoryService);
 
   ngOnInit(): void {
@@ -55,14 +55,9 @@ export class UpdateCategory implements OnInit {
       )
       .subscribe({
         next: () => {
-          this.categoryService.refreshCategories()
-            .subscribe({
-              next: () => {
-                this.router.navigate(
-                  ['/categories']
-                );
-              }
-            });
+           this.router.navigate(
+            ['/categories']
+          );
         },
         error: console.error
       });

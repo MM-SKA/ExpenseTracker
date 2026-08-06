@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { CategoryService }
 from '../../../core/services/category.service';
@@ -17,7 +17,7 @@ from '../../../shared/models/category/category';
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './category-list.html',
   styleUrl: './category-list.css'
 })

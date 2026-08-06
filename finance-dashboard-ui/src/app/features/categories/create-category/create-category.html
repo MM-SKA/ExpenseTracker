@@ -1,18 +1,45 @@
-<div class="page-card" style="max-width:640px; margin:0 auto;">
+<div class="page-card create-category-page">
+
   <div class="page-header">
-    <div>
-      <p class="eyebrow">New category</p>
-      <h1 class="section-title">Create a category</h1>
-      <p class="subtitle-text">Add a custom category to classify your expenses faster.</p>
-    </div>
+    <p class="eyebrow">New Category</p>
+
+    <h1 class="section-title">
+      Create a category
+    </h1>
+
+    <p class="subtitle-text">
+      Organize your expenses by creating custom categories for better tracking and analytics.
+    </p>
   </div>
 
-  <div class="panel-card">
+  <div class="panel-card category-panel">
+
+    <div class="category-icon">
+      🏷️
+    </div>
+
     <div class="form-field">
-      <label for="category-input">Category name</label>
-      <input id="category-input" name="category-name" class="form-control" [(ngModel)]="name" placeholder="Subscription" />
+      <label for="category-input">
+        Category Name
+      </label>
+
+      <input
+        id="category-input"
+        name="category-name"
+        type="text"
+        [(ngModel)]="name"
+        placeholder="e.g. Subscription"
+      >
     </div>
 
-    <button class="button-primary" (click)="createCategory()">Save category</button>
+    <button
+      class="button-primary save-button"
+      (click)="createCategory()">
+
+      Save Category
+
+    </button>
+
   </div>
+
 </div>

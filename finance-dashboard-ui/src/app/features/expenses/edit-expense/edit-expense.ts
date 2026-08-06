@@ -8,11 +8,12 @@ import { Category } from '../../../shared/models/category/category';
 
 @Component({
   selector: 'app-edit-expense',
+  standalone:true,
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-expense.html',
   styleUrl: './edit-expense.css',
 })
-export class EditExpense implements OnInit{
+export class EditExpense implements OnInit {
   id = '';
   notes = '';
   amount = 0;
@@ -29,7 +30,6 @@ export class EditExpense implements OnInit{
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
     this.loadCategories();
-    this.loadExpense();
   }
 
   loadCategories(): void {
@@ -39,6 +39,7 @@ export class EditExpense implements OnInit{
       .subscribe({
         next: (response: Category[]) => {
           this.categories = response;
+          this.loadExpense();
         }
       });
   }
@@ -48,24 +49,31 @@ export class EditExpense implements OnInit{
       .getExpenseById(this.id)
       .subscribe({
         next: (response: any) => {
-          this.notes = response.notes;
-          this.amount = response.amount;
-          this.categoryId = response.categoryId;
-          this.location = response.location ?? '';
-          this.date = response.date?.split('T')[0];
+          console.log(response);
+          const expense = response.data;
+          this.notes = expense.description;
+          this.amount = expense.amount;
+          this.categoryId = expense.categoryId;
+          this.location = expense.location ?? '';
+          this.date = expense.date?.split('T')[0];
+          console.log('notes', this.notes);
+          console.log('amount', this.amount);
+          console.log('categoryId', this.categoryId);
+          console.log('location', this.location);
+          console.log('date', this.date);
         }
       });
   }
 
   updateExpense(): void {
     this.expenseService.updateExpense(this.id,
-        {
-          notes: this.notes,
-          amount: this.amount,
-          categoryId: this.categoryId,
-          date: this.date,
-          location: this.location
-        })
+      {
+        notes: this.notes,
+        amount: this.amount,
+        categoryId: this.categoryId,
+        date: this.date,
+        location: this.location
+      })
       .subscribe({
         next: () => {
           this.router.navigate(

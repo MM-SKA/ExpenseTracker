@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, tap, catchError } from 'rxjs';
+import { Observable, of, tap, catchError, switchMap } from 'rxjs';
 import { Category } from '../../shared/models/category/category';
 import { CreateCategoryRequest } from '../../shared/models/category/create-category-request';
 import { UpdateCategoryRequest } from '../../shared/models/category/update-category-request';
-
 import { environment } from '../../../environment/environment';
 
 @Injectable({
@@ -79,6 +78,10 @@ export class CategoryService {
     return this.http.post(
       `${environment.apiUrl}/categories/create`,
       request
+    ).pipe(
+      switchMap(() =>
+        this.getCategories(true)
+      )
     );
   }
 
@@ -86,6 +89,9 @@ export class CategoryService {
     return this.http.put(
       `${environment.apiUrl}/categories/update/${id}`,
       request
+    ).pipe(switchMap(() =>
+      this.getCategories(true)
+    )
     );
   }
 

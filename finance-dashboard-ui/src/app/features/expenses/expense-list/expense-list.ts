@@ -113,4 +113,8 @@ export class ExpenseList implements OnInit {
     }
   }
 
+  public editExpense(id: string): void{
+    this.router.navigate(['/expenses/edit', id]);
+  }
+
 }
