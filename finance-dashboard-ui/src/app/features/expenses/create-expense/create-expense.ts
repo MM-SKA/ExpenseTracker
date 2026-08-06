@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category/category';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-expense',
@@ -24,6 +25,7 @@ export class CreateExpense implements OnInit {
   readonly router = inject(Router);
   readonly expenseService = inject(ExpenseService);
   readonly categoryService = inject(CategoryService);
+  private readonly toastr = inject(ToastrService);
   categoryId = '';
   categories: Category[] = [];
 
@@ -56,7 +58,13 @@ export class CreateExpense implements OnInit {
         notes: this.description,
         date: this.date,
         location: this.location
-      }).subscribe({ next: () => this.router.navigate(['/expenses']), error: () => this.saveToLocal() });
+      }).subscribe({
+        next: () => {
+          this.toastr.success('Expense created successfully.', 'Success');
+          this.router.navigate(['/expenses'])
+        },
+        error: () => this.saveToLocal()
+      });
     } else {
       this.saveToLocal();
     }

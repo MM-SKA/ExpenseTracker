@@ -96,8 +96,9 @@
               <thead>
                 <tr>
                   <th>Description</th>
-                  <th>Location</th>
-                  <th class="text-end">Amount</th>
+                  <th class="text-center">Category</th>
+                  <th class="text-center">Location</th>
+                  <th class="text-center">Amount</th>
                   <th class="text-center">Date</th>
                   <th class="text-center">Action</th>
                 </tr>
@@ -112,11 +113,16 @@
                     </div>
                   </td>
                   <td>
+                    <span class="badge bg-info">
+                      {{ e.categoryName }}
+                    </span>
+                  </td>
+                  <td>
                     <div>{{ e.location || '—' }}</div>
                   </td>
                   <td class="text-end"><span class="badge rounded-pill" [ngClass]="getAmountBadgeClass(e.amount)">{{
                       e.amount | currency:'USD':'symbol':'1.0-0' }}</span></td>
-                  <td class="text-center"><small>{{ e.date }}</small></td>
+                  <td class="text-center"><small>{{ e.date | date:'dd-MMM-yyyy'}}</small></td>
                   <td class="text-center">
                     <button class="btn btn-sm btn-outline-primary me-2" type="button" (click)="editExpense(e.id)">
                       ✏️ Edit

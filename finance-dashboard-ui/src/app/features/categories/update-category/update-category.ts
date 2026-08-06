@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-
+import { ToastrService } from 'ngx-toastr';
 import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
@@ -14,14 +14,11 @@ import { CategoryService } from '../../../core/services/category.service';
 export class UpdateCategory implements OnInit {
   id = '';
   name = '';
-  private readonly route =
-    inject(ActivatedRoute);
 
-  private readonly router =
-    inject(Router);
-
-  private readonly categoryService =
-    inject(CategoryService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly categoryService = inject(CategoryService);
+  private readonly toastr = inject(ToastrService);
 
   ngOnInit(): void {
 
@@ -55,7 +52,8 @@ export class UpdateCategory implements OnInit {
       )
       .subscribe({
         next: () => {
-           this.router.navigate(
+          this.toastr.success('Category edited successfully.', 'Success');
+          this.router.navigate(
             ['/categories']
           );
         },

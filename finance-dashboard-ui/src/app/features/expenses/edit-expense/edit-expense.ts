@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category/category';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-edit-expense',
@@ -26,6 +27,7 @@ export class EditExpense implements OnInit {
   private readonly categoryService = inject(CategoryService);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -76,6 +78,7 @@ export class EditExpense implements OnInit {
       })
       .subscribe({
         next: () => {
+          this.toastr.success('Expense edited successfully.', 'Success');
           this.router.navigate(
             ['/expenses']
           );

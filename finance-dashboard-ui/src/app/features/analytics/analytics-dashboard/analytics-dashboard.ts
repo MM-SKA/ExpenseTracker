@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ExpenseService } from '../../../core/services/expense';
@@ -27,7 +27,7 @@ export class AnalyticsDashboard implements OnInit {
 
   readonly expenseService = inject(ExpenseService);
   readonly categoryService = inject(CategoryService);
-
+  private readonly cdr = inject(ChangeDetectorRef);
   ngOnInit(): void {
     this.loadCategories();
     this.loadAnalytics();
@@ -87,6 +87,7 @@ export class AnalyticsDashboard implements OnInit {
         const data = response?.data ?? response;
         this.analytics = data?.analytics ?? data?.Analytics ?? null;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.analytics = null;

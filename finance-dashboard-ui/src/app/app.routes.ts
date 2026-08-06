@@ -37,7 +37,7 @@ export const routes: Routes = [
   {
     path: 'expenses',
     component: ExpenseList,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'expenses/create',
@@ -47,7 +47,7 @@ export const routes: Routes = [
   {
     path: 'analytics',
     component: AnalyticsDashboard,
-    canActivate: [authGuard]
+    // canActivate: [authGuard]
   },
   {
     path: 'expenses/edit/:id',
