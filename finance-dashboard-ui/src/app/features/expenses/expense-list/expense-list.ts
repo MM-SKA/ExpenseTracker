@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -21,6 +21,7 @@ export class ExpenseList implements OnInit {
 
   readonly router = inject(Router);
   readonly expenseService = inject(ExpenseService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
@@ -29,6 +30,7 @@ export class ExpenseList implements OnInit {
         next: (response: any) => {
           const data = response?.data ?? response;
           this.expenses = this.sortExpenses(Array.isArray(data) ? data : []);
+          this.cdr.detectChanges();
         },
         error: () => this.load()
       });

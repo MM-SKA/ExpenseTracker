@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -28,6 +28,7 @@ export class EditExpense implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
@@ -63,6 +64,7 @@ export class EditExpense implements OnInit {
           console.log('categoryId', this.categoryId);
           console.log('location', this.location);
           console.log('date', this.date);
+          this.cdr.detectChanges();
         }
       });
   }

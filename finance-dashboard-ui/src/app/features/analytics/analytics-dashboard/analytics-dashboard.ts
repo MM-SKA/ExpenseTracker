@@ -38,6 +38,7 @@ export class AnalyticsDashboard implements OnInit {
       next: (response: any) => {
         const data = response?.data ?? response;
         this.categories = Array.isArray(data) ? data : [];
+        this.cdr.detectChanges();
       },
       error: () => {
         this.categories = [];
@@ -52,6 +53,7 @@ export class AnalyticsDashboard implements OnInit {
         const data = response?.data ?? response;
         this.analytics = data?.analytics ?? data?.Analytics ?? null;
         this.isLoading = false;
+        this.cdr.detectChanges();
       },
       error: () => {
         this.analytics = null;
