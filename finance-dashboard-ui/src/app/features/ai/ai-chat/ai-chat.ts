@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   ViewChild,
-  AfterViewChecked,
   inject
 } from '@angular/core';
 
@@ -24,10 +23,10 @@ interface ChatMessage {
   templateUrl: './ai-chat.html',
   styleUrl: './ai-chat.css',
 })
-export class AiChat implements AfterViewChecked {
+export class AiChat{
 
   @ViewChild('messagesContainer')
-  private messagesContainer!:
+  private readonly messagesContainer!:
     ElementRef<HTMLDivElement>;
 
   messages: ChatMessage[] = [];
@@ -41,17 +40,17 @@ export class AiChat implements AfterViewChecked {
   private readonly aiService =
     inject(AiService);
 
-  ngAfterViewChecked(): void {
+  // ngAfterViewChecked(): void {
 
-    if (this.shouldScroll) {
+  //   if (this.shouldScroll) {
 
-      this.scrollToBottom();
+  //     this.scrollToBottom();
 
-      this.shouldScroll = false;
+  //     this.shouldScroll = false;
 
-    }
+  //   }
 
-  }
+  // }
 
   send(): void {
 

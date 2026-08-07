@@ -105,4 +105,10 @@ export class CategoryService {
     this.getCategories(true)
       .subscribe();
   }
+
+  deleteCategory(id: string) {
+    return this.http.delete(
+      `${environment.apiUrl}/categories/delete/${id}`
+    );
+  }
 }

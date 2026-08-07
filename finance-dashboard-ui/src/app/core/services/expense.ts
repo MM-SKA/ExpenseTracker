@@ -34,4 +34,10 @@ export class ExpenseService {
       request
     );
   }
+
+  deleteExpense(id: string) {
+    return this.http.delete(
+      `${environment.apiUrl}/expenses/delete/${id}`
+    );
+  }
 }

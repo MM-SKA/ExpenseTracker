@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 
 import { CategoryService }
-from '../../../core/services/category.service';
+  from '../../../core/services/category.service';
 
 import { Category }
-from '../../../shared/models/category/category';
+  from '../../../shared/models/category/category';
 
 @Component({
   selector: 'app-category-list',
@@ -81,6 +81,36 @@ export class CategoryList implements OnInit {
       id
     ]);
 
+  }
+
+  deleteCategory(id: string): void {
+
+    if (!confirm(
+      'Are you sure you want to delete this category?'
+    )) {
+      return;
+    }
+    this.categoryService
+      .deleteCategory(id)
+      .subscribe({
+        next: () => {
+          this.categoryService
+            .getCategories(true)
+            .subscribe({
+              next: (categories) => {
+                this.categories = categories;
+                this.cdr.detectChanges();
+              }
+            });
+        },
+
+        error: (error) => {
+          console.error(error);
+          alert(
+            'Unable to delete category.'
+          );
+        }
+      });
   }
 
 }

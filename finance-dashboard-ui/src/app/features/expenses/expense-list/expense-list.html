@@ -44,34 +44,37 @@
       <div class="el-filter-body">
         <div class="el-filter-field">
           <span class="el-filter-field-label">Search</span>
-          <input
-            id="filterText"
-            class="el-input"
-            name="filterText"
-            placeholder="Description or note…"
-            [(ngModel)]="filterText"
-            (ngModelChange)="onFilterChange()" />
+          <input id="filterText" class="el-input" name="filterText" placeholder="Description or note…"
+            [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
+        </div>
+
+        <div class="el-filter-field">
+          <span class="el-filter-field-label">
+            Category
+          </span>
+          <select class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+            <option value="">
+              All Categories
+            </option>
+            @for(category of categories;
+            track category.id)
+            {
+            <option [value]="category.name">
+              {{ category.name }}
+            </option>
+            }
+          </select>
         </div>
 
         <div class="el-date-row">
           <div class="el-filter-field">
             <span class="el-filter-field-label">From</span>
-            <input
-              id="startDate"
-              class="el-input"
-              name="startDate"
-              type="date"
-              [(ngModel)]="startDate"
+            <input id="startDate" class="el-input" name="startDate" type="date" [(ngModel)]="startDate"
               (ngModelChange)="onFilterChange()" />
           </div>
           <div class="el-filter-field">
             <span class="el-filter-field-label">To</span>
-            <input
-              id="endDate"
-              class="el-input"
-              name="endDate"
-              type="date"
-              [(ngModel)]="endDate"
+            <input id="endDate" class="el-input" name="endDate" type="date" [(ngModel)]="endDate"
               (ngModelChange)="onFilterChange()" />
           </div>
         </div>
@@ -83,46 +86,46 @@
     <!-- Table -->
     <div class="el-table-wrap">
       @if (filtered().length) {
-        <table class="el-table">
-          <thead>
-            <tr>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Location</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (e of filtered(); track e.id) {
-            <tr>
-              <td>
-                <div class="el-desc">
-                  <span class="el-desc-icon">💳</span>
-                  {{ e.description }}
-                </div>
-              </td>
-              <td><span class="el-cat-badge">{{ e.categoryName }}</span></td>
-              <td>{{ e.location || '—' }}</td>
-              <td><span class="el-amount">{{ e.amount | currency:'USD':'symbol':'1.2-2' }}</span></td>
-              <td><span class="el-date">{{ e.date | date:'dd MMM yyyy' }}</span></td>
-              <td>
-                <div class="el-actions">
-                  <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">Edit</button>
-                  <button class="el-btn-del" type="button" (click)="delete(e.id)" title="Delete">✕</button>
-                </div>
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
+      <table class="el-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Location</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (e of filtered(); track e.id) {
+          <tr>
+            <td>
+              <div class="el-desc">
+                <span class="el-desc-icon">💳</span>
+                {{ e.description }}
+              </div>
+            </td>
+            <td><span class="el-cat-badge">{{ e.categoryName }}</span></td>
+            <td>{{ e.location || '—' }}</td>
+            <td><span class="el-amount">{{ e.amount | currency:'USD':'symbol':'1.2-2' }}</span></td>
+            <td><span class="el-date">{{ e.date | date:'dd MMM yyyy' }}</span></td>
+            <td>
+              <div class="el-actions">
+                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">Edit</button>
+                <button class="el-btn-del" type="button" (click)="delete(e.id)" title="Delete">✕</button>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
       } @else {
-        <div class="el-empty">
-          <div class="el-empty-icon">📭</div>
-          <h3>No expenses found</h3>
-          <p>Try adjusting your filters or add a new expense.</p>
-        </div>
+      <div class="el-empty">
+        <div class="el-empty-icon">📭</div>
+        <h3>No expenses found</h3>
+        <p>Try adjusting your filters or add a new expense.</p>
+      </div>
       }
     </div>
 

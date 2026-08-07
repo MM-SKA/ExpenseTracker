@@ -82,6 +82,7 @@ internal sealed class AiExpenseService(
             - If user says Travel, categoryId should be "Travel".
             - month must be a number from 1 to 12.
             - Do not return month names like "July".
+            - for end date : include that day till 11:59:59 pm
             - year must be a number like 2026.
             - startDate and endDate must be ISO dates or null.
             - minAmount and maxAmount must be numbers or null.

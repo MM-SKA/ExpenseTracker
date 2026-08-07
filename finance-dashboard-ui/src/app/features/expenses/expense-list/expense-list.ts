@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { ExpenseService } from '../../../core/services/expense';
+import { CategoryService } from '../../../core/services/category.service';
 
 @Component({
   selector: 'app-expense-list',
@@ -14,14 +15,17 @@ import { ExpenseService } from '../../../core/services/expense';
 export class ExpenseList implements OnInit {
 
   expenses: any[] = [];
+  categories: any[] = [];
+  selectedCategory = '';
 
   filterText = '';
   startDate = '';
   endDate = '';
 
-  readonly router = inject(Router);
-  readonly expenseService = inject(ExpenseService);
+  private readonly router = inject(Router);
+  private readonly expenseService = inject(ExpenseService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly categoryService = inject(CategoryService);
 
   ngOnInit(): void {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
@@ -34,6 +38,14 @@ export class ExpenseList implements OnInit {
         },
         error: () => this.load()
       });
+      this.categoryService
+        .getCategories()
+        .subscribe({
+          next: (categories) => {
+            this.categories =
+              categories;
+          }
+        });
     } else {
       this.load();
     }
@@ -65,9 +77,10 @@ export class ExpenseList implements OnInit {
   filtered(): any[] {
     const filter = this.filterText?.trim().toLowerCase();
     return this.expenses.filter(e => {
-      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) {return false;}
-      if (this.startDate && e.date < this.startDate) {return false;}
-      if (this.endDate && e.date > this.endDate) {return false;}
+      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) { return false; }
+      if (this.startDate && e.date < this.startDate) { return false; }
+      if (this.endDate && e.date > this.endDate) { return false; }
+      if (this.selectedCategory && e.categoryName !== this.selectedCategory) { return false; }
       return true;
     });
   }
@@ -104,18 +117,47 @@ export class ExpenseList implements OnInit {
     this.endDate = '';
   }
 
-  delete(id: number): void {
-    this.expenses = this.expenses.filter(e => e.id !== id);
-    if (typeof localStorage !== 'undefined') {
-      try {
-        localStorage.setItem('expenses', JSON.stringify(this.expenses));
-      } catch {
-        // ignore
-      }
+  delete(id: string): void {
+    const confirmed =
+      confirm(
+        'Are you sure you want to delete this expense?'
+      );
+
+    if (!confirmed) {
+      return;
     }
+    this.expenseService
+      .deleteExpense(id)
+      .subscribe({
+        next: () => {
+
+          this.expenseService
+            .getExpenses()
+            .subscribe({
+
+              next: (response: any) => {
+                const data =
+                  response?.data ?? response;
+                this.expenses =
+                  this.sortExpenses(
+                    Array.isArray(data)
+                      ? data
+                      : []
+                  );
+                this.cdr.detectChanges();
+              }
+            });
+        },
+        error: (error) => {
+          console.error(error);
+          alert(
+            'Unable to delete expense.'
+          );
+        }
+      });
   }
 
-  public editExpense(id: string): void{
+  public editExpense(id: string): void {
     this.router.navigate(['/expenses/edit', id]);
   }
 
