@@ -43,16 +43,16 @@
       </div>
       <div class="el-filter-body">
         <div class="el-filter-field">
-          <span class="el-filter-field-label">Search</span>
+          <label class="el-filter-field-label" for="filterText"> Search </label>
           <input id="filterText" class="el-input" name="filterText" placeholder="Description or note…"
             [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
         </div>
 
         <div class="el-filter-field">
-          <span class="el-filter-field-label">
+          <label class="el-filter-field-label" for="categoryFilter">
             Category
-          </span>
-          <select class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+          </label>
+          <select id="categoryFilter" class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
             <option value="">
               All Categories
             </option>
@@ -68,12 +68,12 @@
 
         <div class="el-date-row">
           <div class="el-filter-field">
-            <span class="el-filter-field-label">From</span>
+            <label for="startDate" class="el-filter-field-label">From</span>
             <input id="startDate" class="el-input" name="startDate" type="date" [(ngModel)]="startDate"
               (ngModelChange)="onFilterChange()" />
           </div>
           <div class="el-filter-field">
-            <span class="el-filter-field-label">To</span>
+            <label for="endDate" class="el-filter-field-label">To</label>
             <input id="endDate" class="el-input" name="endDate" type="date" [(ngModel)]="endDate"
               (ngModelChange)="onFilterChange()" />
           </div>

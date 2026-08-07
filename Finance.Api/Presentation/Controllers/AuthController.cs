@@ -13,6 +13,13 @@ namespace Finance.Api.Presentation.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
 
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult Me()
+    {
+        return Ok();
+    }
+
     [HttpPost("register")]
     public async Task<IActionResult> RegisterAsync(RegisterRequestDto request, CancellationToken cancellationToken)
     {
@@ -36,23 +43,17 @@ public class AuthController(IAuthService authService) : ControllerBase
             return Unauthorized(response);
         }
 
-        return Ok(response);
-    }
-
-    [Authorize]
-    [HttpGet("me")]
-    public async Task<IActionResult> MeAsync(CancellationToken cancellationToken)
-    {
-        var userId = User.GetUserId();
-
-        var response =
-            await authService.GetCurrentUserAsync(userId, cancellationToken).ConfigureAwait(false);
-
-        if (!response.Success)
+        if (response.Success && response.Data is not null)
         {
-            return NotFound(response);
+            Response.Cookies.Append("accessToken", response.Data.Token, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Lax,
+                Expires = DateTimeOffset.UtcNow.AddDays(7)
+            });
         }
-
+        response.Data.Token = string.Empty;
         return Ok(response);
     }
 

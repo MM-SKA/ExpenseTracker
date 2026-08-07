@@ -155,7 +155,7 @@
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.an-btn-reset:hover { background: rgba(255,255,255,0.06); color: #fff; }
+.an-btn-reset:hover { background: rgba(255, 255, 255, 0); color: #fff; }
 .an-btn-reset:disabled { opacity: 0.3; cursor: not-allowed; }
 
 /* ── Loading ──────────────────────────────── */
@@ -265,7 +265,7 @@
   border-radius: 2px;
   background: rgba(255,255,255,0.06);
   border: 1px solid rgba(255,255,255,0.09);
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0);
   font-size: 0.7rem;
   font-weight: 600;
   white-space: nowrap;

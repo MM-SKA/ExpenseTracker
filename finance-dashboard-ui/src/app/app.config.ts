@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideRouter } from '@angular/router';
 import { authInterceptor } from '../app/core/interceptors/auth-interceptor';
 import { provideHttpClient, withInterceptors, withFetch } from '@angular/common/http';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 
@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch(),withInterceptors([authInterceptor])),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideAnimationsAsync(),
+    provideAnimations(),
     provideToastr({
       positionClass: 'toast-top-right',
       preventDuplicates: true,

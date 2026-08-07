@@ -1,4 +1,4 @@
-import { inject ,Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
@@ -18,7 +18,7 @@ export class AuthService {
 
   login(
     request: LoginRequest
-  ): Observable<ApiResponse<LoginResponse>>{
+  ): Observable<ApiResponse<LoginResponse>> {
     return this.http.post<ApiResponse<LoginResponse>>(
       `${environment.apiUrl}/auth/login`,
       request);
@@ -30,5 +30,11 @@ export class AuthService {
     return this.http.post<ApiResponse<LoginResponse>>(
       `${environment.apiUrl}/auth/register`,
       request);
+  }
+
+  getCurrentUser() {
+    return this.http.get(
+      `${environment.apiUrl}/auth/me`
+    );
   }
 }

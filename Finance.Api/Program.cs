@@ -70,6 +70,20 @@ builder.Services
                         )
                     )
             };
+
+        options.Events =
+            new JwtBearerEvents
+            {
+                OnMessageReceived =
+                    context =>
+                    {
+                        context.Token =
+                            context.Request
+                                .Cookies["accessToken"];
+
+                        return Task.CompletedTask;
+                    }
+            };
     });
 
 builder.Services.AddAuthorization();
@@ -83,7 +97,8 @@ builder.Services.AddCors(options =>
                 .WithOrigins(
                     "http://localhost:4200")
                 .AllowAnyHeader()
-                .AllowAnyMethod();
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();

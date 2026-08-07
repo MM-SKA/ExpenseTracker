@@ -115,6 +115,7 @@ export class ExpenseList implements OnInit {
     this.filterText = '';
     this.startDate = '';
     this.endDate = '';
+    this.selectedCategory = '';
   }
 
   delete(id: string): void {
