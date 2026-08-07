@@ -1,340 +1,181 @@
-<div class="page-card">
+<div class="an-page">
 
   <!-- Header -->
-  <div class="page-header">
-    <div>
-      <p class="eyebrow">Analytics</p>
-      <h1 class="section-title">Expense Insights</h1>
-      <p class="subtitle-text">
-        Monitor spending trends, category distribution and transaction statistics.
-      </p>
-    </div>
+  <div>
+    <p class="an-eyebrow">Analytics</p>
+    <h1 class="an-title">Expense Insights</h1>
+    <p class="an-subtitle">Monitor spending trends, category distribution and transaction statistics.</p>
   </div>
 
   <!-- Filter Panel -->
-  <div class="panel-card analytics-filter-panel">
+  <div class="an-filter">
+    <div class="an-filter-body">
+      <p class="an-filter-title">Filter Analytics</p>
 
-    <h3 class="panel-heading">Filter Analytics</h3>
+      <div class="an-filter-grid">
 
-    <div class="filter-row">
-
-      <div class="form-field">
-        <label for="category-list">Category</label>
-        <select
-          id="category-list"
-          [(ngModel)]="filters.categoryId">
-
-          <option value="">All Categories</option>
-
-          @for (category of categories; track category.id) {
-          <option [value]="category.id">
-            {{ category.name }}
-          </option>
-          }
-
-        </select>
-      </div>
-
-      <div class="form-field">
-        <label for="startDate-input">Start Date</label>
-        <input
-          id="startDate-input"
-          type="date"
-          [(ngModel)]="filters.startDate">
-      </div>
-
-      <div class="form-field">
-        <label for="endDate-input">End Date</label>
-        <input
-          id="endDate-input"
-          type="date"
-          [(ngModel)]="filters.endDate">
-      </div>
-
-      <div class="form-field">
-        <label for="minAmount-input">Minimum Amount</label>
-        <input
-          id="minAmount-input"
-          type="number"
-          min="0"
-          step="0.01"
-          [(ngModel)]="filters.minAmount">
-      </div>
-
-      <div class="form-field">
-        <label for="maxAmount-input">Maximum Amount</label>
-        <input
-          id="maxAmount-input"
-          type="number"
-          min="0"
-          step="0.01"
-          [(ngModel)]="filters.maxAmount">
-      </div>
-
-      <div class="form-field full-width">
-
-        <div class="filter-label-row">
-          <label for="notes-input">Search</label>
-          <span class="filter-help">
-            Notes • Description • Category
-          </span>
+        <!-- Category -->
+        <div class="an-field">
+          <label for="category-list" class="an-label">Category</label>
+          <select id="category-list" class="an-select" [(ngModel)]="filters.categoryId">
+            <option value="">All Categories</option>
+            @for (category of categories; track category.id) {
+              <option [value]="category.id">{{ category.name }}</option>
+            }
+          </select>
         </div>
 
-        <input
-          id="notes-input"
-          type="text"
-          [(ngModel)]="filters.notes"
-          placeholder="Search expenses...">
+        <!-- Start Date -->
+        <div class="an-field">
+          <label for="startDate-input" class="an-label">Start Date</label>
+          <input id="startDate-input" class="an-input" type="date" [(ngModel)]="filters.startDate" />
+        </div>
+
+        <!-- End Date -->
+        <div class="an-field">
+          <label for="endDate-input" class="an-label">End Date</label>
+          <input id="endDate-input" class="an-input" type="date" [(ngModel)]="filters.endDate" />
+        </div>
+
+        <!-- Min Amount -->
+        <div class="an-field">
+          <label for="minAmount-input" class="an-label">Min Amount</label>
+          <input id="minAmount-input" class="an-input" type="number" min="0" step="0.01"
+            [(ngModel)]="filters.minAmount" placeholder="0.00" />
+        </div>
+
+        <!-- Max Amount -->
+        <div class="an-field">
+          <label for="maxAmount-input" class="an-label">Max Amount</label>
+          <input id="maxAmount-input" class="an-input" type="number" min="0" step="0.01"
+            [(ngModel)]="filters.maxAmount" placeholder="0.00" />
+        </div>
+
+        <!-- Search (full width) -->
+        <div class="an-field an-filter-full">
+          <div class="an-label-row">
+            <label for="notes-input" class="an-label">Search</label>
+            <span class="an-label-hint">Notes · Description · Category</span>
+          </div>
+          <input id="notes-input" class="an-input" type="text"
+            [(ngModel)]="filters.notes" placeholder="Search expenses…" />
+        </div>
 
       </div>
 
+      <!-- Actions -->
+      <div class="an-filter-actions">
+        <button class="an-btn-search" (click)="updateAnalytics()" [disabled]="isLoading">
+          Search Analytics
+        </button>
+        <button class="an-btn-reset" (click)="refresh()" [disabled]="isLoading">
+          Reset
+        </button>
+      </div>
     </div>
-
-    <div class="filter-actions">
-
-      <button
-        class="button-primary"
-        (click)="updateAnalytics()"
-        [disabled]="isLoading">
-
-        Search Analytics
-
-      </button>
-
-      <button
-        class="button-secondary"
-        (click)="refresh()"
-        [disabled]="isLoading">
-
-        Reset
-
-      </button>
-
-    </div>
-
   </div>
 
   <!-- Loading -->
-
-  @if(isLoading){
-
-  <div class="alert-empty">
-    <strong>Loading analytics...</strong>
-    <p>Please wait while we fetch your latest expense data.</p>
-  </div>
-
+  @if (isLoading) {
+    <div class="an-loading">
+      <div class="an-spinner"></div>
+      <span>Fetching analytics…</span>
+    </div>
   }
 
-  @if(!isLoading){
+  @if (!isLoading) {
 
-  @if(analytics){
+    <!-- KPI Cards -->
+    @if (analytics) {
+      <div class="an-kpi-grid">
 
-  <!-- KPI Cards -->
-
-  <div class="analytics-grid">
-
-    <div class="analytics-card">
-
-      <div class="analytics-icon">
-        💰
-      </div>
-
-      <p>Total Spent</p>
-
-      <h2>
-        {{
-        (analytics.summary?.totalSpent ??
-        analytics.Summary?.TotalSpent)
-        | currency:'USD':'symbol':'1.0-0'
-        }}
-      </h2>
-
-    </div>
-
-    <div class="analytics-card">
-
-      <div class="analytics-icon">
-        📊
-      </div>
-
-      <p>Transactions</p>
-
-      <h2>
-        {{
-        analytics.summary?.count ??
-        analytics.Summary?.Count
-        }}
-      </h2>
-
-    </div>
-
-    <div class="analytics-card">
-
-      <div class="analytics-icon">
-        💳
-      </div>
-
-      <p>Average Expense</p>
-
-      <h2>
-        {{
-        (analytics.summary?.averageAmount ??
-        analytics.Summary?.AverageAmount)
-        | currency:'USD':'symbol':'1.0-0'
-        }}
-      </h2>
-
-    </div>
-
-    <div class="analytics-card">
-
-      <div class="analytics-icon">
-        📅
-      </div>
-
-      <p>Date Range</p>
-
-      <h3>
-
-        {{
-        (analytics.dateDistribution?.StartDate ??
-        analytics.DateDistribution?.StartDate)
-        | date:'mediumDate'
-        }}
-
-        -
-
-        {{
-        (analytics.dateDistribution?.EndDate ??
-        analytics.DateDistribution?.EndDate)
-        | date:'mediumDate'
-        }}
-
-      </h3>
-
-    </div>
-
-  </div>
-
-  }
-
-  @else{
-
-  <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
-
-  }
-
-  <!-- Category Analytics -->
-
-  @if((analytics?.byCategory?.length ??
-  analytics?.ByCategory?.length)){
-
-  <div class="panel-card">
-
-    <div class="panel-header">
-
-      <h2 class="section-title">
-        Spend by Category
-      </h2>
-
-      <span class="badge-soft">
-        {{
-        (analytics?.byCategory?.length ??
-        analytics?.ByCategory?.length)
-        }}
-        Categories
-      </span>
-
-    </div>
-
-    <div class="category-grid">
-
-      @for(item of (analytics?.byCategory ??
-      analytics?.ByCategory);
-      track (item.categoryName ??
-      item.CategoryName)){
-
-      <div class="category-card">
-
-        <div class="category-card-row">
-
-          <div>
-
-            <strong>
-              {{
-              item.categoryName ??
-              item.CategoryName
-              }}
-            </strong>
-
-            <p>
-
-              {{
-              (item.amount ??
-              item.Amount)
-              | currency:'USD':'symbol':'1.0-0'
-              }}
-
-            </p>
-
+        <div class="an-kpi-card">
+          <div class="an-kpi-icon">💰</div>
+          <div class="an-kpi-label">Total Spent</div>
+          <div class="an-kpi-value">
+            {{ (analytics.summary?.totalSpent ?? analytics.Summary?.TotalSpent) | currency:'USD':'symbol':'1.0-0' }}
           </div>
-
-          <span class="percentage">
-
-            {{
-            (item.percentage ??
-            item.Percentage)
-            | number:'1.0-0'
-            }}%
-
-          </span>
-
         </div>
 
-        <!-- Progress Bar -->
+        <div class="an-kpi-card">
+          <div class="an-kpi-icon">📊</div>
+          <div class="an-kpi-label">Transactions</div>
+          <div class="an-kpi-value">
+            {{ analytics.summary?.count ?? analytics.Summary?.Count }}
+          </div>
+        </div>
 
-        <div class="progress mt-3">
+        <div class="an-kpi-card">
+          <div class="an-kpi-icon">💳</div>
+          <div class="an-kpi-label">Average Expense</div>
+          <div class="an-kpi-value">
+            {{ (analytics.summary?.averageAmount ?? analytics.Summary?.AverageAmount) | currency:'USD':'symbol':'1.0-0' }}
+          </div>
+        </div>
 
-          <progress
-            class="progress-bar"
-            [style.width.%]="item.percentage ?? item.Percentage">
-
-          </progress>
-
+        <div class="an-kpi-card">
+          <div class="an-kpi-icon">📅</div>
+          <div class="an-kpi-label">Date Range</div>
+          <div class="an-kpi-value an-kpi-sm">
+            {{ (analytics.dateDistribution?.StartDate ?? analytics.DateDistribution?.StartDate) | date:'mediumDate' }}
+            —
+            {{ (analytics.dateDistribution?.EndDate ?? analytics.DateDistribution?.EndDate) | date:'mediumDate' }}
+          </div>
         </div>
 
       </div>
+    } @else {
+      <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
+    }
 
-      }
-
-    </div>
-
-  </div>
+    <!-- Category Breakdown -->
+    @if ((analytics?.byCategory?.length ?? analytics?.ByCategory?.length)) {
+      <div class="an-section">
+        <div class="an-section-header">
+          <h2 class="an-section-title">Spend by Category</h2>
+          <span class="an-section-badge">
+            {{ analytics?.byCategory?.length ?? analytics?.ByCategory?.length }} Categories
+          </span>
+        </div>
+        <div class="an-section-body">
+          <div class="an-cat-grid">
+            @for (item of (analytics?.byCategory ?? analytics?.ByCategory);
+                  track (item.categoryName ?? item.CategoryName)) {
+              <div class="an-cat-card">
+                <div class="an-cat-row">
+                  <div>
+                    <div class="an-cat-name">{{ item.categoryName ?? item.CategoryName }}</div>
+                    <div class="an-cat-amount">
+                      {{ (item.amount ?? item.Amount) | currency:'USD':'symbol':'1.0-0' }}
+                    </div>
+                  </div>
+                  <span class="an-cat-pct">
+                    {{ (item.percentage ?? item.Percentage) | number:'1.0-0' }}%
+                  </span>
+                </div>
+                <div class="an-progress-track">
+                  <div class="an-progress-bar"
+                    [style.width.%]="item.percentage ?? item.Percentage">
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+      <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
+    }
 
   }
 
-  @else{
-
-  <ng-container *ngTemplateOutlet="noAnalytics"></ng-container>
-
-  }
-
-  }
-
-  <!-- Empty State -->
-
+  <!-- Empty State Template -->
   <ng-template #noAnalytics>
-
-    <div class="alert-empty">
-
-      <h3>No Analytics Available</h3>
-
-      <p>
-        Add some expenses or adjust your filters to view analytics.
-      </p>
-
+    <div class="an-empty">
+      <div class="an-empty-icon">📉</div>
+      <h3>No analytics available</h3>
+      <p>Add some expenses or adjust your filters to view analytics.</p>
     </div>
-
   </ng-template>
 
 </div>

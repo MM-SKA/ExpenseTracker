@@ -1,221 +1,155 @@
-/* ===========================
-   Main Container
-=========================== */
+/* ── Create Expense ───────────────────────── */
 
-.page-card {
-  max-width: 700px;
+.ef-page {
+  padding: 1.75rem 1.5rem;
+  max-width: 680px;
   margin: 0 auto;
-  color: #1d569f;
-  padding: 2rem;
 }
 
-.panel-card {
-  border-radius: 28px;
-  padding: 1.75rem;
-  background: linear-gradient(
-    180deg,
-    rgba(15, 23, 42, 0.98),
-    rgba(10, 18, 34, 0.95)
-  );
-  border: 1px solid rgba(124, 58, 237, 0.18);
-  box-shadow: 0 35px 65px rgba(10, 18, 34, 0.22);
-}
-
-/* ===========================
-   Form
-=========================== */
-
-.form-label {
-  color: #cbd5e1;
-  font-size: 0.95rem;
-  margin-bottom: 0.5rem;
-}
-
-.input-group {
-  border-radius: 16px;
-}
-
-.input-icon {
-  background: rgba(15, 23, 42, 0.88);
-  color: #cbd5e1;
-  border: none;
-}
-
-.input-dark {
-  background: rgba(15, 23, 42, 0.88);
-  color: #e2e8f0;
-}
-
-.input-dark::placeholder {
-  color: rgba(226, 232, 240, 0.45);
-}
-
-.input-dark:focus {
-  background: rgba(15, 23, 42, 0.88);
-  color: white;
-  box-shadow: none;
-}
-
-.btn-primary {
-  padding: 0.95rem;
-  border-radius: 16px;
+/* ── Header ───────────────────────────────── */
+.ef-eyebrow {
+  font-size: 0.65rem;
   font-weight: 700;
-  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 0.35rem;
+}
+
+.ef-title {
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+  font-weight: 800;
+  color: #fff;
+  margin: 0 0 0.3rem;
+  letter-spacing: -0.03em;
+}
+
+.ef-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.35);
+  margin: 0 0 1.5rem;
+}
+
+/* ── Form card ────────────────────────────── */
+.ef-card {
+  background: #0a0a0a;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.ef-card::before {
+  content: '';
+  display: block;
+  height: 2px;
+  background: #fff;
+}
+
+.ef-card-body {
+  padding: 1.5rem;
+}
+
+/* ── Grid ─────────────────────────────────── */
+.ef-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.ef-col-full { grid-column: span 2; }
+
+/* ── Field ────────────────────────────────── */
+.ef-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.ef-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
+}
+
+.ef-input-wrap {
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 3px;
+  background: #111;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.ef-input-wrap:focus-within {
+  border-color: rgba(255,255,255,0.30);
+}
+
+.ef-icon {
+  padding: 0 0.75rem;
+  color: rgba(255,255,255,0.25);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.ef-input,
+.ef-select {
+  flex: 1;
+  padding: 0.62rem 0.75rem 0.62rem 0;
+  background: transparent;
   border: none;
+  outline: none;
+  color: #fff;
+  font-size: 0.83rem;
+  min-width: 0;
 }
 
-/* ===========================
-   Desktop (1200px+)
-=========================== */
+.ef-input::placeholder { color: rgba(255,255,255,0.22); }
 
-@media (min-width: 1200px) {
-
-  .page-card {
-    max-width: 760px;
-  }
-
-  .card-body {
-    padding: 3rem !important;
-  }
-
-  .section-title {
-    font-size: 2.3rem;
-  }
-
-  .subtitle-text {
-    font-size: 1.05rem;
-  }
+.ef-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
 }
 
-/* ===========================
-   Laptop (992px - 1199px)
-=========================== */
-
-@media (max-width: 1199px) {
-
-  .page-card {
-    max-width: 700px;
-  }
-
-  .card-body {
-    padding: 2.5rem !important;
-  }
+.ef-select option {
+  background: #111;
+  color: #fff;
 }
 
-/* ===========================
-   Tablet (768px - 991px)
-=========================== */
-
-@media (max-width: 991px) {
-
-  .page-card {
-    padding: 1.5rem;
-  }
-
-  .card-body {
-    padding: 2rem !important;
-  }
-
-  .panel-card {
-    padding: 1.5rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .subtitle-text {
-    font-size: 0.95rem;
-  }
-
-  .btn-primary {
-    width: 100%;
-  }
+.ef-select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
-/* ===========================
-   Mobile (576px - 767px)
-=========================== */
-
-@media (max-width: 767px) {
-
-  .container {
-    padding-inline: 1rem;
-  }
-
-  .page-card {
-    padding: 0;
-  }
-
-  .card-body {
-    padding: 1.5rem !important;
-  }
-
-  .panel-card {
-    padding: 1.25rem;
-    border-radius: 22px;
-  }
-
-  .section-title {
-    font-size: 1.75rem;
-  }
-
-  .subtitle-text {
-    font-size: 0.9rem;
-  }
-
-  .input-group-lg > .form-control,
-  .input-group-lg > .form-select {
-    font-size: 0.95rem;
-    padding: 0.85rem;
-  }
-
-  .btn-primary {
-    font-size: 1rem;
-    padding: 0.9rem;
-  }
+/* ── Submit ───────────────────────────────── */
+.ef-submit {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  border-radius: 3px;
+  border: none;
+  background: #fff;
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  margin-top: 0.5rem;
 }
 
-/* ===========================
-   Small Mobile (<576px)
-=========================== */
+.ef-submit:hover {
+  opacity: 0.86;
+  transform: translateY(-1px);
+}
 
-@media (max-width: 575px) {
+.ef-submit:active { transform: translateY(0); }
 
-  .container {
-    padding: 0.75rem;
-  }
-
-  .page-card {
-    border-radius: 18px;
-  }
-
-  .card-body {
-    padding: 1.25rem !important;
-  }
-
-  .page-header {
-    text-align: center;
-  }
-
-  .section-title {
-    font-size: 1.55rem;
-  }
-
-  .subtitle-text {
-    font-size: 0.85rem;
-  }
-
-  .form-label {
-    font-size: 0.9rem;
-  }
-
-  .input-group-text {
-    padding-inline: 0.8rem;
-  }
-
-  .btn-primary {
-    padding: 0.85rem;
-    font-size: 0.95rem;
-  }
+@media (max-width: 520px) {
+  .ef-grid { grid-template-columns: 1fr; }
+  .ef-col-full { grid-column: span 1; }
+  .ef-page { padding: 1rem; }
 }

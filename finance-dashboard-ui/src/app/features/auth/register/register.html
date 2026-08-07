@@ -1,59 +1,64 @@
-<div class="auth-shell container-fluid py-5">
-  <div class="auth-panel mx-auto">
-    <div class="auth-panel-body p-5">
-      <div class="auth-brand d-flex align-items-center gap-3 mb-4">
+<div class="auth-shell">
+  <div class="auth-panel">
+    <div class="auth-panel-body">
+
+      <!-- Brand -->
+      <div class="auth-brand">
         <div class="brand-mark-sm">F</div>
         <div>
-          <span class="h4 fw-semibold mb-0 d-block">Finance Dashboard</span>
-          <small class="text-muted">Create your account</small>
+          <div class="brand-name">Finance Dashboard</div>
+          <div class="brand-tagline">Create your free account</div>
         </div>
       </div>
 
-      <div class="auth-header mb-4">
-        <p class="eyebrow">Create account</p>
-        <h1 class="auth-title mb-2">Register to get started</h1>
-        <p class="auth-subtitle mb-0">Sign up now to manage categories, expenses, and analytics in a premium dashboard.</p>
+      <!-- Header -->
+      <div class="auth-header">
+        <div class="eyebrow">✦ New account</div>
+        <h1 class="auth-title">Get started <span>for free</span></h1>
+        <p class="auth-subtitle">Track expenses, set budgets, and unlock smart analytics — all in one place.</p>
       </div>
 
-      <form class="row g-4" (ngSubmit)="register()">
-        <div class="col-md-6">
+      <!-- Form -->
+      <form class="auth-form-grid" (ngSubmit)="register()">
+
+        <div class="field-group">
           <label for="fullName-input" class="form-label">Full name</label>
-          <div class="input-group input-group-lg rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">👤</span>
-            <input id="fullName-input" class="form-control input-dark border-0" type="text" [(ngModel)]="fullName" placeholder="Jane Doe" />
+          <div class="input-wrap">
+            <span class="input-icon-el">👤</span>
+            <input id="fullName-input" class="field-input" type="text" name="fullName" [(ngModel)]="fullName" placeholder="Jane Doe" autocomplete="name" />
           </div>
         </div>
 
-        <div class="col-md-6">
-          <label for="email-input" class="form-label">Email</label>
-          <div class="input-group input-group-lg rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">✉️</span>
-            <input id="email-input" class="form-control input-dark border-0" type="email" [(ngModel)]="email" placeholder="you@example.com" />
+        <div class="field-group">
+          <label for="email-input" class="form-label">Email address</label>
+          <div class="input-wrap">
+            <span class="input-icon-el">✉</span>
+            <input id="email-input" class="field-input" type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" autocomplete="email" />
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="field-group">
           <label for="password-input" class="form-label">Password</label>
-          <div class="input-group input-group-lg rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">🔒</span>
-            <input id="password-input" class="form-control input-dark border-0" type="password" [(ngModel)]="password" placeholder="Enter a secure password" />
+          <div class="input-wrap">
+            <span class="input-icon-el">🔒</span>
+            <input id="password-input" class="field-input" type="password" name="password" [(ngModel)]="password" placeholder="Create a secure password" autocomplete="new-password" />
           </div>
         </div>
 
-        <div class="col-md-6">
+        <div class="field-group">
           <label for="phoneNumber-input" class="form-label">Phone number</label>
-          <div class="input-group input-group-lg rounded-4 overflow-hidden bg-dark border border-secondary">
-            <span class="input-group-text input-icon">📞</span>
-            <input id="phoneNumber-input" class="form-control input-dark border-0" type="tel" [(ngModel)]="phoneNumber" placeholder="123-456-7890" />
+          <div class="input-wrap">
+            <span class="input-icon-el">📱</span>
+            <input id="phoneNumber-input" class="field-input" type="tel" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="+1 234 567 8900" autocomplete="tel" />
           </div>
         </div>
 
-        <div class="col-12 d-grid">
-          <button class="btn btn-primary btn-lg" type="submit">Register</button>
+        <div class="col-span-2">
+          <button class="btn-submit" type="submit">Create account →</button>
         </div>
       </form>
 
-      <p class="auth-footer text-center text-muted mb-0 mt-3">Already have an account? <a routerLink="/">Login</a></p>
+      <p class="auth-footer-link">Already have an account? <a routerLink="/">Sign in</a></p>
     </div>
   </div>
 </div>

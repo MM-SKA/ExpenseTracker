@@ -14,11 +14,12 @@
       <a routerLink="/expenses/create" routerLinkActive="active">Create</a>
       <a routerLink="/categories" routerLinkActive="active">Categories</a>
       <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
+      <a routerLink="/ai" routerLinkActive="active">🤖 AI</a>
       <button class="signout-button" type="button" (click)="signOut()">Sign out</button>
       <span class="user-chip">{{ authUser()?.fullName }}</span>
       } @else {
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
-      <a routerLink="/register" routerLinkActive="active">Register</a>
+      <a routerLink="/register" routerLinkActive="active" class="nav-register-btn">Register</a>
       }
     </nav>
   </header>

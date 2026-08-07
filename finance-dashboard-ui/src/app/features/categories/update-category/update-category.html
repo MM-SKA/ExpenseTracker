@@ -1,37 +1,28 @@
-<div class="container mt-4">
+<div class="cf-page">
 
-    <div class="card">
+  <p class="cf-eyebrow">Edit Category</p>
+  <h1 class="cf-title">Update category</h1>
+  <p class="cf-subtitle">Rename this category — all linked expenses will reflect the change.</p>
 
-        <div class="card-header">
+  <div class="cf-card">
+    <div class="cf-card-body">
 
-            <h4>Edit Category</h4>
+      <div class="cf-icon-block">
+        <div class="cf-icon">🏷</div>
+        <span class="cf-icon-label">Editing category</span>
+      </div>
 
-        </div>
+      <div class="cf-field">
+        <label class="cf-label">Category Name</label>
+        <input
+          class="cf-input"
+          [(ngModel)]="name"
+          placeholder="Category name…" />
+      </div>
 
-        <div class="card-body">
-
-            <div class="mb-3">
-
-                <label>
-                    Category Name
-                </label>
-
-                <input 
-                    class="form-control"
-                    [(ngModel)]="name">
-
-            </div>
-
-            <button
-                class="btn btn-warning"
-                (click)="updateCategory()">
-
-                Update
-
-            </button>
-
-        </div>
+      <button class="cf-submit" (click)="updateCategory()">Update category →</button>
 
     </div>
+  </div>
 
 </div>

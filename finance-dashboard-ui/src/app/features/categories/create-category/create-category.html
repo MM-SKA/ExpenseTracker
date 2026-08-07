@@ -1,45 +1,31 @@
-<div class="page-card create-category-page">
+<div class="cf-page">
 
-  <div class="page-header">
-    <p class="eyebrow">New Category</p>
+  <p class="cf-eyebrow">New Category</p>
+  <h1 class="cf-title">Create a category</h1>
+  <p class="cf-subtitle">Organize your expenses by creating custom categories for better tracking and analytics.</p>
 
-    <h1 class="section-title">
-      Create a category
-    </h1>
+  <div class="cf-card">
+    <div class="cf-card-body">
 
-    <p class="subtitle-text">
-      Organize your expenses by creating custom categories for better tracking and analytics.
-    </p>
-  </div>
+      <div class="cf-icon-block">
+        <div class="cf-icon">🏷</div>
+        <span class="cf-icon-label">Category</span>
+      </div>
 
-  <div class="panel-card category-panel">
+      <div class="cf-field">
+        <label for="category-input" class="cf-label">Category Name</label>
+        <input
+          id="category-input"
+          class="cf-input"
+          name="category-name"
+          type="text"
+          [(ngModel)]="name"
+          placeholder="e.g. Subscription, Groceries…" />
+      </div>
 
-    <div class="category-icon">
-      🏷️
+      <button class="cf-submit" (click)="createCategory()">Save category →</button>
+
     </div>
-
-    <div class="form-field">
-      <label for="category-input">
-        Category Name
-      </label>
-
-      <input
-        id="category-input"
-        name="category-name"
-        type="text"
-        [(ngModel)]="name"
-        placeholder="e.g. Subscription"
-      >
-    </div>
-
-    <button
-      class="button-primary save-button"
-      (click)="createCategory()">
-
-      Save Category
-
-    </button>
-
   </div>
 
 </div>

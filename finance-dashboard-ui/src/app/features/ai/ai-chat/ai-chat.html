@@ -1,1 +1,73 @@
-<p>ai-chat works!</p>
+<div class="ai-shell">
+
+  <!-- Top bar -->
+  <div class="ai-topbar">
+    <div class="ai-topbar-left">
+      <div class="ai-icon">🤖</div>
+      <div class="ai-title-block">
+        <span class="ai-name">Finance AI</span>
+        <span class="ai-status">Online · Ready</span>
+      </div>
+    </div>
+    <div class="ai-topbar-badge">✦ GPT-powered</div>
+  </div>
+
+  <!-- Messages -->
+  <div class="ai-messages" #messagesContainer>
+
+    @if (messages.length === 0) {
+      <!-- Welcome state -->
+      <div class="ai-welcome">
+        <div class="ai-welcome-icon">🤖</div>
+        <h2>Your Finance AI</h2>
+        <p>Ask me anything about your expenses, budgets, or financial insights. I'll help you make smarter money decisions.</p>
+        <div class="ai-chips">
+          <button class="ai-chip" (click)="sendChip('Summarize my expenses this month')">📊 Monthly summary</button>
+          <button class="ai-chip" (click)="sendChip('Which category am I overspending on?')">⚠️ Overspending alerts</button>
+          <button class="ai-chip" (click)="sendChip('Give me saving tips based on my spending')">💡 Saving tips</button>
+          <button class="ai-chip" (click)="sendChip('Show my top 5 biggest expenses')">🔝 Top expenses</button>
+        </div>
+      </div>
+    }
+
+    @for (msg of messages; track $index) {
+      <div class="msg-row" [class.ai]="msg.role === 'ai'" [class.user]="msg.role === 'user'">
+        <div class="msg-avatar" [class.ai-av]="msg.role === 'ai'" [class.user-av]="msg.role === 'user'">
+          {{ msg.role === 'ai' ? '🤖' : '👤' }}
+        </div>
+        <div class="msg-bubble">{{ msg.content }}</div>
+      </div>
+    }
+
+    @if (isTyping) {
+      <div class="msg-row ai">
+        <div class="msg-avatar ai-av">🤖</div>
+        <div class="msg-bubble">
+          <div class="typing-indicator">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Input bar -->
+  <div class="ai-input-bar">
+    <div class="ai-input-wrap">
+      <textarea
+        class="ai-input"
+        rows="1"
+        placeholder="Ask about your finances…"
+        [(ngModel)]="inputText"
+        (keydown.enter)="onEnter($event)">
+      </textarea>
+      <button class="ai-send-btn" (click)="send()" [disabled]="!inputText.trim() || isTyping" title="Send">
+        ↑
+      </button>
+    </div>
+    <p class="ai-input-hint">Press Enter to send · Shift+Enter for new line</p>
+  </div>
+
+</div>
