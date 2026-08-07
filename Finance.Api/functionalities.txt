@@ -1,7 +1,6 @@
-http cookies
+
 sorting filter , data , price
 encrypt
-pagination
 
 cosmos db
 

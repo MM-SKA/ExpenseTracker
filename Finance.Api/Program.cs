@@ -140,7 +140,7 @@ using (var scope = app.Services.CreateScope())
         scope.ServiceProvider
             .GetRequiredService<FinanceDbContext>();
 
-    await context.Database
+    _ = await context.Database
         .EnsureCreatedAsync()
         .ConfigureAwait(false);
 

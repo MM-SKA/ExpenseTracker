@@ -5,6 +5,7 @@ import { Category } from '../../shared/models/category/category';
 import { CreateCategoryRequest } from '../../shared/models/category/create-category-request';
 import { UpdateCategoryRequest } from '../../shared/models/category/update-category-request';
 import { environment } from '../../../environment/environment';
+import { StorageService } from './storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class CategoryService {
   readonly http = inject(HttpClient);
   private categoriesCache: Category[] | null = null;
   readonly storageKey = 'categories_cache';
+  private readonly storageService = inject(StorageService);
 
   getCategories(forceRefresh = false): Observable<Category[]> {
     if (!forceRefresh && this.categoriesCache?.length) {
@@ -48,28 +50,32 @@ export class CategoryService {
   }
 
   private loadFromStorage(): Category[] {
-    if (typeof localStorage === 'undefined') {
-      return [];
-    }
+
     try {
-      const raw = localStorage.getItem(this.storageKey);
-      if (!raw) {
-        return [];
-      }
-      const parsed = JSON.parse(raw);
-      return Array.isArray(parsed) ? parsed : [];
-    } catch {
+
+      return this.storageService
+        .getEncrypted<Category[]>(this.storageKey) ?? [];
+
+    }
+    catch {
+
       return [];
+
     }
   }
 
   private saveToStorage(categories: Category[]): void {
-    if (typeof localStorage === 'undefined') {
-      return;
-    }
+
     try {
-      localStorage.setItem(this.storageKey, JSON.stringify(categories));
-    } catch {
+
+      this.storageService
+        .setEncrypted(
+          this.storageKey,
+          categories
+        );
+
+    }
+    catch {
       // ignore failures
     }
   }
@@ -107,6 +113,7 @@ export class CategoryService {
   }
 
   deleteCategory(id: string) {
+
     return this.http.delete(
       `${environment.apiUrl}/categories/delete/${id}`
     );
