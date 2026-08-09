@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
+import { StorageService } from '../../../core/services/storage.service';
 import { Category } from '../../../shared/models/category/category';
 import { ToastrService } from 'ngx-toastr';
 
@@ -25,6 +26,7 @@ export class CreateExpense implements OnInit {
   readonly router = inject(Router);
   readonly expenseService = inject(ExpenseService);
   readonly categoryService = inject(CategoryService);
+  private readonly storageService = inject(StorageService);
   private readonly toastr = inject(ToastrService);
   categoryId = '';
   categories: Category[] = [];
@@ -71,20 +73,16 @@ export class CreateExpense implements OnInit {
   }
 
   private saveToLocal(): void {
-    let list: any[] = [];
-    if (typeof localStorage !== 'undefined') {
-      try {
-        list = JSON.parse(localStorage.getItem('expenses') || '[]');
-      } catch {
-        list = [];
-      }
-      list.push({ id: Date.now(), description: this.description, amount: Number.parseFloat(this.amount) || 0, date: this.date, location: this.location });
-      try {
-        localStorage.setItem('expenses', JSON.stringify(list));
-      } catch {
-        // ignore
-      }
-    }
+    const list = this.storageService.getEncrypted<any[]>('expenses') || [];
+    list.push({
+      id: Date.now().toString(),
+      description: this.description,
+      amount: Number.parseFloat(this.amount) || 0,
+      date: this.date,
+      location: this.location,
+      categoryName: this.categories.find(c => c.id === this.categoryId)?.name || 'General'
+    });
+    this.storageService.setEncrypted('expenses', list);
     this.router.navigate(['/expenses']);
   }
 

@@ -25,15 +25,20 @@
   <div class="cl-grid">
     @for (category of categories; track category.id) {
     <div class="cl-card">
-      <div class="cl-card-info">
+      <div class="cl-card-info" (click)="viewCategoryExpenses(category.name)" title="Click to view expenses in {{ category.name }}">
         <div class="cl-card-icon">🏷</div>
         <div>
           <div class="cl-card-name">{{ category.name }}</div>
           <div class="cl-card-type">{{ category.isSystemCategory ? 'System' : 'Custom' }}</div>
         </div>
       </div>
-      <button class="cl-edit-btn" type="button" (click)="editCategory(category.id)">Edit</button>
-      <button class="delete-button" type="button" (click)="deleteCategory(category.id)"> 🗑️ Delete </button>
+      <div class="cl-card-actions">
+        <button class="cl-view-btn" type="button" (click)="viewCategoryExpenses(category.name)" title="View expenses in {{ category.name }}">
+          💳 View Expenses
+        </button>
+        <button class="cl-edit-btn" type="button" (click)="editCategory(category.id)">Edit</button>
+        <button class="delete-button" type="button" (click)="deleteCategory(category.id)"> 🗑️ Delete </button>
+      </div>
     </div>
     }
   </div>
