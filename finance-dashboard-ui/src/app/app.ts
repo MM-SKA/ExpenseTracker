@@ -26,26 +26,12 @@ export class App {
 
   protected readonly title = signal('finance-dashboard-ui');
 
-  public readonly authUser = signal<AuthUser | null>(
-    this.loadUser()
-  );
-
-  public readonly isAuthenticated = computed(
-    () => !!this.authUser()
-  );
-
-  public readonly userInitial = computed(
-    () =>
-      this.authUser()?.fullName?.charAt(0).toUpperCase() ?? 'F'
-  );
-
+  public readonly authUser = signal<AuthUser | null>(this.loadUser());
+  public readonly isAuthenticated = computed(() => !!this.authUser());
+  public readonly userInitial = computed(() => this.authUser()?.fullName?.charAt(0).toUpperCase() ?? 'F');
   public readonly router = inject(Router);
-
   private readonly translate = inject(TranslateService);
-
-  currentLanguage =
-    localStorage.getItem('language') ?? 'en';
-
+  currentLanguage = localStorage.getItem('language') ?? 'en';
   private readonly supportedLanguages = ['en', 'fr', 'ja'];
 
   constructor() {

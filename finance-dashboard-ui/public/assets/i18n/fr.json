@@ -90,5 +90,31 @@
   "ERROR": "Erreur",
 
   "DELETE_EXPENSE_CONFIRMATION": "Voulez-vous vraiment supprimer cette dépense ?",
-  "DELETE_EXPENSE_ERROR": "Impossible de supprimer la dépense."
+  "DELETE_EXPENSE_ERROR": "Impossible de supprimer la dépense.",
+
+  "CATEGORY_PAGE": "Catégories",
+  "EXPENSE_CATEGORIES": "Catégories de dépenses",
+  "CATEGORY_PAGE_SUBTITLE": "Créez et gérez des catégories pour organiser toutes vos dépenses.",
+
+  "NEW_CATEGORY": "Nouvelle catégorie",
+  "CREATE_CATEGORY": "Créer une catégorie",
+  "EDITING_CATEGORY": "Modification de la catégorie",
+  "CATEGORY_NAME": "Nom de la catégorie",
+  "CATEGORY_NAME_PLACEHOLDER": "Nom de la catégorie…",
+  "CATEGORY_EXAMPLE_PLACEHOLDER": "ex. Abonnements, Courses…",
+
+  "SYSTEM": "Système",
+  "CUSTOM": "Personnalisée",
+
+  "VIEW_EXPENSES": "Voir les dépenses",
+  "CREATE_CATEGORY_BUTTON": "Enregistrer la catégorie",
+  "UPDATE_CATEGORY": "Modifier la catégorie",
+
+  "NO_CATEGORIES_YET": "Aucune catégorie",
+  "NO_CATEGORIES_MESSAGE": "Créez votre première catégorie pour commencer à organiser vos dépenses.",
+  "CREATE_FIRST_CATEGORY": "Créer une catégorie",
+
+  "LOADING_CATEGORIES": "Chargement des catégories…",
+
+  "VIEW_CATEGORY_EXPENSES": "Voir les dépenses de {{category}}"
 }

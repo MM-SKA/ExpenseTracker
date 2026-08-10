@@ -105,7 +105,7 @@ button, input, select, textarea { font: inherit; }
 .app-nav a.active,
 .app-nav a:hover,
 .signout-button:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0);
   color: #fff;
   border-color: rgba(255, 255, 255, 0.12);
 }

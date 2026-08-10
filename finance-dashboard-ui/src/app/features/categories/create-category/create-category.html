@@ -1,7 +1,7 @@
 <div class="cf-page">
 
-  <p class="cf-eyebrow">New Category</p>
-  <h1 class="cf-title">Create a category</h1>
+  <p class="cf-eyebrow">{{'NEW_CATEGORY'|translate}}</p>
+  <h1 class="cf-title">{{'CREATE_CATEGORY'|translate}}</h1>
   <p class="cf-subtitle">Organize your expenses by creating custom categories for better tracking and analytics.</p>
 
   <div class="cf-card">
@@ -9,21 +9,21 @@
 
       <div class="cf-icon-block">
         <div class="cf-icon">🏷</div>
-        <span class="cf-icon-label">Category</span>
+        <span class="cf-icon-label">{{'CATEGORY'|translate}}</span>
       </div>
 
       <div class="cf-field">
-        <label for="category-input" class="cf-label">Category Name</label>
+        <label for="category-input" class="cf-label">{{'CATEGORY_NAME'|translate}}</label>
         <input
           id="category-input"
           class="cf-input"
           name="category-name"
           type="text"
           [(ngModel)]="name"
-          placeholder="e.g. Subscription, Groceries…" />
+          [placeholder]="'CATEGORY_EXAMPLE_PLACEHOLDER'|translate" />
       </div>
 
-      <button class="cf-submit" (click)="createCategory()">Save category →</button>
+      <button class="cf-submit" (click)="createCategory()">{{'CREATE_CATEGORY_BUTTON'|translate}} →</button>
 
     </div>
   </div>

@@ -3,18 +3,18 @@
   <!-- Header -->
   <div class="cl-header">
     <div>
-      <p class="cl-eyebrow">Categories</p>
-      <h1 class="cl-title">Expense Categories</h1>
-      <p class="cl-subtitle">Create and manage categories to keep every expense organized.</p>
+      <p class="cl-eyebrow">{{'CATEGORY_PAGE'|translate}}</p>
+      <h1 class="cl-title">{{'EXPENSE_CATEGORIES'|translate}}</h1>
+      <p class="cl-subtitle">{{'CATEGORY_PAGE_SUBTITLE'|translate}}</p>
     </div>
-    <button class="cl-new-btn" routerLink="/categories/create">+ New Category</button>
+    <button class="cl-new-btn" routerLink="/categories/create">+ {{'NEW_CATEGORY'|translate}}</button>
   </div>
 
   <!-- Loading -->
   @if (isLoading) {
   <div class="cl-loading">
     <div class="cl-spinner"></div>
-    <span>Loading categories…</span>
+    <span>{{'LOADING_CATEGORIES'|translate}}</span>
   </div>
   }
 
@@ -34,10 +34,10 @@
       </div>
       <div class="cl-card-actions">
         <button class="cl-view-btn" type="button" (click)="viewCategoryExpenses(category.name)" title="View expenses in {{ category.name }}">
-          💳 View Expenses
+          💳 {{'VIEW_EXPENSES'|translate}}
         </button>
-        <button class="cl-edit-btn" type="button" (click)="editCategory(category.id)">Edit</button>
-        <button class="delete-button" type="button" (click)="deleteCategory(category.id)"> 🗑️ Delete </button>
+        <button class="cl-edit-btn" type="button" (click)="editCategory(category.id)">{{'EDIT'|translate}}</button>
+        <button class="delete-button" type="button" (click)="deleteCategory(category.id)"> 🗑️ {{'DELETE'|translate}} </button>
       </div>
     </div>
     }
@@ -47,9 +47,9 @@
   @else {
   <div class="cl-empty">
     <div class="cl-empty-icon">📂</div>
-    <h3>No categories yet</h3>
-    <p>Create your first category to start organizing expenses.</p>
-    <button class="cl-empty-btn" routerLink="/categories/create">+ Create Category</button>
+    <h3>{{'NO_CATEGORIES_YET'|translate}}</h3>
+    <p>{{'NO_CATEGORIES_MESSAGE'|translate}}</p>
+    <button class="cl-empty-btn" routerLink="/categories/create">+ {{'CREATE_FIRST_CATEGORY'|translate}}</button>
   </div>
   }
 

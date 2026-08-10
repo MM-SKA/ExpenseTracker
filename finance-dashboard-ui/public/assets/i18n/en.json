@@ -90,5 +90,31 @@
   "ERROR": "Error",
 
   "DELETE_EXPENSE_CONFIRMATION": "Are you sure you want to delete this expense?",
-  "DELETE_EXPENSE_ERROR": "Unable to delete expense."
+  "DELETE_EXPENSE_ERROR": "Unable to delete expense.",
+
+  "CATEGORY_PAGE": "Categories",
+  "EXPENSE_CATEGORIES": "Expense Categories",
+  "CATEGORY_PAGE_SUBTITLE": "Create and manage categories to keep every expense organized.",
+
+  "NEW_CATEGORY": "New Category",
+  "CREATE_CATEGORY": "Create Category",
+  "EDITING_CATEGORY": "Editing category",
+  "CATEGORY_NAME": "Category Name",
+  "CATEGORY_NAME_PLACEHOLDER": "Category name…",
+  "CATEGORY_EXAMPLE_PLACEHOLDER": "e.g. Subscription, Groceries…",
+
+  "SYSTEM": "System",
+  "CUSTOM": "Custom",
+
+  "VIEW_EXPENSES": "View Expenses",
+  "CREATE_CATEGORY_BUTTON": "Save category",
+  "UPDATE_CATEGORY": "Update category",
+
+  "NO_CATEGORIES_YET": "No categories yet",
+  "NO_CATEGORIES_MESSAGE": "Create your first category to start organizing expenses.",
+  "CREATE_FIRST_CATEGORY": "Create Category",
+
+  "LOADING_CATEGORIES": "Loading categories…",
+
+  "VIEW_CATEGORY_EXPENSES": "View expenses in {{category}}"
 }

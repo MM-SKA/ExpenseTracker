@@ -1,39 +1,25 @@
-import {
-  Component,
-  inject,
-  ChangeDetectorRef,
-  OnInit
-} from '@angular/core';
-
+import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-
-import { CategoryService }
-  from '../../../core/services/category.service';
-
-import { Category }
-  from '../../../shared/models/category/category';
+import { CategoryService } from '../../../core/services/category.service';
+import { Category } from '../../../shared/models/category/category';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-category-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './category-list.html',
   styleUrl: './category-list.css'
 })
 export class CategoryList implements OnInit {
 
   categories: Category[] = [];
-
   isLoading = true;
-
   readonly router = inject(Router);
-
-  readonly categoryService =
-    inject(CategoryService);
-
-  readonly cdr =
-    inject(ChangeDetectorRef);
+  readonly categoryService = inject(CategoryService);
+  readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
 

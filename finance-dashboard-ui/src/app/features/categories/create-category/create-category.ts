@@ -1,13 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CategoryService } from '../../../core/services/category.service';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-category',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, TranslatePipe],
   standalone: true,
   templateUrl: './create-category.html',
   styleUrl: './create-category.css',
@@ -17,6 +18,7 @@ export class CreateCategory {
   private readonly categoryService = inject(CategoryService);
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
+  private readonly translate = inject(TranslateService);
 
   createCategory(): void {
     this.categoryService.createCategory({

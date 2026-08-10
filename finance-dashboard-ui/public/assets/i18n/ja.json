@@ -90,5 +90,31 @@
   "ERROR": "エラー",
 
   "DELETE_EXPENSE_CONFIRMATION": "この支出を削除してもよろしいですか？",
-  "DELETE_EXPENSE_ERROR": "支出を削除できませんでした。"
+  "DELETE_EXPENSE_ERROR": "支出を削除できませんでした。",
+
+  "CATEGORY_PAGE": "カテゴリー",
+  "EXPENSE_CATEGORIES": "支出カテゴリー",
+  "CATEGORY_PAGE_SUBTITLE": "カテゴリーを作成・管理して、すべての支出を整理しましょう。",
+
+  "NEW_CATEGORY": "新しいカテゴリー",
+  "CREATE_CATEGORY": "カテゴリーを作成",
+  "EDITING_CATEGORY": "カテゴリーを編集",
+  "CATEGORY_NAME": "カテゴリー名",
+  "CATEGORY_NAME_PLACEHOLDER": "カテゴリー名…",
+  "CATEGORY_EXAMPLE_PLACEHOLDER": "例：サブスクリプション、食料品…",
+
+  "SYSTEM": "システム",
+  "CUSTOM": "カスタム",
+
+  "VIEW_EXPENSES": "支出を見る",
+  "CREATE_CATEGORY_BUTTON": "カテゴリーを保存",
+  "UPDATE_CATEGORY": "カテゴリーを更新",
+
+  "NO_CATEGORIES_YET": "カテゴリーがありません",
+  "NO_CATEGORIES_MESSAGE": "最初のカテゴリーを作成して、支出の整理を始めましょう。",
+  "CREATE_FIRST_CATEGORY": "カテゴリーを作成",
+
+  "LOADING_CATEGORIES": "カテゴリーを読み込んでいます…",
+
+  "VIEW_CATEGORY_EXPENSES": "{{category}}の支出を見る"
 }
