@@ -1,63 +1,53 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth-guard';
-import { CreateCategory } from './features/categories/create-category/create-category';
-import { LoginComponent } from './features/auth/login/login.component';
-import { Register } from './features/auth/register/register';
-import { CategoryList } from './features/categories/category-list/category-list';
-import { UpdateCategory } from './features/categories/update-category/update-category';
-import { AnalyticsDashboard } from './features/analytics/analytics-dashboard/analytics-dashboard';
-import { CreateExpense } from './features/expenses/create-expense/create-expense';
-import { ExpenseList } from './features/expenses/expense-list/expense-list';
-import { EditExpense } from './features/expenses/edit-expense/edit-expense';
-import { AiChat } from './features/ai/ai-chat/ai-chat';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LoginComponent
+    loadComponent:()=>import('./features/auth/login/login.component').then(m=>m.LoginComponent)
   },
   {
     path: 'register',
-    component: Register
+    loadComponent:()=>import('./features/auth/register/register').then(m=>m.Register)
   },
   {
     path: 'categories',
-    component: CategoryList,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/categories/create-category/create-category').then(m=>m.CreateCategory),
+    canActivate: [authGuard]
   },
   {
     path: 'categories/create',
-    component: CreateCategory,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/categories/create-category/create-category').then(m=>m.CreateCategory),
+    canActivate: [authGuard]
   },
   {
     path: 'categories/edit/:id',
-    component: UpdateCategory,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/categories/update-category/update-category').then(m=>m.UpdateCategory),
+    canActivate: [authGuard]
   },
   {
     path: 'expenses',
-    component: ExpenseList,
-    // canActivate: [authGuard]
+    loadComponent: () => import('./features/expenses/expense-list/expense-list').then(m => m.ExpenseList),
+    canActivate: [authGuard]
   },
   {
     path: 'expenses/create',
-    component: CreateExpense,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/expenses/create-expense/create-expense').then(m=>m.CreateExpense),
+    canActivate: [authGuard]
   },
   {
     path: 'analytics',
-    component: AnalyticsDashboard,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/analytics/analytics-dashboard/analytics-dashboard').then(m=>m.AnalyticsDashboard),
+    canActivate: [authGuard]
   },
   {
     path: 'ai',
-    component: AiChat,
+    loadComponent:()=>import('./features/ai/ai-chat/ai-chat').then(m=>m.AiChat),
     canActivate: [authGuard]
   },
   {
     path: 'expenses/edit/:id',
-    component: EditExpense,
-    // canActivate: [authGuard]
+    loadComponent:()=>import('./features/expenses/edit-expense/edit-expense').then(m=>m.EditExpense),
+    canActivate: [authGuard]
   }
 ];
