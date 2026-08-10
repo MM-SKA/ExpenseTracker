@@ -11,6 +11,7 @@
     <nav class="app-nav">
       <!-- Language -->
       <div class="language-selector">
+
         <span class="language-globe">🌐</span>
 
         <select class="language-select" [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)"
@@ -21,6 +22,7 @@
           <option value="ja">日本語</option>
 
         </select>
+
       </div>
       @if (isAuthenticated()) {
       <a routerLink="/expenses" routerLinkActive="active">{{'EXPENSES'|translate}}</a>

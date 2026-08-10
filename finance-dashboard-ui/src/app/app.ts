@@ -46,21 +46,11 @@ export class App {
   currentLanguage =
     localStorage.getItem('language') ?? 'en';
 
+  private readonly supportedLanguages = ['en', 'fr', 'ja'];
+
   constructor() {
 
-    this.translate.use(this.currentLanguage).subscribe({
-      next: () => {
-        console.log(
-          `${this.currentLanguage} translations loaded`
-        );
-      },
-      error: (error) => {
-        console.error(
-          'Translation loading failed:',
-          error
-        );
-      }
-    });
+    this.initializeLanguage();
 
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
@@ -69,31 +59,63 @@ export class App {
     });
   }
 
+  private initializeLanguage(): void {
+
+    const savedLanguage =
+      localStorage.getItem('language');
+
+    if (
+      savedLanguage &&
+      this.supportedLanguages.includes(savedLanguage)
+    ) {
+
+      this.currentLanguage = savedLanguage;
+
+    } else {
+
+      this.currentLanguage =
+        this.detectBrowserLanguage();
+
+    }
+
+    this.translate.use(this.currentLanguage);
+  }
+
+  private detectBrowserLanguage(): string {
+
+    for (const language of navigator.languages) {
+
+      const shortLanguage =
+        language.split('-')[0];
+
+      if (
+        this.supportedLanguages.includes(shortLanguage)
+      ) {
+        return shortLanguage;
+      }
+    }
+
+    return 'en';
+  }
+
   public changeLanguage(language: string): void {
 
-    this.translate.use(language).subscribe({
-      next: () => {
+    if (
+      !this.supportedLanguages.includes(language)
+    ) {
+      return;
+    }
 
-        this.currentLanguage = language;
+    this.currentLanguage = language;
 
-        localStorage.setItem(
-          'language',
-          language
-        );
+    // Save user's choice
+    localStorage.setItem(
+      'language',
+      language
+    );
 
-        console.log(
-          'Language changed to:',
-          language
-        );
-      },
-
-      error: (error) => {
-        console.error(
-          'Translation loading failed:',
-          error
-        );
-      }
-    });
+    // Change UI language
+    this.translate.use(language);
   }
 
   public signOut(): void {
