@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'categories',
-    loadComponent:()=>import('./features/categories/create-category/create-category').then(m=>m.CreateCategory),
+    loadComponent:()=>import('./features/categories/category-list/category-list').then(m=>m.CategoryList),
     canActivate: [authGuard]
   },
   {

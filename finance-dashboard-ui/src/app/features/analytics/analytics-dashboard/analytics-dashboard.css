@@ -15,21 +15,21 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(0, 0, 0, 0.35);
   margin: 0 0 0.3rem;
 }
 
 .an-title {
   font-size: clamp(1.4rem, 3vw, 2rem);
   font-weight: 800;
-  color: #fff;
+  color: #000000;
   margin: 0 0 0.3rem;
   letter-spacing: -0.03em;
 }
 
 .an-subtitle {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.35);
+  color: rgba(0, 0, 0, 0.35);
   margin: 0 0 0.25rem;
 }
 
