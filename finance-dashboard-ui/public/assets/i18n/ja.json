@@ -1,0 +1,94 @@
+{
+  "APP_TITLE": "個人財務ダッシュボード",
+
+  "LOGIN": "ログイン",
+  "REGISTER": "登録",
+  "SIGN_OUT": "ログアウト",
+
+  "EXPENSES": "支出",
+  "CREATE": "作成",
+  "CATEGORIES": "カテゴリー",
+  "ANALYTICS": "分析",
+  "AI": "AI",
+
+  "ADD_EXPENSE": "支出を追加",
+  "EDIT_EXPENSE": "支出を編集",
+  "DELETE_EXPENSE": "支出を削除",
+
+  "EDIT": "編集",
+  "DELETE": "削除",
+  "SAVE": "保存",
+  "CANCEL": "キャンセル",
+
+  "EXPENSE": "支出を",
+  "CATEGORY": "カテゴリー",
+  "AMOUNT": "金額",
+  "DATE": "日付",
+  "DESCRIPTION": "説明",
+  "LOCATION": "場所",
+
+  "EXPENSE_OVERVIEW": "支出の概要",
+  "EXPENSE_OVERVIEW_SUBTITLE": "支出を追跡し、フィルター、並べ替え、ページ移動を簡単に行えます。",
+
+  "TOTAL": "合計",
+  "COUNT": "件数",
+  "AVERAGE": "平均",
+  "HIGHEST": "最高額",
+
+  "FILTERS_OPTIONS": "フィルターとオプション",
+  "NEWEST_FIRST": "新しい順",
+  "OLDEST_FIRST": "古い順",
+
+  "SEARCH": "検索",
+  "SEARCH_PLACEHOLDER": "説明またはメモ…",
+
+  "ALL_CATEGORIES": "すべてのカテゴリー",
+
+  "SORT_BY": "並べ替え",
+  "RECENT_NEWEST": "最近の支出（新しい順）",
+  "OLDEST": "古い順",
+
+  "PER_PAGE": "1ページあたり",
+  "ITEMS": "件",
+
+  "FROM": "開始日",
+  "TO": "終了日",
+
+  "CLEAR_FILTERS": "フィルターをクリア",
+
+  "SHOWING": "表示",
+  "OF": "/",
+  "EXPENSES_COUNT": "件の支出",
+
+  "PREVIOUS": "前へ",
+  "NEXT": "次へ",
+
+  "NO_EXPENSES_FOUND": "支出が見つかりません",
+  "NO_EXPENSES_MESSAGE": "フィルターを変更するか、新しい支出を追加してください。",
+
+  "NEW_EXPENSE": "新しい支出",
+  "ADD_PURCHASE": "購入を追加",
+  "ADD_PURCHASE_SUBTITLE": "カテゴリー、金額、日付を記録して、より良い支出管理を行いましょう。",
+
+  "EDIT_EXPENSE_LABEL": "支出を編集",
+  "UPDATE_YOUR_EXPENSE": "支出を更新",
+  "UPDATE_EXPENSE_SUBTITLE": "以下の情報を変更して、変更内容を保存してください。",
+  "UPDATE_EXPENSE": "支出を更新",
+
+  "DESCRIPTION_PLACEHOLDER": "説明…",
+  "AMOUNT_PLACEHOLDER": "0.00",
+  "LOCATION_PLACEHOLDER": "レストラン、店舗…",
+
+  "LOADING": "読み込み中…",
+  "NO_CATEGORIES": "カテゴリーがありません",
+
+  "EXPENSE_CREATED_SUCCESS": "支出を作成しました。",
+  "EXPENSE_EDITED_SUCCESS": "支出を更新しました。",
+  "EXPENSE_DELETED_SUCCESS": "支出を削除しました。",
+
+  "SUCCESS": "成功",
+  "ERROR": "エラー",
+
+  "DELETE_EXPENSE_CONFIRMATION": "この支出を削除してもよろしいですか？",
+  "DELETE_EXPENSE_ERROR": "支出を削除できませんでした。"
+}

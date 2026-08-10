@@ -1,0 +1,94 @@
+{
+  "APP_TITLE": "Personal Finance Dashboard",
+
+  "LOGIN": "Login",
+  "REGISTER": "Register",
+  "SIGN_OUT": "Sign out",
+
+  "EXPENSES": "Expenses",
+  "CREATE": "Create",
+  "CATEGORIES": "Categories",
+  "ANALYTICS": "Analytics",
+  "AI": "AI",
+
+  "ADD_EXPENSE": "Add Expense",
+  "EDIT_EXPENSE": "Edit Expense",
+  "DELETE_EXPENSE": "Delete Expense",
+
+  "EDIT": "Edit",
+  "DELETE": "Delete",
+  "SAVE": "Save",
+  "CANCEL": "Cancel",
+
+  "EXPENSE": "Expense",
+  "CATEGORY": "Category",
+  "AMOUNT": "Amount",
+  "DATE": "Date",
+  "DESCRIPTION": "Description",
+  "LOCATION": "Location",
+
+  "EXPENSE_OVERVIEW": "Your expense overview",
+  "EXPENSE_OVERVIEW_SUBTITLE": "Track your spending — filter, sort, and paginate seamlessly.",
+
+  "TOTAL": "Total",
+  "COUNT": "Count",
+  "AVERAGE": "Average",
+  "HIGHEST": "Highest",
+
+  "FILTERS_OPTIONS": "Filters & Options",
+  "NEWEST_FIRST": "Newest first",
+  "OLDEST_FIRST": "Oldest first",
+
+  "SEARCH": "Search",
+  "SEARCH_PLACEHOLDER": "Description or note…",
+
+  "ALL_CATEGORIES": "All Categories",
+
+  "SORT_BY": "Sort By",
+  "RECENT_NEWEST": "Recent (Newest First)",
+  "OLDEST": "Oldest First",
+
+  "PER_PAGE": "Per Page",
+  "ITEMS": "items",
+
+  "FROM": "From",
+  "TO": "To",
+
+  "CLEAR_FILTERS": "Clear filters",
+
+  "SHOWING": "Showing",
+  "OF": "of",
+  "EXPENSES_COUNT": "expenses",
+
+  "PREVIOUS": "Prev",
+  "NEXT": "Next",
+
+  "NO_EXPENSES_FOUND": "No expenses found",
+  "NO_EXPENSES_MESSAGE": "Try adjusting your filters or add a new expense.",
+
+  "NEW_EXPENSE": "New expense",
+  "ADD_PURCHASE": "Add a purchase",
+  "ADD_PURCHASE_SUBTITLE": "Capture expenses with category, amount, and date for better reporting.",
+
+  "EDIT_EXPENSE_LABEL": "Edit expense",
+  "UPDATE_YOUR_EXPENSE": "Update your expense",
+  "UPDATE_EXPENSE_SUBTITLE": "Modify the details below and save your changes.",
+  "UPDATE_EXPENSE": "Update expense",
+
+  "DESCRIPTION_PLACEHOLDER": "Description…",
+  "AMOUNT_PLACEHOLDER": "0.00",
+  "LOCATION_PLACEHOLDER": "Restaurant, Store…",
+
+  "LOADING": "Loading…",
+  "NO_CATEGORIES": "No categories",
+
+  "EXPENSE_CREATED_SUCCESS": "Expense created successfully.",
+  "EXPENSE_EDITED_SUCCESS": "Expense edited successfully.",
+  "EXPENSE_DELETED_SUCCESS": "Expense deleted successfully.",
+
+  "SUCCESS": "Success",
+  "ERROR": "Error",
+
+  "DELETE_EXPENSE_CONFIRMATION": "Are you sure you want to delete this expense?",
+  "DELETE_EXPENSE_ERROR": "Unable to delete expense."
+}

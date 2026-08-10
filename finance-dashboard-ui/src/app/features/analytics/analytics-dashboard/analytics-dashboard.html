@@ -93,7 +93,7 @@
           <div class="an-kpi-icon">💰</div>
           <div class="an-kpi-label">Total Spent</div>
           <div class="an-kpi-value">
-            {{ (analytics.summary?.totalSpent ?? analytics.Summary?.TotalSpent) | currency:'USD':'symbol':'1.0-0' }}
+            {{ (analytics.summary?.totalSpent ?? analytics.Summary?.TotalSpent) | currency:'INR':'symbol':'1.0-0' }}
           </div>
         </div>
 
@@ -109,7 +109,7 @@
           <div class="an-kpi-icon">💳</div>
           <div class="an-kpi-label">Average Expense</div>
           <div class="an-kpi-value">
-            {{ (analytics.summary?.averageAmount ?? analytics.Summary?.AverageAmount) | currency:'USD':'symbol':'1.0-0' }}
+            {{ (analytics.summary?.averageAmount ?? analytics.Summary?.AverageAmount) | currency:'INR':'symbol':'1.0-0' }}
           </div>
         </div>
 
@@ -146,7 +146,7 @@
                   <div>
                     <div class="an-cat-name">{{ item.categoryName ?? item.CategoryName }}</div>
                     <div class="an-cat-amount">
-                      {{ (item.amount ?? item.Amount) | currency:'USD':'symbol':'1.0-0' }}
+                      {{ (item.amount ?? item.Amount) | currency:'INR':'symbol':'1.0-0' }}
                     </div>
                   </div>
                   <span class="an-cat-pct">

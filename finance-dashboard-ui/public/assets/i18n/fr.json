@@ -1,0 +1,94 @@
+{
+  "APP_TITLE": "Tableau de bord des finances personnelles",
+
+  "LOGIN": "Connexion",
+  "REGISTER": "Inscription",
+  "SIGN_OUT": "Déconnexion",
+
+  "EXPENSES": "Dépenses",
+  "CREATE": "Créer",
+  "CATEGORIES": "Catégories",
+  "ANALYTICS": "Analyses",
+  "AI": "IA",
+
+  "ADD_EXPENSE": "Ajouter une dépense",
+  "EDIT_EXPENSE": "Modifier la dépense",
+  "DELETE_EXPENSE": "Supprimer la dépense",
+
+  "EDIT": "Modifier",
+  "DELETE": "Supprimer",
+  "SAVE": "Enregistrer",
+  "CANCEL": "Annuler",
+
+  "EXPENSE": "Dépense",
+  "CATEGORY": "Catégorie",
+  "AMOUNT": "Montant",
+  "DATE": "Date",
+  "DESCRIPTION": "Description",
+  "LOCATION": "Lieu",
+
+  "EXPENSE_OVERVIEW": "Aperçu de vos dépenses",
+  "EXPENSE_OVERVIEW_SUBTITLE": "Suivez vos dépenses — filtrez, triez et parcourez facilement.",
+
+  "TOTAL": "Total",
+  "COUNT": "Nombre",
+  "AVERAGE": "Moyenne",
+  "HIGHEST": "Maximum",
+
+  "FILTERS_OPTIONS": "Filtres et options",
+  "NEWEST_FIRST": "Plus récent en premier",
+  "OLDEST_FIRST": "Plus ancien en premier",
+
+  "SEARCH": "Rechercher",
+  "SEARCH_PLACEHOLDER": "Description ou note…",
+
+  "ALL_CATEGORIES": "Toutes les catégories",
+
+  "SORT_BY": "Trier par",
+  "RECENT_NEWEST": "Récent (plus récent en premier)",
+  "OLDEST": "Plus ancien en premier",
+
+  "PER_PAGE": "Par page",
+  "ITEMS": "éléments",
+
+  "FROM": "De",
+  "TO": "À",
+
+  "CLEAR_FILTERS": "Effacer les filtres",
+
+  "SHOWING": "Affichage de",
+  "OF": "sur",
+  "EXPENSES_COUNT": "dépenses",
+
+  "PREVIOUS": "Précédent",
+  "NEXT": "Suivant",
+
+  "NO_EXPENSES_FOUND": "Aucune dépense trouvée",
+  "NO_EXPENSES_MESSAGE": "Essayez de modifier vos filtres ou ajoutez une nouvelle dépense.",
+
+  "NEW_EXPENSE": "Nouvelle dépense",
+  "ADD_PURCHASE": "Ajouter un achat",
+  "ADD_PURCHASE_SUBTITLE": "Enregistrez vos dépenses avec leur catégorie, montant et date pour améliorer vos rapports.",
+
+  "EDIT_EXPENSE_LABEL": "Modifier la dépense",
+  "UPDATE_YOUR_EXPENSE": "Modifier votre dépense",
+  "UPDATE_EXPENSE_SUBTITLE": "Modifiez les informations ci-dessous et enregistrez vos changements.",
+  "UPDATE_EXPENSE": "Modifier la dépense",
+
+  "DESCRIPTION_PLACEHOLDER": "Description…",
+  "AMOUNT_PLACEHOLDER": "0,00",
+  "LOCATION_PLACEHOLDER": "Restaurant, magasin…",
+
+  "LOADING": "Chargement…",
+  "NO_CATEGORIES": "Aucune catégorie",
+
+  "EXPENSE_CREATED_SUCCESS": "Dépense créée avec succès.",
+  "EXPENSE_EDITED_SUCCESS": "Dépense modifiée avec succès.",
+  "EXPENSE_DELETED_SUCCESS": "Dépense supprimée avec succès.",
+
+  "SUCCESS": "Succès",
+  "ERROR": "Erreur",
+
+  "DELETE_EXPENSE_CONFIRMATION": "Voulez-vous vraiment supprimer cette dépense ?",
+  "DELETE_EXPENSE_ERROR": "Impossible de supprimer la dépense."
+}

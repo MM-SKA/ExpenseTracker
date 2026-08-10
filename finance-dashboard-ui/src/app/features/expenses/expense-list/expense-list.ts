@@ -5,11 +5,12 @@ import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { StorageService } from '../../../core/services/storage.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-expense-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, TranslatePipe],
   templateUrl: './expense-list.html',
   styleUrl: './expense-list.css',
 })
@@ -33,6 +34,7 @@ export class ExpenseList implements OnInit {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly categoryService = inject(CategoryService);
   private readonly storageService = inject(StorageService);
+  private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

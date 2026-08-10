@@ -7,11 +7,12 @@ import { CategoryService } from '../../../core/services/category.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { Category } from '../../../shared/models/category/category';
 import { ToastrService } from 'ngx-toastr';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-expense',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './create-expense.html',
   styleUrl: './create-expense.css',
 })
@@ -28,6 +29,7 @@ export class CreateExpense implements OnInit {
   readonly categoryService = inject(CategoryService);
   private readonly storageService = inject(StorageService);
   private readonly toastr = inject(ToastrService);
+  private readonly translate = inject(TranslateService);
   categoryId = '';
   categories: Category[] = [];
 

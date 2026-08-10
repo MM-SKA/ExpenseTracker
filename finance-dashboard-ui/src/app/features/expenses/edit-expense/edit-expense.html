@@ -1,8 +1,8 @@
 <div class="ef-page">
 
-  <p class="ef-eyebrow">Edit expense</p>
-  <h1 class="ef-title">Update your expense</h1>
-  <p class="ef-subtitle">Modify the details below and save your changes.</p>
+  <p class="ef-eyebrow">{{'EDIT_EXPENSE_LABEL'|translate}}</p>
+  <h1 class="ef-title">{{'UPDATE_YOUR_EXPENSE'|translate}}</h1>
+  <p class="ef-subtitle">{{'UPDATE_EXPENSE_SUBTITLE'|translate}}</p>
 
   <div class="ef-card">
     <div class="ef-card-body">
@@ -10,7 +10,7 @@
 
         <!-- Category -->
         <div class="ef-field">
-          <label class="ef-label" for="category-dropdown">Category</label>
+          <label class="ef-label" for="category-dropdown">{{'CATEGORY'|translate}}</label>
           <div class="ef-input-wrap">
             <span class="ef-icon">🏷</span>
             <select id="category-dropdown" class="ef-select" name="category" [(ngModel)]="categoryId">
@@ -23,7 +23,7 @@
 
         <!-- Date -->
         <div class="ef-field">
-          <label class="ef-label" for="date-input">Date</label>
+          <label class="ef-label" for="date-input">{{'DATE'|translate}}</label>
           <div class="ef-input-wrap">
             <span class="ef-icon">📅</span>
             <input id="date-input" class="ef-input" type="date" name="date" [(ngModel)]="date" />
@@ -32,37 +32,37 @@
 
         <!-- Description -->
         <div class="ef-field ef-col-full">
-          <label class="ef-label" for="notes-input">Description</label>
+          <label class="ef-label" for="notes-input">{{'DESCRIPTION'|translate}}</label>
           <div class="ef-input-wrap">
             <span class="ef-icon">📝</span>
-            <input id="notes-input" class="ef-input" placeholder="Description…"
+            <input id="notes-input" class="ef-input" [placeholder]="'DESCRIPTION' | translate"
               [value]="notes" (input)="notes = $any($event.target).value" />
           </div>
         </div>
 
         <!-- Amount -->
         <div class="ef-field">
-          <label class="ef-label" for="amount-input">Amount</label>
+          <label class="ef-label" for="amount-input">{{'AMOUNT'|translate}}</label>
           <div class="ef-input-wrap">
             <span class="ef-icon">$</span>
             <input id="amount-input" class="ef-input" type="number" step="0.01"
-              name="amount" placeholder="0.00" [(ngModel)]="amount" />
+              name="amount" [placeholder]="'AMOUNT_PLACEHOLDER'|translate" [(ngModel)]="amount" />
           </div>
         </div>
 
         <!-- Location -->
         <div class="ef-field">
-          <label class="ef-label" for="location-input">Location</label>
+          <label class="ef-label" for="location-input">{{'LOCATION'|translate}}</label>
           <div class="ef-input-wrap">
             <span class="ef-icon">📍</span>
             <input id="location-input" class="ef-input" name="location"
-              placeholder="Restaurant, Store…" [(ngModel)]="location" />
+              [placeholder]="'LOCATION_PLACEHOLDER'|translate" [(ngModel)]="location" />
           </div>
         </div>
 
         <!-- Submit -->
         <div class="ef-col-full">
-          <button class="ef-submit" type="submit">Update expense →</button>
+          <button class="ef-submit" type="submit">{{'UPDATE_EXPENSE'|translate}} →</button>
         </div>
 
       </form>

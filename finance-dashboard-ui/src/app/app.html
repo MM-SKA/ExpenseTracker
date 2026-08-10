@@ -9,18 +9,33 @@
     </div>
 
     <nav class="app-nav">
+      <!-- Language -->
+      <div class="language-selector">
+        <span class="language-globe">🌐</span>
+
+        <select class="language-select" [value]="currentLanguage" (change)="changeLanguage($any($event.target).value)"
+          aria-label="Select language">
+
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="ja">日本語</option>
+
+        </select>
+      </div>
       @if (isAuthenticated()) {
-      <a routerLink="/expenses" routerLinkActive="active">Expenses</a>
-      <a routerLink="/expenses/create" routerLinkActive="active">Create</a>
-      <a routerLink="/categories" routerLinkActive="active">Categories</a>
-      <a routerLink="/analytics" routerLinkActive="active">Analytics</a>
-      <a routerLink="/ai" routerLinkActive="active">🤖 AI</a>
-      <button class="signout-button" type="button" (click)="signOut()">Sign out</button>
+      <a routerLink="/expenses" routerLinkActive="active">{{'EXPENSES'|translate}}</a>
+      <a routerLink="/expenses/create" routerLinkActive="active">{{'CREATE'|translate}}</a>
+      <a routerLink="/categories" routerLinkActive="active">{{'CATEGORIES'|translate}}</a>
+      <a routerLink="/analytics" routerLinkActive="active">{{'ANALYTICS'|translate}}</a>
+      <a routerLink="/ai" routerLinkActive="active">🤖 {{'AI'|translate}}</a>
+      <button class="signout-button" type="button" (click)="signOut()">{{'SIGN_OUT'|translate}}</button>
       <span class="user-chip">{{ authUser()?.fullName }}</span>
       } @else {
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Login</a>
-      <a routerLink="/register" routerLinkActive="active" class="nav-register-btn">Register</a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"> {{ 'LOGIN' | translate
+        }}</a>
+      <a routerLink="/register" routerLinkActive="active" class="nav-register-btn">{{ 'REGISTER' | translate }}</a>
       }
+
     </nav>
   </header>
 

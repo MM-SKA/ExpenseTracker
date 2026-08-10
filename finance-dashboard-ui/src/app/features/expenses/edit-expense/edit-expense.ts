@@ -6,11 +6,12 @@ import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category/category';
 import { ToastrService } from 'ngx-toastr';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-edit-expense',
-  standalone:true,
-  imports: [CommonModule, FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './edit-expense.html',
   styleUrl: './edit-expense.css',
 })
@@ -29,6 +30,7 @@ export class EditExpense implements OnInit {
   private readonly router = inject(Router);
   private readonly toastr = inject(ToastrService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];

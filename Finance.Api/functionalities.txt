@@ -1,4 +1,5 @@
-
+localization
+lazy loading
 sorting filter , data , price
 encrypt
 

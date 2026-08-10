@@ -3,31 +3,31 @@
   <!-- Top bar -->
   <div class="el-topbar">
     <div>
-      <p class="el-eyebrow">Expenses</p>
-      <h1 class="el-title">Your expense overview</h1>
-      <p class="el-subtitle">Track your spending — filter, sort, and paginate seamlessly.</p>
+      <p class="el-eyebrow">{{'EXPENSES'|translate}}</p>
+      <h1 class="el-title">{{'EXPENSE_OVERVIEW'|translate}}</h1>
+      <p class="el-subtitle">{{'EXPENSE_OVERVIEW_SUBTITLE'|translate}}</p>
     </div>
-    <a class="el-add-btn" routerLink="/expenses/create">+ Add expense</a>
+    <a class="el-add-btn" routerLink="/expenses/create">+ {{'ADD_EXPENSE'|translate}}</a>
   </div>
 
   <!-- Stats -->
   @if (filtered().length) {
   <div class="el-stats">
     <div class="stat-card">
-      <div class="stat-label">Total</div>
-      <div class="stat-value">{{ getTotalAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-label">{{'TOTAL'|translate}}</div>
+      <div class="stat-value">{{ getTotalAmount() | currency:'INR':'symbol':'1.0-0' }}</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Count</div>
+      <div class="stat-label">{{'COUNT'|translate}}</div>
       <div class="stat-value">{{ filtered().length }}</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Average</div>
-      <div class="stat-value">{{ getAverageAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-label">{{'AVERAGE'|translate}}</div>
+      <div class="stat-value">{{ getAverageAmount() | currency:'INR':'symbol':'1.0-0' }}</div>
     </div>
     <div class="stat-card">
-      <div class="stat-label">Highest</div>
-      <div class="stat-value">{{ getHighestAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-label">{{'HIGHEST'|translate}}</div>
+      <div class="stat-value">{{ getHighestAmount() | currency:'INR':'symbol':'1.0-0' }}</div>
     </div>
   </div>
   }
@@ -38,23 +38,23 @@
     <!-- Filter panel -->
     <div class="el-filter">
       <div class="el-filter-header">
-        <span class="el-filter-label">Filters & Options</span>
+        <span class="el-filter-label">{{'FILTERS_OPTIONS'|translate}}</span>
         <span class="el-filter-hint">{{ sortOrder === 'recent' ? 'Newest first' : 'Oldest first' }}</span>
       </div>
       <div class="el-filter-body">
         <div class="el-filter-field">
-          <label class="el-filter-field-label" for="filterText"> Search </label>
-          <input id="filterText" class="el-input" name="filterText" placeholder="Description or note…"
+          <label class="el-filter-field-label" for="filterText"> {{'SEARCH'|translate}} </label>
+          <input id="filterText" class="el-input" name="filterText" [placeholder]="'SEARCH_PLACEHOLDER' | translate"
             [(ngModel)]="filterText" (ngModelChange)="onFilterChange()" />
         </div>
 
         <div class="el-filter-field">
           <label class="el-filter-field-label" for="categoryFilter">
-            Category
+            {{'CATEGORY'}}
           </label>
           <select id="categoryFilter" class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
             <option value="">
-              All Categories
+              {{'ALL_CATEGORIES'|translate}}
             </option>
             @for(category of categories;
             track category.id)
@@ -67,37 +67,37 @@
         </div>
 
         <div class="el-filter-field">
-          <label class="el-filter-field-label" for="sortOrder"> Sort By </label>
+          <label class="el-filter-field-label" for="sortOrder"> {{'SORT_BY'|translate}} </label>
           <select id="sortOrder" class="el-input" [(ngModel)]="sortOrder" (ngModelChange)="onSortChange()">
-            <option value="recent">Recent (Newest First)</option>
-            <option value="oldest">Oldest First</option>
+            <option value="recent">{{'RECENT_NEWEST'|translate}}</option>
+            <option value="oldest">{{'OLDEST'|translate}}</option>
           </select>
         </div>
 
         <div class="el-filter-field">
-          <label class="el-filter-field-label" for="pageSize"> Per Page </label>
+          <label class="el-filter-field-label" for="pageSize"> {{'PER_PAGE'|translate}} </label>
           <select id="pageSize" class="el-input" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
-            <option [ngValue]="5">5 items</option>
-            <option [ngValue]="10">10 items</option>
-            <option [ngValue]="20">20 items</option>
-            <option [ngValue]="50">50 items</option>
+            <option [ngValue]="5">5 {{'ITEMS'|translate}}</option>
+            <option [ngValue]="10">10 {{'ITEMS'|translate}}</option>
+            <option [ngValue]="20">20 {{'ITEMS'|translate}}</option>
+            <option [ngValue]="50">50 {{'ITEMS'|translate}}</option>
           </select>
         </div>
 
         <div class="el-date-row">
           <div class="el-filter-field">
-            <label for="startDate" class="el-filter-field-label">From</label>
+            <label for="startDate" class="el-filter-field-label">{{'FROM'|translate}}</label>
             <input id="startDate" class="el-input" name="startDate" type="date" [(ngModel)]="startDate"
               (ngModelChange)="onFilterChange()" />
           </div>
           <div class="el-filter-field">
-            <label for="endDate" class="el-filter-field-label">To</label>
+            <label for="endDate" class="el-filter-field-label">{{'TO'|translate}}</label>
             <input id="endDate" class="el-input" name="endDate" type="date" [(ngModel)]="endDate"
               (ngModelChange)="onFilterChange()" />
           </div>
         </div>
 
-        <button class="el-clear-btn" type="button" (click)="clearFilter()">Clear filters</button>
+        <button class="el-clear-btn" type="button" (click)="clearFilter()">{{'CLEAR_FILTERS'|translate}}</button>
       </div>
     </div>
 
@@ -107,11 +107,11 @@
       <table class="el-table">
         <thead>
           <tr>
-            <th>Description</th>
-            <th>Category</th>
-            <th>Location</th>
-            <th>Amount</th>
-            <th>Date</th>
+            <th>{{'DESCRIPTION'|translate}}</th>
+            <th>{{'CATEGORY'|translate}}</th>
+            <th>{{'LOCATION'|translate}}</th>
+            <th>{{'AMOUNT'|translate}}</th>
+            <th>{{'DATE'|translate}}</th>
             <th></th>
           </tr>
         </thead>
@@ -126,12 +126,12 @@
             </td>
             <td><span class="el-cat-badge">{{ e.categoryName }}</span></td>
             <td>{{ e.location || '—' }}</td>
-            <td><span class="el-amount">{{ e.amount | currency:'USD':'symbol':'1.2-2' }}</span></td>
+            <td><span class="el-amount">{{ e.amount | currency:'INR':'symbol':'1.2-2' }}</span></td>
             <td><span class="el-date">{{ e.date | date:'dd MMM yyyy' }}</span></td>
             <td>
               <div class="el-actions">
-                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">Edit</button>
-                <button class="el-btn-del" type="button" (click)="delete(e.id)" title="Delete">✕</button>
+                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">{{'Edit'|translate}}</button>
+                <button class="el-btn-del" type="button" (click)="delete(e.id)" [title]="'DELETE'|translate">✕</button>
               </div>
             </td>
           </tr>
@@ -142,13 +142,13 @@
       <!-- Pagination bar -->
       <div class="el-pagination">
         <div class="el-pagination-info">
-          Showing <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> of <span>{{ filtered().length }}</span> expenses
+          {{'SHOWING'|translate}} <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> {{'OF'|translate}} <span>{{ filtered().length }}</span> {{'EXPENSES_COUNT'|translate}}
         </div>
         <div class="el-pagination-controls">
           <button class="el-page-btn" type="button" [disabled]="currentPage === 1" (click)="prevPage()" title="Previous Page">
-            ‹ Prev
+            ‹ {{'PREVIOUS'|translate}}
           </button>
-          
+
           @for (p of pages; track p) {
             <button class="el-page-btn" [class.active]="p === currentPage" type="button" (click)="goToPage(p)">
               {{ p }}
@@ -156,15 +156,15 @@
           }
 
           <button class="el-page-btn" type="button" [disabled]="currentPage === totalPages" (click)="nextPage()" title="Next Page">
-            Next ›
+            {{'NEXT'|translate}} ›
           </button>
         </div>
       </div>
       } @else {
       <div class="el-empty">
         <div class="el-empty-icon">📭</div>
-        <h3>No expenses found</h3>
-        <p>Try adjusting your filters or add a new expense.</p>
+        <h3>{{'NO_EXPENSES_FOUND'|translate}}</h3>
+        <p>{{'NO_EXPENSES_MESSAGE'|translate}}</p>
       </div>
       }
     </div>
