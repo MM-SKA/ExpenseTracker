@@ -31,6 +31,14 @@ button, input, select, textarea { font: inherit; }
   overflow: auto;
 }
 
+.language-select{
+  color: white;
+}
+
+.language-select option{
+  color: black;
+}
+
 /* ── Header ──────────────────────────────── */
 .app-header {
   display: flex;

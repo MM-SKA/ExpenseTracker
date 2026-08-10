@@ -50,7 +50,7 @@
 
         <div class="el-filter-field">
           <label class="el-filter-field-label" for="categoryFilter">
-            {{'CATEGORY'}}
+            {{'CATEGORY'|translate}}
           </label>
           <select id="categoryFilter" class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
             <option value="">
@@ -130,7 +130,7 @@
             <td><span class="el-date">{{ e.date | date:'dd MMM yyyy' }}</span></td>
             <td>
               <div class="el-actions">
-                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">{{'Edit'|translate}}</button>
+                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">{{'EDIT'|translate}}</button>
                 <button class="el-btn-del" type="button" (click)="delete(e.id)" [title]="'DELETE'|translate">✕</button>
               </div>
             </td>

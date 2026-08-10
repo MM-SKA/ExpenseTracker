@@ -32,7 +32,7 @@ export class App {
   public readonly router = inject(Router);
   private readonly translate = inject(TranslateService);
   currentLanguage = localStorage.getItem('language') ?? 'en';
-  private readonly supportedLanguages = ['en', 'fr', 'ja'];
+  private readonly supportedLanguages = ['en', 'fr', 'ja', 'hi'];
 
   constructor() {
 

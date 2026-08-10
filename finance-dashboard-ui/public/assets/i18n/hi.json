@@ -1,14 +1,120 @@
 {
   "APP_TITLE": "पर्सनल फाइनेंस डैशबोर्ड",
+
   "LOGIN": "लॉगिन",
   "REGISTER": "पंजीकरण",
+  "SIGN_OUT": "साइन आउट",
+
+  "EXPENSES": "खर्च",
+  "CREATE": "बनाएं",
+  "CATEGORIES": "श्रेणियां",
+  "ANALYTICS": "विश्लेषण",
+  "AI": "एआई",
+
   "ADD_EXPENSE": "खर्च जोड़ें",
+  "EDIT_EXPENSE": "खर्च संपादित करें",
+  "DELETE_EXPENSE": "खर्च हटाएं",
+
   "EDIT": "संपादित करें",
   "DELETE": "हटाएं",
+  "SAVE": "सहेजें",
+  "CANCEL": "रद्द करें",
+
+  "EXPENSE": "खर्च",
   "CATEGORY": "श्रेणी",
   "AMOUNT": "राशि",
   "DATE": "तारीख",
   "DESCRIPTION": "विवरण",
-  "SAVE": "सहेजें",
-  "CANCEL": "रद्द करें"
+  "LOCATION": "स्थान",
+
+  "EXPENSE_OVERVIEW": "आपके खर्च का अवलोकन",
+  "EXPENSE_OVERVIEW_SUBTITLE": "अपने खर्चों को ट्रैक करें — आसानी से फ़िल्टर, क्रमबद्ध और पेजिनेट करें।",
+
+  "TOTAL": "कुल",
+  "COUNT": "संख्या",
+  "AVERAGE": "औसत",
+  "HIGHEST": "सर्वाधिक",
+
+  "FILTERS_OPTIONS": "फ़िल्टर और विकल्प",
+  "NEWEST_FIRST": "नवीनतम पहले",
+  "OLDEST_FIRST": "सबसे पुराने पहले",
+
+  "SEARCH": "खोजें",
+  "SEARCH_PLACEHOLDER": "विवरण या नोट…",
+
+  "ALL_CATEGORIES": "सभी श्रेणियां",
+
+  "SORT_BY": "क्रमबद्ध करें",
+  "RECENT_NEWEST": "हाल के (नवीनतम पहले)",
+  "OLDEST": "सबसे पुराने पहले",
+
+  "PER_PAGE": "प्रति पेज",
+  "ITEMS": "आइटम",
+
+  "FROM": "से",
+  "TO": "तक",
+
+  "CLEAR_FILTERS": "फ़िल्टर साफ़ करें",
+
+  "SHOWING": "दिखाए जा रहे हैं",
+  "OF": "में से",
+  "EXPENSES_COUNT": "खर्च",
+
+  "PREVIOUS": "पिछला",
+  "NEXT": "अगला",
+
+  "NO_EXPENSES_FOUND": "कोई खर्च नहीं मिला",
+  "NO_EXPENSES_MESSAGE": "अपने फ़िल्टर बदलें या शुरू करने के लिए नया खर्च जोड़ें।",
+
+  "NEW_EXPENSE": "नया खर्च",
+  "ADD_PURCHASE": "खरीदारी जोड़ें",
+  "ADD_PURCHASE_SUBTITLE": "बेहतर रिपोर्टिंग के लिए श्रेणी, राशि और तारीख के साथ अपने खर्च दर्ज करें।",
+
+  "EDIT_EXPENSE_LABEL": "खर्च संपादित करें",
+  "UPDATE_YOUR_EXPENSE": "अपना खर्च अपडेट करें",
+  "UPDATE_EXPENSE_SUBTITLE": "नीचे दिए गए विवरण में बदलाव करें और अपने परिवर्तन सहेजें।",
+  "UPDATE_EXPENSE": "खर्च अपडेट करें",
+
+  "DESCRIPTION_PLACEHOLDER": "विवरण…",
+  "AMOUNT_PLACEHOLDER": "0.00",
+  "LOCATION_PLACEHOLDER": "रेस्तरां, दुकान…",
+
+  "LOADING": "लोड हो रहा है…",
+  "NO_CATEGORIES": "कोई श्रेणी नहीं",
+
+  "EXPENSE_CREATED_SUCCESS": "खर्च सफलतापूर्वक बनाया गया।",
+  "EXPENSE_EDITED_SUCCESS": "खर्च सफलतापूर्वक संपादित किया गया।",
+  "EXPENSE_DELETED_SUCCESS": "खर्च सफलतापूर्वक हटाया गया।",
+
+  "SUCCESS": "सफलता",
+  "ERROR": "त्रुटि",
+
+  "DELETE_EXPENSE_CONFIRMATION": "क्या आप वाकई इस खर्च को हटाना चाहते हैं?",
+  "DELETE_EXPENSE_ERROR": "खर्च हटाया नहीं जा सका।",
+
+  "CATEGORY_PAGE": "श्रेणियां",
+  "EXPENSE_CATEGORIES": "खर्च की श्रेणियां",
+  "CATEGORY_PAGE_SUBTITLE": "अपने सभी खर्चों को व्यवस्थित रखने के लिए श्रेणियां बनाएं और प्रबंधित करें।",
+
+  "NEW_CATEGORY": "नई श्रेणी",
+  "CREATE_CATEGORY": "श्रेणी बनाएं",
+  "EDITING_CATEGORY": "श्रेणी संपादित करना",
+  "CATEGORY_NAME": "श्रेणी का नाम",
+  "CATEGORY_NAME_PLACEHOLDER": "श्रेणी का नाम…",
+  "CATEGORY_EXAMPLE_PLACEHOLDER": "जैसे सदस्यता, किराना…",
+
+  "SYSTEM": "सिस्टम",
+  "CUSTOM": "कस्टम",
+
+  "VIEW_EXPENSES": "खर्च देखें",
+  "CREATE_CATEGORY_BUTTON": "श्रेणी सहेजें",
+  "UPDATE_CATEGORY": "श्रेणी अपडेट करें",
+
+  "NO_CATEGORIES_YET": "अभी तक कोई श्रेणी नहीं है",
+  "NO_CATEGORIES_MESSAGE": "अपने खर्चों को व्यवस्थित करना शुरू करने के लिए पहली श्रेणी बनाएं।",
+  "CREATE_FIRST_CATEGORY": "श्रेणी बनाएं",
+
+  "LOADING_CATEGORIES": "श्रेणियां लोड हो रही हैं…",
+
+  "VIEW_CATEGORY_EXPENSES": "{{category}} के खर्च देखें"
 }
