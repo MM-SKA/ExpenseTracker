@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScrollTop } from './scroll-top';
+import { ScrollTopComponent } from './scroll-top';
 
-describe('ScrollTop', () => {
-  let component: ScrollTop;
-  let fixture: ComponentFixture<ScrollTop>;
+describe('ScrollTopComponent', () => {
+  let component: ScrollTopComponent;
+  let fixture: ComponentFixture<ScrollTopComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ScrollTop],
+      imports: [ScrollTopComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ScrollTop);
+    fixture = TestBed.createComponent(ScrollTopComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

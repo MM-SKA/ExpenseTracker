@@ -5,7 +5,7 @@
     <div>
       <p class="el-eyebrow">Expenses</p>
       <h1 class="el-title">Your expense overview</h1>
-      <p class="el-subtitle">Track your spending — newest first.</p>
+      <p class="el-subtitle">Track your spending — filter, sort, and paginate seamlessly.</p>
     </div>
     <a class="el-add-btn" routerLink="/expenses/create">+ Add expense</a>
   </div>
@@ -27,7 +27,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-label">Highest</div>
-      <div class="stat-value">{{ (filtered() | slice:0:1)[0]?.amount || 0 | currency:'USD':'symbol':'1.0-0' }}</div>
+      <div class="stat-value">{{ getHighestAmount() | currency:'USD':'symbol':'1.0-0' }}</div>
     </div>
   </div>
   }
@@ -38,8 +38,8 @@
     <!-- Filter panel -->
     <div class="el-filter">
       <div class="el-filter-header">
-        <span class="el-filter-label">Filters</span>
-        <span class="el-filter-hint">Newest first</span>
+        <span class="el-filter-label">Filters & Options</span>
+        <span class="el-filter-hint">{{ sortOrder === 'recent' ? 'Newest first' : 'Oldest first' }}</span>
       </div>
       <div class="el-filter-body">
         <div class="el-filter-field">
@@ -63,6 +63,24 @@
               {{ category.name }}
             </option>
             }
+          </select>
+        </div>
+
+        <div class="el-filter-field">
+          <label class="el-filter-field-label" for="sortOrder"> Sort By </label>
+          <select id="sortOrder" class="el-input" [(ngModel)]="sortOrder" (ngModelChange)="onSortChange()">
+            <option value="recent">Recent (Newest First)</option>
+            <option value="oldest">Oldest First</option>
+          </select>
+        </div>
+
+        <div class="el-filter-field">
+          <label class="el-filter-field-label" for="pageSize"> Per Page </label>
+          <select id="pageSize" class="el-input" [(ngModel)]="pageSize" (ngModelChange)="onPageSizeChange()">
+            <option [ngValue]="5">5 items</option>
+            <option [ngValue]="10">10 items</option>
+            <option [ngValue]="20">20 items</option>
+            <option [ngValue]="50">50 items</option>
           </select>
         </div>
 
@@ -98,7 +116,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (e of filtered(); track e.id) {
+          @for (e of paginatedExpenses; track e.id) {
           <tr>
             <td>
               <div class="el-desc">
@@ -120,6 +138,28 @@
           }
         </tbody>
       </table>
+
+      <!-- Pagination bar -->
+      <div class="el-pagination">
+        <div class="el-pagination-info">
+          Showing <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> of <span>{{ filtered().length }}</span> expenses
+        </div>
+        <div class="el-pagination-controls">
+          <button class="el-page-btn" type="button" [disabled]="currentPage === 1" (click)="prevPage()" title="Previous Page">
+            ‹ Prev
+          </button>
+          
+          @for (p of pages; track p) {
+            <button class="el-page-btn" [class.active]="p === currentPage" type="button" (click)="goToPage(p)">
+              {{ p }}
+            </button>
+          }
+
+          <button class="el-page-btn" type="button" [disabled]="currentPage === totalPages" (click)="nextPage()" title="Next Page">
+            Next ›
+          </button>
+        </div>
+      </div>
       } @else {
       <div class="el-empty">
         <div class="el-empty-icon">📭</div>

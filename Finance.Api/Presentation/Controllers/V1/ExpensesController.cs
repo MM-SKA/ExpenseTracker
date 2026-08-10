@@ -1,4 +1,4 @@
-﻿using Asp.Versioning;
+using Asp.Versioning;
 
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Application.DTOs.Expenses;

@@ -127,6 +127,12 @@
   align-items: center;
   gap: 0.85rem;
   min-width: 0;
+  cursor: pointer;
+  flex: 1;
+}
+
+.cl-card-info:hover .cl-card-name {
+  color: #60a5fa;
 }
 
 .cl-card-icon {
@@ -148,6 +154,7 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: color 0.15s ease;
 }
 
 .cl-card-type {
@@ -156,8 +163,36 @@
   margin-top: 2px;
 }
 
-.cl-edit-btn {
-  padding: 0.3rem 0.75rem;
+.cl-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.cl-view-btn {
+  padding: 0.3rem 0.65rem;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.85);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.cl-view-btn:hover {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+}
+
+.cl-edit-btn,
+.delete-button {
+  padding: 0.3rem 0.65rem;
   border-radius: 2px;
   border: 1px solid rgba(255,255,255,0.10);
   background: transparent;
@@ -170,7 +205,8 @@
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.cl-edit-btn:hover {
+.cl-edit-btn:hover,
+.delete-button:hover {
   background: rgba(255,255,255,0.07);
   color: #fff;
   border-color: rgba(255,255,255,0.22);

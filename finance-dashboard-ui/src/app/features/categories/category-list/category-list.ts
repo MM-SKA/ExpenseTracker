@@ -74,13 +74,16 @@ export class CategoryList implements OnInit {
 
   }
 
-  editCategory(id: string): void {
+  viewCategoryExpenses(categoryName?: string): void {
+    if (!categoryName) return;
+    this.router.navigate(['/expenses'], { queryParams: { category: categoryName } });
+  }
 
+  editCategory(id: string): void {
     this.router.navigate([
       '/categories/edit',
       id
     ]);
-
   }
 
   deleteCategory(id: string): void {
