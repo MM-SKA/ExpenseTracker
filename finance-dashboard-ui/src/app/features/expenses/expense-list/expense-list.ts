@@ -6,6 +6,7 @@ import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-expense-list',
@@ -42,19 +43,19 @@ export class ExpenseList implements OnInit {
   ngOnInit(): void {
 
     this.route.queryParams.subscribe(params => {
-      if (params['category']) {
-        this.selectedCategory = params['category'];
-        this.currentPage = 1;
-        this.cdr.detectChanges();
-      }
+      this.selectedCategory = params['category'] ?? '';
+      this.filterText = params['search'] ?? '';
+      this.startDate = params['startDate'] ?? '';
+      this.endDate = params['endDate'] ?? '';
+      this.sortOrder = params['sort'] === 'oldest' ? 'oldest' : 'recent';
+      this.currentPage = Number(params['page']) || 1;
+      this.pageSize = Number(params['pageSize']) || 10;
+      this.loadExpenses();
     });
-
-    this.loadExpenses();
     this.categoryService
       .getCategories()
       .subscribe({
         next: categories => {
-          console.log(categories);
           this.categories = categories;
         }
       });
@@ -106,42 +107,6 @@ export class ExpenseList implements OnInit {
       });
   }
 
-  private sortExpenses(expenses: any[]): any[] {
-    return [...expenses].sort((a, b) => {
-      const aTime = Date.parse(a?.date ?? '');
-      const bTime = Date.parse(b?.date ?? '');
-      let comparison = 0;
-      if (!Number.isNaN(aTime) && !Number.isNaN(bTime)) {
-        comparison = aTime - bTime;
-      } else {
-        const aId = String(a?.id ?? '');
-        const bId = String(b?.id ?? '');
-        comparison = aId.localeCompare(bId);
-      }
-      return this.sortOrder === 'recent' ? -comparison : comparison;
-    });
-  }
-
-  filtered(): any[] {
-    const filter = this.filterText?.trim().toLowerCase();
-    const catFilter = this.selectedCategory?.trim().toLowerCase();
-
-    const result = this.expenses.filter(e => {
-      if (filter && !(e.description ?? '').toLowerCase().includes(filter)) { return false; }
-      if (this.startDate && e.date < this.startDate) { return false; }
-      if (this.endDate && e.date > this.endDate) { return false; }
-      if (catFilter) {
-        const eCatName = (e.categoryName ?? '').trim().toLowerCase();
-        const eCatId = (e.categoryId ?? '').trim().toLowerCase();
-        if (eCatName !== catFilter && eCatId !== catFilter) {
-          return false;
-        }
-      }
-      return true;
-    });
-    return this.sortExpenses(result);
-  }
-
   get totalPages(): number {
     return this.totalPagesCount;
   }
@@ -179,21 +144,21 @@ export class ExpenseList implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
-      this.loadExpenses();
+      this.updateQueryParams();
     }
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.loadExpenses();
+      this.updateQueryParams();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPagesCount) {
       this.currentPage++;
-      this.loadExpenses();
+      this.updateQueryParams();
     }
   }
 
@@ -227,17 +192,17 @@ export class ExpenseList implements OnInit {
 
   onFilterChange(): void {
     this.currentPage = 1;
-    this.loadExpenses();
+    this.updateQueryParams();
   }
 
   onSortChange(): void {
     this.currentPage = 1;
-    this.loadExpenses();
+    this.updateQueryParams();
   }
 
   onPageSizeChange(): void {
     this.currentPage = 1;
-    this.loadExpenses();
+    this.updateQueryParams();
   }
 
   clearFilter(): void {
@@ -247,6 +212,7 @@ export class ExpenseList implements OnInit {
     this.selectedCategory = '';
     this.sortOrder = 'recent';
     this.currentPage = 1;
+    this.pageSize = 10;
     this.router.navigate([], { relativeTo: this.route, queryParams: {} });
   }
 
@@ -263,20 +229,14 @@ export class ExpenseList implements OnInit {
       .deleteExpense(id)
       .subscribe({
         next: () => {
-          this.expenseService
-            .getExpenses()
-            .subscribe({
-              next: (response: any) => {
-                const data =
-                  response?.data ?? response;
-                this.expenses = Array.isArray(data) ? data : [];
-                this.storageService.setEncrypted('expenses', this.expenses);
-                if (this.currentPage > this.totalPages) {
-                  this.currentPage = Math.max(1, this.totalPages);
-                }
-                this.cdr.detectChanges();
-              }
-            });
+          if (
+            this.expenses.length === 1 &&
+            this.currentPage > 1
+          ) {
+            this.currentPage--;
+          }
+
+          this.loadExpenses();
         },
         error: (error) => {
           console.error(error);
@@ -289,6 +249,23 @@ export class ExpenseList implements OnInit {
 
   public editExpense(id: string): void {
     this.router.navigate(['/expenses/edit', id]);
+  }
+
+  private updateQueryParams(): void {
+    void this.router.navigate(
+      [], {
+      relativeTo: this.route,
+      queryParams: {
+        category: this.selectedCategory || null,
+        search: this.filterText || null,
+        startDate: this.startDate || null,
+        endDate: this.endDate || null,
+        sort: this.sortOrder,
+        page: this.currentPage,
+        pageSize: this.pageSize
+      }
+    }
+    );
   }
 
 }

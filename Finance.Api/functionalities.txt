@@ -1,19 +1,14 @@
-improve pagination
-
+add location as filter
 sorting filter , data , price
+
 encrypt
-
 cosmos db
-
 supabase
 repository
 dynamic versioning
-
 did today:
-
 custom validation
 api versioning
-
 logmessage vs logwarning
 primary constructor
 api for header and body params

@@ -51,7 +51,12 @@ export class AnalyticsDashboard implements OnInit {
 
   loadAnalytics(): void {
     this.isLoading = true;
-    this.expenseService.filterExpenses({ includeAnalytics: true }).subscribe({
+    this.expenseService.filterPagedExpenses({
+      pageNumber: 1,
+      pageSize: 10,
+      sortOrder: 'recent',
+      includeAnalytics: true
+    }).subscribe({
       next: (response: any) => {
         const data = response?.data ?? response;
         this.analytics = data?.analytics ?? data?.Analytics ?? null;
@@ -79,14 +84,17 @@ export class AnalyticsDashboard implements OnInit {
 
   updateAnalytics(): void {
     this.isLoading = true;
-    this.expenseService.filterExpenses({
+    this.expenseService.filterPagedExpenses({
       categoryId: this.filters.categoryId || undefined,
       startDate: this.filters.startDate || undefined,
       endDate: this.filters.endDate || undefined,
       minAmount: this.filters.minAmount ?? undefined,
       maxAmount: this.filters.maxAmount ?? undefined,
       notes: this.filters.notes || undefined,
-      includeAnalytics: true
+      includeAnalytics: true,
+      pageNumber: 1,
+      pageSize: 10,
+      sortOrder: 'recent',
     }).subscribe({
       next: (response: any) => {
         const data = response?.data ?? response;
