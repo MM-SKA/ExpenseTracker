@@ -6,23 +6,23 @@
       <div class="auth-brand">
         <div class="brand-mark-sm">F</div>
         <div>
-          <div class="brand-name">Finance Dashboard</div>
-          <div class="brand-tagline">Premium expense tracking</div>
+          <div class="brand-name">{{'FINANCE_DASHBOARD'|translate}}</div>
+          <div class="brand-tagline">{{'PREMIUM_EXPENSE_TRACKING'|translate}}</div>
         </div>
       </div>
 
       <!-- Header -->
       <div class="auth-header">
-        <div class="eyebrow">✦ Welcome back</div>
-        <h1 class="auth-title">Sign in to your <span>workspace</span></h1>
-        <p class="auth-subtitle">Securely access your expenses, categories, and analytics in one place.</p>
+        <div class="eyebrow">✦ {{'WELCOME_BACK'|translate}}</div>
+        <h1 class="auth-title">{{'SIGN_IN_TO_WORKSPACE'|translate}}</h1>
+        <p class="auth-subtitle">{{'SECURELY_ACCESS'|translate}}</p>
       </div>
 
       <!-- Form -->
       <form class="auth-form" (ngSubmit)="login()">
 
         <div class="field-group">
-          <label for="email-input" class="form-label">Email address</label>
+          <label for="email-input" class="form-label">{{'EMAIL_ADDRESS'}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">✉</span>
             <input
@@ -31,13 +31,13 @@
               name="email"
               type="email"
               autocomplete="email"
-              placeholder="you@example.com"
+              [placeholder]="'EMAIL_PLACEHOLDER'|translate"
               [(ngModel)]="email">
           </div>
         </div>
 
         <div class="field-group">
-          <label for="password-input" class="form-label">Password</label>
+          <label for="password-input" class="form-label">{{'PASSWORD'}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">🔒</span>
             <input
@@ -46,15 +46,15 @@
               name="password"
               type="password"
               autocomplete="current-password"
-              placeholder="Enter your password"
+              [placeholder]="'PASSWORD_PLACEHOLDER'|translate"
               [(ngModel)]="password">
           </div>
         </div>
 
-        <button class="btn-submit" type="submit">Continue →</button>
+        <button class="btn-submit" type="submit">{{'CONTINUE'|translate}} →</button>
       </form>
 
-      <p class="auth-footer-link">Don't have an account? <a routerLink="/register">Create one free</a></p>
+      <p class="auth-footer-link">{{'NO_ACCOUNT'|translate}} <a routerLink="/register">{{'CREATE_ONE_FREE'|translate}}</a></p>
     </div>
   </div>
 </div>

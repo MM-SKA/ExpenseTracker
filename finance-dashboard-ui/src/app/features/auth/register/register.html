@@ -6,31 +6,31 @@
       <div class="auth-brand">
         <div class="brand-mark-sm">F</div>
         <div>
-          <div class="brand-name">Finance Dashboard</div>
-          <div class="brand-tagline">Create your free account</div>
+          <div class="brand-name">{{'FINANCE_DASHBOARD'|translate}}</div>
+          <div class="brand-tagline">{{'CREATE_FREE_ACCOUNT'|translate}}</div>
         </div>
       </div>
 
       <!-- Header -->
       <div class="auth-header">
-        <div class="eyebrow">✦ New account</div>
-        <h1 class="auth-title">Get started <span>for free</span></h1>
-        <p class="auth-subtitle">Track expenses, set budgets, and unlock smart analytics — all in one place.</p>
+        <div class="eyebrow">✦ {{'NEW_ACCOUNT'|translate}}</div>
+        <h1 class="auth-title">{{'GET_STARTED_FREE'|translate}}</h1>
+        <p class="auth-subtitle">{{'TRACK_EXPENSES_BUDGETS'|translate}}</p>
       </div>
 
       <!-- Form -->
       <form class="auth-form-grid" (ngSubmit)="register()">
 
         <div class="field-group">
-          <label for="fullName-input" class="form-label">Full name</label>
+          <label for="fullName-input" class="form-label">{{'FULL_NAME'}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">👤</span>
-            <input id="fullName-input" class="field-input" type="text" name="fullName" [(ngModel)]="fullName" placeholder="Jane Doe" autocomplete="name" />
+            <input id="fullName-input" class="field-input" type="text" name="fullName" [(ngModel)]="fullName" [placeholder]="'FULL_NAME_PLACEHOLDER'|translate" autocomplete="name" />
           </div>
         </div>
 
         <div class="field-group">
-          <label for="email-input" class="form-label">Email address</label>
+          <label for="email-input" class="form-label">{{'EMAIL_ADDRESS'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">✉</span>
             <input id="email-input" class="field-input" type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" autocomplete="email" />
@@ -38,15 +38,15 @@
         </div>
 
         <div class="field-group">
-          <label for="password-input" class="form-label">Password</label>
+          <label for="password-input" class="form-label">{{'PASSWORD'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">🔒</span>
-            <input id="password-input" class="field-input" type="password" name="password" [(ngModel)]="password" placeholder="Create a secure password" autocomplete="new-password" />
+            <input id="password-input" class="field-input" type="password" name="password" [(ngModel)]="password" [placeholder]="'CREATE_PASSWORD'|translate" autocomplete="new-password" />
           </div>
         </div>
 
         <div class="field-group">
-          <label for="phoneNumber-input" class="form-label">Phone number</label>
+          <label for="phoneNumber-input" class="form-label">{{'PHONE_NUMBER'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">📱</span>
             <input id="phoneNumber-input" class="field-input" type="tel" name="phoneNumber" [(ngModel)]="phoneNumber" placeholder="+1 234 567 8900" autocomplete="tel" />
@@ -54,11 +54,11 @@
         </div>
 
         <div class="col-span-2">
-          <button class="btn-submit" type="submit">Create account →</button>
+          <button class="btn-submit" type="submit">{{'CREATE_ACCOUNT'|translate}} →</button>
         </div>
       </form>
 
-      <p class="auth-footer-link">Already have an account? <a routerLink="/">Sign in</a></p>
+      <p class="auth-footer-link">{{'ALREADY_HAVE_ACCOUNT'|translate}} <a routerLink="/">{{'SIGN_IN'|translate}}</a></p>
     </div>
   </div>
 </div>

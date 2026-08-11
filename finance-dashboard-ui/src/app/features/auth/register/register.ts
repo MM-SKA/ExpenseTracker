@@ -4,11 +4,12 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { RegisterRequest } from '../../../shared/models/auth/register-request';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
@@ -21,6 +22,7 @@ export class Register {
   readonly router = inject(Router);
   readonly authService = inject(AuthService);
   readonly categoryService = inject(CategoryService);
+  public readonly translate = inject(TranslateService);
 
   register(): void {
     const request: RegisterRequest = {

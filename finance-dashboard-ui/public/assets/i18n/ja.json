@@ -1,120 +1,150 @@
 {
   "APP_TITLE": "個人財務ダッシュボード",
-
   "LOGIN": "ログイン",
   "REGISTER": "登録",
   "SIGN_OUT": "ログアウト",
-
   "EXPENSES": "支出",
   "CREATE": "作成",
   "CATEGORIES": "カテゴリー",
   "ANALYTICS": "分析",
   "AI": "AI",
-
   "ADD_EXPENSE": "支出を追加",
   "EDIT_EXPENSE": "支出を編集",
   "DELETE_EXPENSE": "支出を削除",
-
   "EDIT": "編集",
   "DELETE": "削除",
   "SAVE": "保存",
   "CANCEL": "キャンセル",
-
   "EXPENSE": "支出を",
   "CATEGORY": "カテゴリー",
   "AMOUNT": "金額",
   "DATE": "日付",
   "DESCRIPTION": "説明",
   "LOCATION": "場所",
-
   "EXPENSE_OVERVIEW": "支出の概要",
   "EXPENSE_OVERVIEW_SUBTITLE": "支出を追跡し、フィルター、並べ替え、ページ移動を簡単に行えます。",
-
   "TOTAL": "合計",
   "COUNT": "件数",
   "AVERAGE": "平均",
   "HIGHEST": "最高額",
-
   "FILTERS_OPTIONS": "フィルターとオプション",
   "NEWEST_FIRST": "新しい順",
   "OLDEST_FIRST": "古い順",
-
   "SEARCH": "検索",
   "SEARCH_PLACEHOLDER": "説明またはメモ…",
-
   "ALL_CATEGORIES": "すべてのカテゴリー",
-
   "SORT_BY": "並べ替え",
   "RECENT_NEWEST": "最近の支出（新しい順）",
   "OLDEST": "古い順",
-
   "PER_PAGE": "1ページあたり",
   "ITEMS": "件",
-
   "FROM": "開始日",
   "TO": "終了日",
-
   "CLEAR_FILTERS": "フィルターをクリア",
-
   "SHOWING": "表示",
   "OF": "/",
   "EXPENSES_COUNT": "件の支出",
-
   "PREVIOUS": "前へ",
   "NEXT": "次へ",
-
   "NO_EXPENSES_FOUND": "支出が見つかりません",
   "NO_EXPENSES_MESSAGE": "フィルターを変更するか、新しい支出を追加してください。",
-
   "NEW_EXPENSE": "新しい支出",
   "ADD_PURCHASE": "購入を追加",
   "ADD_PURCHASE_SUBTITLE": "カテゴリー、金額、日付を記録して、より良い支出管理を行いましょう。",
-
   "EDIT_EXPENSE_LABEL": "支出を編集",
   "UPDATE_YOUR_EXPENSE": "支出を更新",
   "UPDATE_EXPENSE_SUBTITLE": "以下の情報を変更して、変更内容を保存してください。",
   "UPDATE_EXPENSE": "支出を更新",
-
   "DESCRIPTION_PLACEHOLDER": "説明…",
   "AMOUNT_PLACEHOLDER": "0.00",
   "LOCATION_PLACEHOLDER": "レストラン、店舗…",
-
   "LOADING": "読み込み中…",
   "NO_CATEGORIES": "カテゴリーがありません",
-
   "EXPENSE_CREATED_SUCCESS": "支出を作成しました。",
   "EXPENSE_EDITED_SUCCESS": "支出を更新しました。",
   "EXPENSE_DELETED_SUCCESS": "支出を削除しました。",
-
   "SUCCESS": "成功",
   "ERROR": "エラー",
-
   "DELETE_EXPENSE_CONFIRMATION": "この支出を削除してもよろしいですか？",
   "DELETE_EXPENSE_ERROR": "支出を削除できませんでした。",
-
   "CATEGORY_PAGE": "カテゴリー",
   "EXPENSE_CATEGORIES": "支出カテゴリー",
   "CATEGORY_PAGE_SUBTITLE": "カテゴリーを作成・管理して、すべての支出を整理しましょう。",
-
   "NEW_CATEGORY": "新しいカテゴリー",
   "CREATE_CATEGORY": "カテゴリーを作成",
   "EDITING_CATEGORY": "カテゴリーを編集",
   "CATEGORY_NAME": "カテゴリー名",
   "CATEGORY_NAME_PLACEHOLDER": "カテゴリー名…",
   "CATEGORY_EXAMPLE_PLACEHOLDER": "例：サブスクリプション、食料品…",
-
   "SYSTEM": "システム",
   "CUSTOM": "カスタム",
-
   "VIEW_EXPENSES": "支出を見る",
   "CREATE_CATEGORY_BUTTON": "カテゴリーを保存",
   "UPDATE_CATEGORY": "カテゴリーを更新",
-
   "NO_CATEGORIES_YET": "カテゴリーがありません",
   "NO_CATEGORIES_MESSAGE": "最初のカテゴリーを作成して、支出の整理を始めましょう。",
   "CREATE_FIRST_CATEGORY": "カテゴリーを作成",
-
   "LOADING_CATEGORIES": "カテゴリーを読み込んでいます…",
-
-  "VIEW_CATEGORY_EXPENSES": "{{category}}の支出を見る"
+  "VIEW_CATEGORY_EXPENSES": "{{category}}の支出を見る",
+  "FINANCE_DASHBOARD": "個人財務ダッシュボード",
+  "PREMIUM_EXPENSE_TRACKING": "プレミアム支出管理",
+  "WELCOME_BACK": "お帰りなさい",
+  "SIGN_IN_TO_WORKSPACE": "ワークスペースにサインイン",
+  "SECURELY_ACCESS": "支出、カテゴリー、分析機能に安全にアクセスできます。",
+  "EMAIL_ADDRESS": "メールアドレス",
+  "EMAIL_PLACEHOLDER": "you@example.com",
+  "PASSWORD": "パスワード",
+  "PASSWORD_PLACEHOLDER": "パスワードを入力してください",
+  "CONTINUE": "続行",
+  "NO_ACCOUNT": "アカウントをお持ちでないですか？",
+  "CREATE_ONE_FREE": "無料で作成",
+  "NEW_ACCOUNT": "新しいアカウント",
+  "GET_STARTED_FREE": "無料で始めましょう",
+  "TRACK_EXPENSES_BUDGETS": "支出を追跡し、予算を管理し、スマート分析を活用しましょう。",
+  "CREATE_FREE_ACCOUNT": "無料アカウントを作成",
+  "FULL_NAME": "氏名",
+  "FULL_NAME_PLACEHOLDER": "山田 太郎",
+  "CREATE_PASSWORD": "安全なパスワードを作成",
+  "PHONE_NUMBER": "電話番号",
+  "PHONE_PLACEHOLDER": "+81 90 1234 5678",
+  "CREATE_ACCOUNT": "アカウント作成",
+  "ALREADY_HAVE_ACCOUNT": "すでにアカウントをお持ちですか？",
+  "SIGN_IN": "サインイン",
+  "ANALYTICS_TITLE": "支出分析",
+  "ANALYTICS_SUBTITLE": "支出の傾向、カテゴリー分布、取引統計を確認できます。",
+  "FILTER_ANALYTICS": "分析をフィルター",
+  "START_DATE": "開始日",
+  "END_DATE": "終了日",
+  "MIN_AMOUNT": "最小金額",
+  "MAX_AMOUNT": "最大金額",
+  "SEARCH_HINT": "メモ・説明・カテゴリー",
+  "SEARCH_EXPENSES_PLACEHOLDER": "支出を検索…",
+  "SEARCH_ANALYTICS": "分析を検索",
+  "RESET": "リセット",
+  "FETCHING_ANALYTICS": "分析を取得中…",
+  "TOTAL_SPENT": "総支出額",
+  "TRANSACTIONS": "取引数",
+  "AVERAGE_EXPENSE": "平均支出額",
+  "DATE_RANGE": "期間",
+  "SPEND_BY_CATEGORY": "カテゴリー別支出",
+  "CATEGORIES_COUNT": "カテゴリー",
+  "NO_ANALYTICS_AVAILABLE": "分析データがありません",
+  "NO_ANALYTICS_MESSAGE": "分析を表示するには支出を追加するか、フィルターを調整してください。",
+  "FINANCE_AI": "ファイナンスAI",
+  "ONLINE_READY": "オンライン・準備完了",
+  "GPT_POWERED": "GPT搭載",
+  "AI_WELCOME_TITLE": "あなたのファイナンスAI",
+  "AI_WELCOME_MESSAGE": "支出、予算、財務分析について何でも質問してください。より賢いお金の使い方をお手伝いします。",
+  "AI_CHIP_MONTHLY_SUMMARY": "📊 月次サマリー",
+  "AI_CHIP_OVERSPENDING": "⚠️ 使い過ぎアラート",
+  "AI_CHIP_SAVING_TIPS": "💡 節約のヒント",
+  "AI_CHIP_TOP_EXPENSES": "🔝 上位の支出",
+  "AI_PROMPT_MONTHLY_SUMMARY": "今月の支出を要約してください",
+  "AI_PROMPT_OVERSPENDING": "どのカテゴリーで使い過ぎていますか？",
+  "AI_PROMPT_SAVING_TIPS": "支出に基づいて節約アドバイスをください",
+  "AI_PROMPT_TOP_EXPENSES": "上位5件の支出を表示してください",
+  "ASK_FINANCES_LABEL": "財務について質問する",
+  "ASK_FINANCES_PLACEHOLDER": "財務について質問してください…",
+  "SEND": "送信",
+  "INPUT_HINT": "Enterで送信・Shift+Enterで改行"
 }

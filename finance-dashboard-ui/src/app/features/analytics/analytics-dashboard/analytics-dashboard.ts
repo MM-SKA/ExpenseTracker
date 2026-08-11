@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category/category';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-analytics-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './analytics-dashboard.html',
   styleUrl: './analytics-dashboard.css',
 })
@@ -28,6 +29,8 @@ export class AnalyticsDashboard implements OnInit {
   readonly expenseService = inject(ExpenseService);
   readonly categoryService = inject(CategoryService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly translate = inject(TranslateService);
+
   ngOnInit(): void {
     this.loadCategories();
     this.loadAnalytics();

@@ -37,6 +37,7 @@ export class ExpenseList implements OnInit {
   private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
+
     this.route.queryParams.subscribe(params => {
       if (params['category']) {
         this.selectedCategory = params['category'];
@@ -45,28 +46,36 @@ export class ExpenseList implements OnInit {
       }
     });
 
-    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
-    if (token) {
-      this.expenseService.getExpenses().subscribe({
+    this.loadExpenses();
+    this.categoryService
+      .getCategories()
+      .subscribe({
+        next: categories => {
+          this.categories = categories;
+        }
+      });
+  }
+
+  loadExpenses(): void {
+
+    this.expenseService
+      .getExpenses()
+      .subscribe({
         next: (response: any) => {
-          const data = response?.data ?? response;
-          this.expenses = Array.isArray(data) ? data : [];
-          this.storageService.setEncrypted('expenses', this.expenses);
+
+          const data =
+            response?.data ?? response;
+
+          this.expenses =
+            Array.isArray(data)
+              ? data
+              : [];
           this.cdr.detectChanges();
         },
-        error: () => this.load()
+        error: error => {
+          console.error(error);
+        }
       });
-      this.categoryService
-        .getCategories()
-        .subscribe({
-          next: (categories) => {
-            this.categories =
-              categories;
-          }
-        });
-    } else {
-      this.load();
-    }
   }
 
   load(): void {

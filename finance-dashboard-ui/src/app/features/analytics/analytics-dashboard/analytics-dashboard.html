@@ -2,23 +2,23 @@
 
   <!-- Header -->
   <div>
-    <p class="an-eyebrow">Analytics</p>
-    <h1 class="an-title">Expense Insights</h1>
-    <p class="an-subtitle">Monitor spending trends, category distribution and transaction statistics.</p>
+    <p class="an-eyebrow">{{'ANALYTICS'|translate}}</p>
+    <h1 class="an-title">{{'ANALYTICS_TITLE'|translate}}</h1>
+    <p class="an-subtitle">{{'ANALYTICS_SUBTITLE'|translate}}</p>
   </div>
 
   <!-- Filter Panel -->
   <div class="an-filter">
     <div class="an-filter-body">
-      <p class="an-filter-title">Filter Analytics</p>
+      <p class="an-filter-title">{{'FILTER_ANALYTICS'|translate}}</p>
 
       <div class="an-filter-grid">
 
         <!-- Category -->
         <div class="an-field">
-          <label for="category-list" class="an-label">Category</label>
+          <label for="category-list" class="an-label">{{'CATEGORY'|translate}}</label>
           <select id="category-list" class="an-select" [(ngModel)]="filters.categoryId">
-            <option value="">All Categories</option>
+            <option value="">{{'ALL_CATEGORIES'|translate}}</option>
             @for (category of categories; track category.id) {
               <option [value]="category.id">{{ category.name }}</option>
             }
@@ -27,26 +27,26 @@
 
         <!-- Start Date -->
         <div class="an-field">
-          <label for="startDate-input" class="an-label">Start Date</label>
+          <label for="startDate-input" class="an-label">{{'START_DATE'|translate}}</label>
           <input id="startDate-input" class="an-input" type="date" [(ngModel)]="filters.startDate" />
         </div>
 
         <!-- End Date -->
         <div class="an-field">
-          <label for="endDate-input" class="an-label">End Date</label>
+          <label for="endDate-input" class="an-label">{{'END_DATE'|translate}}</label>
           <input id="endDate-input" class="an-input" type="date" [(ngModel)]="filters.endDate" />
         </div>
 
         <!-- Min Amount -->
         <div class="an-field">
-          <label for="minAmount-input" class="an-label">Min Amount</label>
+          <label for="minAmount-input" class="an-label">{{'MIN_AMOUNT'|translate}}</label>
           <input id="minAmount-input" class="an-input" type="number" min="0" step="0.01"
             [(ngModel)]="filters.minAmount" placeholder="0.00" />
         </div>
 
         <!-- Max Amount -->
         <div class="an-field">
-          <label for="maxAmount-input" class="an-label">Max Amount</label>
+          <label for="maxAmount-input" class="an-label">{{'MAX_AMOUNT'|translate}}</label>
           <input id="maxAmount-input" class="an-input" type="number" min="0" step="0.01"
             [(ngModel)]="filters.maxAmount" placeholder="0.00" />
         </div>
@@ -55,10 +55,10 @@
         <div class="an-field an-filter-full">
           <div class="an-label-row">
             <label for="notes-input" class="an-label">Search</label>
-            <span class="an-label-hint">Notes · Description · Category</span>
+            <span class="an-label-hint">{{'SEARCH_HINT'|translate}}</span>
           </div>
           <input id="notes-input" class="an-input" type="text"
-            [(ngModel)]="filters.notes" placeholder="Search expenses…" />
+            [(ngModel)]="filters.notes" [placeholder]="'SEARCH_EXPENSES_PLACEHOLDER'|translate" />
         </div>
 
       </div>
@@ -66,10 +66,10 @@
       <!-- Actions -->
       <div class="an-filter-actions">
         <button class="an-btn-search" (click)="updateAnalytics()" [disabled]="isLoading">
-          Search Analytics
+          {{'SEARCH_ANALYTICS'|translate}}
         </button>
         <button class="an-btn-reset" (click)="refresh()" [disabled]="isLoading">
-          Reset
+          {{'RESET'|translate}}
         </button>
       </div>
     </div>
@@ -79,7 +79,7 @@
   @if (isLoading) {
     <div class="an-loading">
       <div class="an-spinner"></div>
-      <span>Fetching analytics…</span>
+      <span>{{'FETCHING_ANALYTICS'|translate}}</span>
     </div>
   }
 
@@ -91,7 +91,7 @@
 
         <div class="an-kpi-card">
           <div class="an-kpi-icon">💰</div>
-          <div class="an-kpi-label">Total Spent</div>
+          <div class="an-kpi-label">{{'TOTAL_SPENT'|translate}}</div>
           <div class="an-kpi-value">
             {{ (analytics.summary?.totalSpent ?? analytics.Summary?.TotalSpent) | currency:'INR':'symbol':'1.0-0' }}
           </div>
@@ -99,7 +99,7 @@
 
         <div class="an-kpi-card">
           <div class="an-kpi-icon">📊</div>
-          <div class="an-kpi-label">Transactions</div>
+          <div class="an-kpi-label">{{'TRANSACTIONS'|translate}}</div>
           <div class="an-kpi-value">
             {{ analytics.summary?.count ?? analytics.Summary?.Count }}
           </div>
@@ -107,7 +107,7 @@
 
         <div class="an-kpi-card">
           <div class="an-kpi-icon">💳</div>
-          <div class="an-kpi-label">Average Expense</div>
+          <div class="an-kpi-label">{{'AVERAGE_EXPENSE'|translate}}</div>
           <div class="an-kpi-value">
             {{ (analytics.summary?.averageAmount ?? analytics.Summary?.AverageAmount) | currency:'INR':'symbol':'1.0-0' }}
           </div>
@@ -115,7 +115,7 @@
 
         <div class="an-kpi-card">
           <div class="an-kpi-icon">📅</div>
-          <div class="an-kpi-label">Date Range</div>
+          <div class="an-kpi-label">{{'DATE_RANGE'|translate}}</div>
           <div class="an-kpi-value an-kpi-sm">
             {{ (analytics.dateDistribution?.StartDate ?? analytics.DateDistribution?.StartDate) | date:'mediumDate' }}
             —
@@ -132,9 +132,9 @@
     @if ((analytics?.byCategory?.length ?? analytics?.ByCategory?.length)) {
       <div class="an-section">
         <div class="an-section-header">
-          <h2 class="an-section-title">Spend by Category</h2>
+          <h2 class="an-section-title">{{'SPEND_BY_CATEGORY'|translate}}</h2>
           <span class="an-section-badge">
-            {{ analytics?.byCategory?.length ?? analytics?.ByCategory?.length }} Categories
+            {{ analytics?.byCategory?.length ?? analytics?.ByCategory?.length }} {{'CATEGORIES_COUNT'|translate}}
           </span>
         </div>
         <div class="an-section-body">
@@ -173,8 +173,8 @@
   <ng-template #noAnalytics>
     <div class="an-empty">
       <div class="an-empty-icon">📉</div>
-      <h3>No analytics available</h3>
-      <p>Add some expenses or adjust your filters to view analytics.</p>
+      <h3>{{'NO_ANALYTICS_AVAILABLE'|translate}}</h3>
+      <p>{{'NO_ANALYTICS_MESSAGE'|translate}}</p>
     </div>
   </ng-template>
 

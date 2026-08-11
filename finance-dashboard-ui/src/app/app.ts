@@ -1,12 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { AuthUser } from './shared/models/auth/auth-user';
-import {
-  NavigationEnd,
-  Router,
-  RouterLink,
-  RouterLinkActive,
-  RouterOutlet
-} from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { ScrollTopComponent } from './shared/components/scroll-top/scroll-top';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 

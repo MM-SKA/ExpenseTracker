@@ -1,33 +1,23 @@
-import {
-  Component,
-  ElementRef,
-  ViewChild,
-  inject
-} from '@angular/core';
-
+import { Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-
 import { AiService } from '../../../core/services/ai';
-
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 interface ChatMessage {
-
   role: 'ai' | 'user';
-
   content: string;
-
 }
 
 @Component({
   selector: 'app-ai-chat',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   templateUrl: './ai-chat.html',
   styleUrl: './ai-chat.css',
 })
-export class AiChat{
+export class AiChat {
 
   @ViewChild('messagesContainer')
-  private readonly messagesContainer!:
-    ElementRef<HTMLDivElement>;
+  private readonly messagesContainer!: ElementRef<HTMLDivElement>;
+  public readonly translate = inject(TranslateService);
 
   messages: ChatMessage[] = [];
 
@@ -39,19 +29,6 @@ export class AiChat{
 
   private readonly aiService =
     inject(AiService);
-
-  // ngAfterViewChecked(): void {
-
-  //   if (this.shouldScroll) {
-
-  //     this.scrollToBottom();
-
-  //     this.shouldScroll = false;
-
-  //   }
-
-  // }
-
   send(): void {
 
     const text =

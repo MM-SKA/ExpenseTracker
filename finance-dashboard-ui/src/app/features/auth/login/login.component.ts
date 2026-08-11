@@ -3,10 +3,11 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
@@ -16,9 +17,9 @@ export class LoginComponent {
 
   password = '';
   readonly router = inject(Router);
-  readonly authService =
-    inject(AuthService);
+  readonly authService =    inject(AuthService);
   readonly categoryService = inject(CategoryService);
+  public readonly translate = inject(TranslateService);
 
   login(): void {
 

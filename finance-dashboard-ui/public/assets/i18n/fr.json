@@ -1,120 +1,150 @@
 {
   "APP_TITLE": "Tableau de bord des finances personnelles",
-
   "LOGIN": "Connexion",
   "REGISTER": "Inscription",
   "SIGN_OUT": "Déconnexion",
-
   "EXPENSES": "Dépenses",
   "CREATE": "Créer",
   "CATEGORIES": "Catégories",
   "ANALYTICS": "Analyses",
   "AI": "IA",
-
   "ADD_EXPENSE": "Ajouter une dépense",
   "EDIT_EXPENSE": "Modifier la dépense",
   "DELETE_EXPENSE": "Supprimer la dépense",
-
   "EDIT": "Modifier",
   "DELETE": "Supprimer",
   "SAVE": "Enregistrer",
   "CANCEL": "Annuler",
-
   "EXPENSE": "Dépense",
   "CATEGORY": "Catégorie",
   "AMOUNT": "Montant",
   "DATE": "Date",
   "DESCRIPTION": "Description",
   "LOCATION": "Lieu",
-
   "EXPENSE_OVERVIEW": "Aperçu de vos dépenses",
   "EXPENSE_OVERVIEW_SUBTITLE": "Suivez vos dépenses — filtrez, triez et parcourez facilement.",
-
   "TOTAL": "Total",
   "COUNT": "Nombre",
   "AVERAGE": "Moyenne",
   "HIGHEST": "Maximum",
-
   "FILTERS_OPTIONS": "Filtres et options",
   "NEWEST_FIRST": "Plus récent en premier",
   "OLDEST_FIRST": "Plus ancien en premier",
-
   "SEARCH": "Rechercher",
   "SEARCH_PLACEHOLDER": "Description ou note…",
-
   "ALL_CATEGORIES": "Toutes les catégories",
-
   "SORT_BY": "Trier par",
   "RECENT_NEWEST": "Récent (plus récent en premier)",
   "OLDEST": "Plus ancien en premier",
-
   "PER_PAGE": "Par page",
   "ITEMS": "éléments",
-
   "FROM": "De",
   "TO": "À",
-
   "CLEAR_FILTERS": "Effacer les filtres",
-
   "SHOWING": "Affichage de",
   "OF": "sur",
   "EXPENSES_COUNT": "dépenses",
-
   "PREVIOUS": "Précédent",
   "NEXT": "Suivant",
-
   "NO_EXPENSES_FOUND": "Aucune dépense trouvée",
   "NO_EXPENSES_MESSAGE": "Essayez de modifier vos filtres ou ajoutez une nouvelle dépense.",
-
   "NEW_EXPENSE": "Nouvelle dépense",
   "ADD_PURCHASE": "Ajouter un achat",
   "ADD_PURCHASE_SUBTITLE": "Enregistrez vos dépenses avec leur catégorie, montant et date pour améliorer vos rapports.",
-
   "EDIT_EXPENSE_LABEL": "Modifier la dépense",
   "UPDATE_YOUR_EXPENSE": "Modifier votre dépense",
   "UPDATE_EXPENSE_SUBTITLE": "Modifiez les informations ci-dessous et enregistrez vos changements.",
   "UPDATE_EXPENSE": "Modifier la dépense",
-
   "DESCRIPTION_PLACEHOLDER": "Description…",
   "AMOUNT_PLACEHOLDER": "0,00",
   "LOCATION_PLACEHOLDER": "Restaurant, magasin…",
-
   "LOADING": "Chargement…",
   "NO_CATEGORIES": "Aucune catégorie",
-
   "EXPENSE_CREATED_SUCCESS": "Dépense créée avec succès.",
   "EXPENSE_EDITED_SUCCESS": "Dépense modifiée avec succès.",
   "EXPENSE_DELETED_SUCCESS": "Dépense supprimée avec succès.",
-
   "SUCCESS": "Succès",
   "ERROR": "Erreur",
-
   "DELETE_EXPENSE_CONFIRMATION": "Voulez-vous vraiment supprimer cette dépense ?",
   "DELETE_EXPENSE_ERROR": "Impossible de supprimer la dépense.",
-
   "CATEGORY_PAGE": "Catégories",
   "EXPENSE_CATEGORIES": "Catégories de dépenses",
   "CATEGORY_PAGE_SUBTITLE": "Créez et gérez des catégories pour organiser toutes vos dépenses.",
-
   "NEW_CATEGORY": "Nouvelle catégorie",
   "CREATE_CATEGORY": "Créer une catégorie",
   "EDITING_CATEGORY": "Modification de la catégorie",
   "CATEGORY_NAME": "Nom de la catégorie",
   "CATEGORY_NAME_PLACEHOLDER": "Nom de la catégorie…",
   "CATEGORY_EXAMPLE_PLACEHOLDER": "ex. Abonnements, Courses…",
-
   "SYSTEM": "Système",
   "CUSTOM": "Personnalisée",
-
   "VIEW_EXPENSES": "Voir les dépenses",
   "CREATE_CATEGORY_BUTTON": "Enregistrer la catégorie",
   "UPDATE_CATEGORY": "Modifier la catégorie",
-
   "NO_CATEGORIES_YET": "Aucune catégorie",
   "NO_CATEGORIES_MESSAGE": "Créez votre première catégorie pour commencer à organiser vos dépenses.",
   "CREATE_FIRST_CATEGORY": "Créer une catégorie",
-
   "LOADING_CATEGORIES": "Chargement des catégories…",
-
-  "VIEW_CATEGORY_EXPENSES": "Voir les dépenses de {{category}}"
+  "VIEW_CATEGORY_EXPENSES": "Voir les dépenses de {{category}}",
+  "FINANCE_DASHBOARD": "Tableau de bord financier",
+  "PREMIUM_EXPENSE_TRACKING": "Suivi premium des dépenses",
+  "WELCOME_BACK": "Bon retour",
+  "SIGN_IN_TO_WORKSPACE": "Connectez-vous à votre espace de travail",
+  "SECURELY_ACCESS": "Accédez en toute sécurité à vos dépenses, catégories et analyses depuis un seul endroit.",
+  "EMAIL_ADDRESS": "Adresse e-mail",
+  "EMAIL_PLACEHOLDER": "vous@exemple.com",
+  "PASSWORD": "Mot de passe",
+  "PASSWORD_PLACEHOLDER": "Entrez votre mot de passe",
+  "CONTINUE": "Continuer",
+  "NO_ACCOUNT": "Vous n'avez pas de compte ?",
+  "CREATE_ONE_FREE": "Créez-en un gratuitement",
+  "NEW_ACCOUNT": "Nouveau compte",
+  "GET_STARTED_FREE": "Commencez gratuitement",
+  "TRACK_EXPENSES_BUDGETS": "Suivez vos dépenses, gérez vos budgets et profitez d'analyses intelligentes.",
+  "CREATE_FREE_ACCOUNT": "Créez votre compte gratuit",
+  "FULL_NAME": "Nom complet",
+  "FULL_NAME_PLACEHOLDER": "Jean Dupont",
+  "CREATE_PASSWORD": "Créez un mot de passe sécurisé",
+  "PHONE_NUMBER": "Numéro de téléphone",
+  "PHONE_PLACEHOLDER": "+33 6 12 34 56 78",
+  "CREATE_ACCOUNT": "Créer un compte",
+  "ALREADY_HAVE_ACCOUNT": "Vous avez déjà un compte ?",
+  "SIGN_IN": "Se connecter",
+  "ANALYTICS_TITLE": "Analyse des dépenses",
+  "ANALYTICS_SUBTITLE": "Suivez les tendances de dépenses, la répartition par catégorie et les statistiques des transactions.",
+  "FILTER_ANALYTICS": "Filtrer les analyses",
+  "START_DATE": "Date de début",
+  "END_DATE": "Date de fin",
+  "MIN_AMOUNT": "Montant minimum",
+  "MAX_AMOUNT": "Montant maximum",
+  "SEARCH_HINT": "Notes · Description · Catégorie",
+  "SEARCH_EXPENSES_PLACEHOLDER": "Rechercher des dépenses…",
+  "SEARCH_ANALYTICS": "Rechercher",
+  "RESET": "Réinitialiser",
+  "FETCHING_ANALYTICS": "Chargement des analyses…",
+  "TOTAL_SPENT": "Dépenses totales",
+  "TRANSACTIONS": "Transactions",
+  "AVERAGE_EXPENSE": "Dépense moyenne",
+  "DATE_RANGE": "Période",
+  "SPEND_BY_CATEGORY": "Dépenses par catégorie",
+  "CATEGORIES_COUNT": "Catégories",
+  "NO_ANALYTICS_AVAILABLE": "Aucune analyse disponible",
+  "NO_ANALYTICS_MESSAGE": "Ajoutez des dépenses ou modifiez vos filtres pour afficher les analyses.",
+  "FINANCE_AI": "IA Finance",
+  "ONLINE_READY": "En ligne · Prêt",
+  "GPT_POWERED": "Propulsé par GPT",
+  "AI_WELCOME_TITLE": "Votre IA Finance",
+  "AI_WELCOME_MESSAGE": "Posez-moi toutes vos questions sur vos dépenses, budgets ou analyses financières. Je vous aiderai à prendre de meilleures décisions financières.",
+  "AI_CHIP_MONTHLY_SUMMARY": "📊 Résumé mensuel",
+  "AI_CHIP_OVERSPENDING": "⚠️ Alertes de dépassement",
+  "AI_CHIP_SAVING_TIPS": "💡 Conseils d'épargne",
+  "AI_CHIP_TOP_EXPENSES": "🔝 Principales dépenses",
+  "AI_PROMPT_MONTHLY_SUMMARY": "Résumez mes dépenses de ce mois",
+  "AI_PROMPT_OVERSPENDING": "Dans quelle catégorie je dépense trop ?",
+  "AI_PROMPT_SAVING_TIPS": "Donnez-moi des conseils d'épargne selon mes dépenses",
+  "AI_PROMPT_TOP_EXPENSES": "Montrez mes 5 plus grosses dépenses",
+  "ASK_FINANCES_LABEL": "Posez une question sur vos finances",
+  "ASK_FINANCES_PLACEHOLDER": "Posez une question sur vos finances…",
+  "SEND": "Envoyer",
+  "INPUT_HINT": "Appuyez sur Entrée pour envoyer · Maj+Entrée pour une nouvelle ligne"
 }

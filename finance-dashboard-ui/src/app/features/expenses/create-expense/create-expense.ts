@@ -54,38 +54,36 @@ export class CreateExpense implements OnInit {
   }
 
   save(): void {
-    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null;
-    if (token) {
-      this.expenseService.createExpense({
+
+    this.expenseService
+      .createExpense({
         categoryId: this.categoryId,
         amount: Number.parseFloat(this.amount) || 0,
         notes: this.description,
         date: this.date,
         location: this.location
-      }).subscribe({
-        next: () => {
-          this.toastr.success('Expense created successfully.', 'Success');
-          this.router.navigate(['/expenses'])
-        },
-        error: () => this.saveToLocal()
-      });
-    } else {
-      this.saveToLocal();
-    }
-  }
+      })
+      .subscribe({
 
-  private saveToLocal(): void {
-    const list = this.storageService.getEncrypted<any[]>('expenses') || [];
-    list.push({
-      id: Date.now().toString(),
-      description: this.description,
-      amount: Number.parseFloat(this.amount) || 0,
-      date: this.date,
-      location: this.location,
-      categoryName: this.categories.find(c => c.id === this.categoryId)?.name || 'General'
-    });
-    this.storageService.setEncrypted('expenses', list);
-    this.router.navigate(['/expenses']);
+        next: () => {
+
+          this.toastr.success(
+            'Expense created successfully.',
+            'Success'
+          );
+
+          this.router.navigate(['/expenses']);
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          this.toastr.error(
+            'Unable to create expense.'
+          );
+        }
+      });
   }
 
 }
