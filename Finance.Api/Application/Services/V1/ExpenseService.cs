@@ -1,4 +1,4 @@
-using Finance.Api.Application.Constants;
+﻿using Finance.Api.Application.Constants;
 using Finance.Api.Application.DTOs.Category;
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Application.DTOs.Expenses;
@@ -212,112 +212,115 @@ internal sealed class ExpenseServiceV1(
             .ToList();
     }
 
-    public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
-        string userId,
-        FilterExpenseDto filters,
-        CancellationToken cancellationToken)
-    {
-        ArgumentNullException.ThrowIfNull(filters);
+    // public async Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
+    //     string userId,
+    //     FilterExpenseDto filters,
+    //     CancellationToken cancellationToken)
+    // {
+    //     ArgumentNullException.ThrowIfNull(filters);
 
-        var query =
-            BuildFilteredQuery(
-                userId,
-                filters);
+    //     var query =
+    //         BuildFilteredQuery(
+    //             userId,
+    //             filters);
 
-        var filteredExpenses =
-            await query
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
+    //     var filteredExpenses =
+    //         await query
+    //             .ToListAsync(cancellationToken)
+    //             .ConfigureAwait(false);
 
-        var response = new FilterResponseDto
-        {
-            Expenses =
-            [
-                .. filteredExpenses.Select(e => new ExpenseDtoV1
-                {
-                    Id = e.Id,
-                    Description = e.Notes ?? string.Empty,
-                    Amount = e.Amount,
-                    Date = e.ExpenseDate,
-                    CategoryId = e.CategoryId,
-                    Location = e.Location
-                })
-            ]
-        };
+    //     var response = new FilterResponseDto
+    //     {
+    //         Expenses =
+    //         [
+    //             .. filteredExpenses.Select(e => new ExpenseDtoV1
+    //             {
+    //                 Id = e.Id,
+    //                 Description = e.Notes ?? string.Empty,
+    //                 Amount = e.Amount,
+    //                 Date = e.ExpenseDate,
+    //                 CategoryId = e.CategoryId,
+    //                 Location = e.Location
+    //             })
+    //         ]
+    //     };
 
-        if (filters.includeAnalytics)
-        {
-            response.Analytics =
-                CalculateAnalytics(filteredExpenses);
-        }
+    //     if (filters.includeAnalytics)
+    //     {
+    //         response.Analytics =
+    //             CalculateAnalytics(filteredExpenses);
+    //     }
 
-        return response;
-    }
+    //     return response;
+    // }
 
     private IQueryable<Expense> BuildFilteredQuery(
-        string userId,
-        FilterExpenseDto filters)
+    string userId,
+    FilterExpenseDto filters)
     {
         var query =
             expenseRepository.GetExpenseQuery(userId);
 
-        if (!string.IsNullOrWhiteSpace(filters.categoryId))
+        if (!string.IsNullOrWhiteSpace(filters.CategoryId))
         {
             query = query.Where(
-                e => e.CategoryId == filters.categoryId);
+                e => e.CategoryId == filters.CategoryId);
         }
 
-        if (filters.startDate.HasValue)
+        if (filters.StartDate.HasValue)
         {
             query = query.Where(
-                e => e.ExpenseDate >= filters.startDate.Value.Date);
+                e => e.ExpenseDate >= filters.StartDate.Value.Date);
         }
 
-        if (filters.endDate.HasValue)
+        if (filters.EndDate.HasValue)
+        {
+            var endDate =
+                filters.EndDate.Value.Date.AddDays(1).AddTicks(-1);
+
+            query = query.Where(
+                e => e.ExpenseDate <= endDate);
+        }
+
+        if (filters.MinAmount.HasValue)
         {
             query = query.Where(
-                e => e.ExpenseDate <= filters.endDate.Value.Date);
+                e => e.Amount >= filters.MinAmount.Value);
         }
 
-        if (filters.minAmount.HasValue)
+        if (filters.MaxAmount.HasValue)
         {
             query = query.Where(
-                e => e.Amount >= filters.minAmount.Value);
+                e => e.Amount <= filters.MaxAmount.Value);
         }
 
-        if (filters.maxAmount.HasValue)
+        if (filters.Month.HasValue)
         {
             query = query.Where(
-                e => e.Amount <= filters.maxAmount.Value);
+                e => e.ExpenseDate.Month == filters.Month.Value);
         }
 
-        if (filters.month.HasValue)
+        if (filters.Year.HasValue)
         {
             query = query.Where(
-                e => e.ExpenseDate.Month == filters.month.Value);
+                e => e.ExpenseDate.Year == filters.Year.Value);
         }
 
-        if (filters.year.HasValue)
-        {
-            query = query.Where(
-                e => e.ExpenseDate.Year == filters.year.Value);
-        }
-
-        if (!string.IsNullOrWhiteSpace(filters.notes))
+        if (!string.IsNullOrWhiteSpace(filters.Notes))
         {
             query = query.Where(
                 e => e.Notes != null &&
-                     e.Notes.Contains(filters.notes));
+                     e.Notes.Contains(filters.Notes));
         }
 
         if (!string.IsNullOrWhiteSpace(filters.Location))
         {
             query = query.Where(
                 e => e.Location != null &&
-                e.Location.Contains(filters.Location));
+                     e.Location.Contains(filters.Location));
         }
 
-        return query.OrderByDescending(e => e.ExpenseDate);
+        return query;
     }
 
     private static FilteredAnalyticsDto CalculateAnalytics(
@@ -426,7 +429,6 @@ internal sealed class ExpenseServiceV1(
         var expenses =
             await query
                 .OrderByDescending(e => e.ExpenseDate)
-                .ThenByDescending(e => e.Id)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(cancellationToken)
@@ -521,6 +523,83 @@ internal sealed class ExpenseServiceV1(
             Success = true,
             Message = "Expense fetched successfully",
             Data = expenseDto
+        };
+    }
+
+    public async Task<FilteredPagedExpenseResponseDto> FilterPagedExpensesAsync(
+    string userId,
+    FilterExpenseDto filters,
+    CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(filters);
+
+        var query =
+            BuildFilteredQuery(userId, filters);
+
+        var totalRecords =
+            await EntityFrameworkQueryableExtensions
+                .CountAsync(query, cancellationToken)
+                .ConfigureAwait(false);
+
+        var totalPages =
+            (int)Math.Ceiling(
+                totalRecords / (double)filters.PageSize);
+
+        totalPages =
+            Math.Max(totalPages, 1);
+
+        if (filters.PageNumber > totalPages)
+        {
+            filters.PageNumber = totalPages;
+        }
+
+        query =
+            filters.SortOrder.Equals(
+                "oldest",
+                StringComparison.OrdinalIgnoreCase)
+                    ? query.OrderBy(e => e.ExpenseDate)
+                    : query.OrderByDescending(e => e.ExpenseDate);
+
+        var expenses =
+            await query
+                .Skip((filters.PageNumber - 1) * filters.PageSize)
+                .Take(filters.PageSize)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+        FilteredAnalyticsDto? analytics = null;
+
+        if (filters.IncludeAnalytics)
+        {
+            var analyticsExpenses =
+                await BuildFilteredQuery(userId, filters)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+            analytics =
+                CalculateAnalytics(analyticsExpenses);
+        }
+
+        return new FilteredPagedExpenseResponseDto
+        {
+            Items =
+            [
+                .. expenses.Select(e => new ExpenseDtoV1
+            {
+                Id = e.Id,
+                Description = e.Notes ?? string.Empty,
+                Amount = e.Amount,
+                Date = e.ExpenseDate,
+                CategoryId = e.CategoryId,
+                CategoryName = e.CategoryName,
+                Location = e.Location
+            })
+            ],
+            PageNumber = filters.PageNumber,
+            PageSize = filters.PageSize,
+            TotalRecords = totalRecords,
+            TotalPages = totalPages,
+            Analytics = analytics
         };
     }
 }

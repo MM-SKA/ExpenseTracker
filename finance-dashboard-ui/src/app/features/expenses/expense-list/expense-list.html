@@ -11,7 +11,7 @@
   </div>
 
   <!-- Stats -->
-  @if (filtered().length) {
+  @if (expenses.length) {
   <div class="el-stats">
     <div class="stat-card">
       <div class="stat-label">{{'TOTAL'|translate}}</div>
@@ -19,7 +19,7 @@
     </div>
     <div class="stat-card">
       <div class="stat-label">{{'COUNT'|translate}}</div>
-      <div class="stat-value">{{ filtered().length }}</div>
+      <div class="stat-value">{{ totalRecords }}</div>
     </div>
     <div class="stat-card">
       <div class="stat-label">{{'AVERAGE'|translate}}</div>
@@ -59,7 +59,7 @@
             @for(category of categories;
             track category.id)
             {
-            <option [value]="category.name">
+            <option [ngValue]="category.id">
               {{ category.name }}
             </option>
             }
@@ -103,7 +103,7 @@
 
     <!-- Table -->
     <div class="el-table-wrap">
-      @if (filtered().length) {
+      @if (expenses.length) {
       <table class="el-table">
         <thead>
           <tr>
@@ -116,7 +116,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (e of paginatedExpenses; track e.id) {
+          @for (e of expenses; track e.id) {
           <tr>
             <td>
               <div class="el-desc">
@@ -142,7 +142,7 @@
       <!-- Pagination bar -->
       <div class="el-pagination">
         <div class="el-pagination-info">
-          {{'SHOWING'|translate}} <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> {{'OF'|translate}} <span>{{ filtered().length }}</span> {{'EXPENSES_COUNT'|translate}}
+          {{'SHOWING'|translate}} <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> {{'OF'|translate}} <span>{{ totalRecords }}</span> {{'EXPENSES_COUNT'|translate}}
         </div>
         <div class="el-pagination-controls">
           <button class="el-page-btn" type="button" [disabled]="currentPage === 1" (click)="prevPage()" title="Previous Page">
@@ -155,7 +155,7 @@
             </button>
           }
 
-          <button class="el-page-btn" type="button" [disabled]="currentPage === totalPages" (click)="nextPage()" title="Next Page">
+          <button class="el-page-btn" type="button" [disabled]="currentPage === totalPagesCount" (click)="nextPage()" title="Next Page">
             {{'NEXT'|translate}} ›
           </button>
         </div>

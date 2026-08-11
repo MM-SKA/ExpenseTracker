@@ -19,6 +19,9 @@ export class ExpenseList implements OnInit {
   expenses: any[] = [];
   categories: any[] = [];
   selectedCategory = '';
+  totalRecords = 0;
+  totalPagesCount = 1;
+  analytics: any = null;
 
   filterText = '';
   startDate = '';
@@ -51,6 +54,7 @@ export class ExpenseList implements OnInit {
       .getCategories()
       .subscribe({
         next: categories => {
+          console.log(categories);
           this.categories = categories;
         }
       });
@@ -59,7 +63,17 @@ export class ExpenseList implements OnInit {
   loadExpenses(): void {
 
     this.expenseService
-      .getExpenses()
+      .filterPagedExpenses({
+        pageNumber: this.currentPage,
+        pageSize: this.pageSize,
+        categoryId: this.selectedCategory || null,
+        startDate: this.startDate || null,
+        endDate: this.endDate || null,
+        notes: this.filterText || null,
+        location: null,
+        sortOrder: this.sortOrder,
+        includeAnalytics: true
+      })
       .subscribe({
         next: (response: any) => {
 
@@ -67,19 +81,29 @@ export class ExpenseList implements OnInit {
             response?.data ?? response;
 
           this.expenses =
-            Array.isArray(data)
-              ? data
-              : [];
+            data.items ?? [];
+
+          this.currentPage =
+            data.pageNumber ?? 1;
+
+          this.pageSize =
+            data.pageSize ?? this.pageSize;
+
+          this.totalRecords =
+            data.totalRecords ?? 0;
+
+          this.totalPagesCount =
+            data.totalPages ?? 1;
+
+          this.analytics =
+            data.analytics ?? null;
+
           this.cdr.detectChanges();
         },
         error: error => {
           console.error(error);
         }
       });
-  }
-
-  load(): void {
-    this.expenses = this.storageService.getEncrypted<any[]>('expenses') || [];
   }
 
   private sortExpenses(expenses: any[]): any[] {
@@ -118,26 +142,20 @@ export class ExpenseList implements OnInit {
     return this.sortExpenses(result);
   }
 
-  get paginatedExpenses(): any[] {
-    const filteredList = this.filtered();
-    const start = (this.currentPage - 1) * this.pageSize;
-    return filteredList.slice(start, start + this.pageSize);
-  }
-
   get totalPages(): number {
-    const count = this.filtered().length;
-    return count === 0 ? 1 : Math.ceil(count / this.pageSize);
+    return this.totalPagesCount;
   }
 
   get startIndex(): number {
-    const total = this.filtered().length;
-    if (total === 0) return 0;
-    return (this.currentPage - 1) * this.pageSize + 1;
+
+    if (this.totalRecords === 0) {
+      return 0;
+    }
+    return ((this.currentPage - 1) * this.pageSize) + 1;
   }
 
   get endIndex(): number {
-    const total = this.filtered().length;
-    return Math.min(this.currentPage * this.pageSize, total);
+    return Math.min(this.currentPage * this.pageSize, this.totalRecords);
   }
 
   get pages(): number[] {
@@ -161,37 +179,40 @@ export class ExpenseList implements OnInit {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
+      this.loadExpenses();
     }
   }
 
   prevPage(): void {
     if (this.currentPage > 1) {
       this.currentPage--;
+      this.loadExpenses();
     }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPagesCount) {
       this.currentPage++;
+      this.loadExpenses();
     }
   }
 
   getTotalAmount(): number {
-    return this.filtered().reduce((sum, e) => sum + (e.amount ?? 0), 0);
+    return this.analytics?.summary?.totalSpent
+      ?? this.analytics?.Summary?.TotalSpent
+      ?? 0;
   }
 
   getAverageAmount(): number {
-    const filtered = this.filtered();
-    if (filtered.length === 0) {
-      return 0;
-    }
-    return this.getTotalAmount() / filtered.length;
+    return this.analytics?.summary?.averageAmount
+      ?? this.analytics?.Summary?.AverageAmount
+      ?? 0;
   }
 
   getHighestAmount(): number {
-    const list = this.filtered();
-    if (list.length === 0) return 0;
-    return Math.max(...list.map(e => Number(e.amount) || 0));
+    return this.analytics?.summary?.maxAmount
+      ?? this.analytics?.Summary?.MaxAmount
+      ?? 0;
   }
 
   getAmountBadgeClass(amount: number): string {
@@ -206,14 +227,17 @@ export class ExpenseList implements OnInit {
 
   onFilterChange(): void {
     this.currentPage = 1;
+    this.loadExpenses();
   }
 
   onSortChange(): void {
     this.currentPage = 1;
+    this.loadExpenses();
   }
 
   onPageSizeChange(): void {
     this.currentPage = 1;
+    this.loadExpenses();
   }
 
   clearFilter(): void {

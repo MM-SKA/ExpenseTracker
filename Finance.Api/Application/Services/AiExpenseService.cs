@@ -105,19 +105,19 @@ internal sealed class AiExpenseService(
                 DeserializeOptions)
             ?? new FilterExpenseDto();
 
-        if (!string.IsNullOrWhiteSpace(filters.categoryId))
+        if (!string.IsNullOrWhiteSpace(filters.CategoryId))
         {
             var category =
                 categories.FirstOrDefault(c =>
                     string.Equals(
                         c.Name,
-                        filters.categoryId,
+                        filters.CategoryId,
                         StringComparison.OrdinalIgnoreCase));
 
-            filters.categoryId = category?.Id;
+            filters.CategoryId = category?.Id;
         }
 
-        filters.includeAnalytics = true;
+        filters.IncludeAnalytics = true;
 
         return filters;
     }
@@ -137,9 +137,13 @@ internal sealed class AiExpenseService(
                 cancellationToken)
             .ConfigureAwait(false);
 
+        filters.PageNumber = 1;
+        filters.PageSize = 100;
+        filters.IncludeAnalytics = true;
+
         var result =
             await expenseService
-                .FilterExpensesWithAnalyticsAsync(
+                .FilterPagedExpensesAsync(
                     userId,
                     filters,
                     cancellationToken)

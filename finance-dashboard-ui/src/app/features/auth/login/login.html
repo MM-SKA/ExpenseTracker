@@ -22,7 +22,7 @@
       <form class="auth-form" (ngSubmit)="login()">
 
         <div class="field-group">
-          <label for="email-input" class="form-label">{{'EMAIL_ADDRESS'}}</label>
+          <label for="email-input" class="form-label">{{'EMAIL_ADDRESS'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">✉</span>
             <input
@@ -37,7 +37,7 @@
         </div>
 
         <div class="field-group">
-          <label for="password-input" class="form-label">{{'PASSWORD'}}</label>
+          <label for="password-input" class="form-label">{{'PASSWORD'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">🔒</span>
             <input

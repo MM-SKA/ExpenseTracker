@@ -1,4 +1,4 @@
-using Asp.Versioning;
+﻿using Asp.Versioning;
 
 using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Application.DTOs.Expenses;
@@ -97,13 +97,13 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
     //------------------------------------------------------------------------------------------------------------------------------------
     //filter expense endpoint
 
-    [HttpPost("filter")]
-    public async Task<IActionResult> FilterExpenseAsync(FilterExpenseDto request, CancellationToken cancellationToken)
-    {
-        var userId = User.GetUserId();
-        var response = await expenseService.FilterExpensesWithAnalyticsAsync(userId, request, cancellationToken).ConfigureAwait(false);
-        return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
-    }
+    // [HttpPost("filter")]
+    // public async Task<IActionResult> FilterExpenseAsync(FilterExpenseDto request, CancellationToken cancellationToken)
+    // {
+    //     var userId = User.GetUserId();
+    //     var response = await expenseService.FilterExpensesWithAnalyticsAsync(userId, request, cancellationToken).ConfigureAwait(false);
+    //     return Ok(new ApiResponse<FilterResponseDto> { Success = true, Message = "Expense filtered successfully", Data = response });
+    // }
 
     [HttpGet("paged")]
     public async Task<IActionResult> GetPagedExpensesAsync([FromQuery] PaginationRequestDto request, CancellationToken cancellationToken)
@@ -123,5 +123,31 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
         var userId = User.GetUserId();
         var result = await expenseService.GlobalSearchAsync(userId, request, cancellationToken).ConfigureAwait(false);
         return Ok(result);
+    }
+
+    [HttpPost("filter-paged")]
+    public async Task<IActionResult> FilterPagedExpensesAsync(
+    FilterExpenseDto request,
+    CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var userId =
+            User.GetUserId();
+
+        var response =
+            await expenseService
+                .FilterPagedExpensesAsync(
+                    userId,
+                    request,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
+        return Ok(new ApiResponse<FilteredPagedExpenseResponseDto>
+        {
+            Success = true,
+            Message = "Expenses filtered successfully",
+            Data = response
+        });
     }
 }

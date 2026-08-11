@@ -1,24 +1,34 @@
-﻿namespace Finance.Api.Application.DTOs.Expenses;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Finance.Api.Application.DTOs.Expenses;
 
 public class FilterExpenseDto
 {
-    public string? categoryId { get; set; }
+    public string? CategoryId { get; set; }
 
-    public DateTime? startDate { get; set; }
+    public DateTime? StartDate { get; set; }
 
-    public DateTime? endDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
-    public decimal? minAmount { get; set; }
+    public decimal? MinAmount { get; set; }
 
-    public decimal? maxAmount { get; set; }
+    public decimal? MaxAmount { get; set; }
 
-    public int? month { get; set; }
+    public int? Month { get; set; }
 
-    public int? year { get; set; }
+    public int? Year { get; set; }
 
-    public string? notes { get; set; }
+    public string? Notes { get; set; }
 
-    public bool includeAnalytics { get; set; }
+    public bool IncludeAnalytics { get; set; }
 
     public string? Location { get; set; }
+
+    [Range(1, int.MaxValue, ErrorMessage = "PageNumber must be atleast 1")]
+    public int PageNumber { get; set; } = 1;
+
+    [Range(1, 100, ErrorMessage = "PageSize must be between 1 and 100")]
+    public int PageSize { get; set; } = 10;
+
+    public string SortOrder { get; set; } = "recent";
 }

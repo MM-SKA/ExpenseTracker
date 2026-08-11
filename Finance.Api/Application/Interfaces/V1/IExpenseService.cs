@@ -1,4 +1,4 @@
-using Finance.Api.Application.DTOs.Common;
+﻿using Finance.Api.Application.DTOs.Common;
 using Finance.Api.Application.DTOs.Expenses;
 using Finance.Api.Application.DTOs.V1.Expenses;
 
@@ -26,10 +26,10 @@ public interface IExpenseServiceV1<T>
         string userId,
         CancellationToken cancellationToken);
 
-    Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
-        string userId,
-        FilterExpenseDto filters,
-        CancellationToken cancellationToken);
+    // Task<FilterResponseDto> FilterExpensesWithAnalyticsAsync(
+    //     string userId,
+    //     FilterExpenseDto filters,
+    //     CancellationToken cancellationToken);
 
     Task<PaginationResponseDto<ExpenseDtoV1>> GetPaginatedExpensesAsync(
         string userId,
@@ -45,5 +45,10 @@ public interface IExpenseServiceV1<T>
     Task<ApiResponse<ExpenseDtoV1>> GetExpenseByIdAsync(
         string userId,
         string id,
+        CancellationToken cancellationToken);
+
+    Task<FilteredPagedExpenseResponseDto> FilterPagedExpensesAsync(
+        string userId,
+        FilterExpenseDto filters,
         CancellationToken cancellationToken);
 }

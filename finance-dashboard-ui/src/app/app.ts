@@ -100,8 +100,7 @@ export class App {
 
   public signOut(): void {
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.clear();
 
     this.authUser.set(null);
 

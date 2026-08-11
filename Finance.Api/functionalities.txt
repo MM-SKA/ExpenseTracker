@@ -1,5 +1,3 @@
-localization
-lazy loading
 improve pagination
 
 sorting filter , data , price
