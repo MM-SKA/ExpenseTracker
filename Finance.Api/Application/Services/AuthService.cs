@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Finance.Api.Application.Services;
 
-internal sealed class AuthService(IAuthRepository authRepository, IJWTService _jwtService, ILogger<AuthService> _logger, IValidator<RegisterRequestDto> validator)
+internal sealed class AuthService(IAuthRepository authRepository, IJWTService _jwtService, ILogger<AuthService> _logger, IValidator<RegisterRequestDto> validator, IRefreshTokenRepository refreshTokenRepository, IConfiguration configuration)
     : IAuthService
 
 {
@@ -113,7 +113,36 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
             };
         }
 
-        var token = _jwtService.GenerateToken(user);
+        var accessToken =
+            _jwtService.GenerateAccessToken(user);
+
+        var refreshToken =
+            _jwtService.GenerateRefreshToken();
+
+        var refreshTokenHash =
+            _jwtService.HashToken(refreshToken);
+
+        var refreshTokenDays =
+            configuration.GetValue<int>(
+                "Jwt:RefreshTokenDays");
+
+        var refreshTokenEntity =
+            new RefreshToken
+            {
+                UserId = user.Id,
+                TokenHash = refreshTokenHash,
+                ExpiresAt = DateTime.UtcNow.AddDays(refreshTokenDays)
+            };
+
+        await refreshTokenRepository
+            .AddAsync(
+                refreshTokenEntity,
+                cancellationToken)
+            .ConfigureAwait(false);
+
+        await refreshTokenRepository
+            .SaveChangesAsync(cancellationToken)
+            .ConfigureAwait(false);
 
         var authDto = new AuthDto
         {
@@ -128,7 +157,8 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         var loginResponse = new LoginResponseDto
         {
             User = authDto,
-            Token = token
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
         };
 
         return new ApiResponse<LoginResponseDto>

@@ -6,7 +6,6 @@ import { ExpenseService } from '../../../core/services/expense';
 import { CategoryService } from '../../../core/services/category.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { start } from 'repl';
 
 @Component({
   selector: 'app-expense-list',

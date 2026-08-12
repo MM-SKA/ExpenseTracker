@@ -9,6 +9,7 @@ public class FinanceDbContext(DbContextOptions<FinanceDbContext> options) : DbCo
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<Category> Categories => Set<Category>();
     public DbSet<Expense> Expenses => Set<Expense>();
+    public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -17,6 +18,8 @@ public class FinanceDbContext(DbContextOptions<FinanceDbContext> options) : DbCo
         _ = modelBuilder.Entity<Category>().ToContainer("Category").HasPartitionKey(c => c.UserId);
 
         _ = modelBuilder.Entity<Expense>().ToContainer("Expense").HasPartitionKey(e => e.UserId);
+
+        _ = modelBuilder.Entity<RefreshToken>().ToContainer("RefreshToken").HasPartitionKey(x => x.UserId);
 
         base.OnModelCreating(modelBuilder);
     }
