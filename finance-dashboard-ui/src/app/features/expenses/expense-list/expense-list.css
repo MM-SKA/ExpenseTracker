@@ -57,7 +57,9 @@
   flex-shrink: 0;
 }
 
-.el-add-btn:hover { opacity: 0.85; }
+.el-add-btn:hover {
+  opacity: 0.85;
+}
 
 /* ── Stats row ────────────────────────────── */
 .el-stats {
@@ -69,7 +71,7 @@
 
 .stat-card {
   background: #0d0d0d;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   padding: 0.9rem 1rem;
 }
@@ -79,7 +81,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   margin-bottom: 0.35rem;
 }
 
@@ -101,7 +103,7 @@
 /* ── Filter panel ─────────────────────────── */
 .el-filter {
   background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -111,7 +113,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.85rem 1rem;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .el-filter-label {
@@ -119,12 +121,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .el-filter-hint {
   font-size: 0.68rem;
-  color: rgba(255,255,255,0.25);
+  color: rgba(255, 255, 255, 0.25);
 }
 
 .el-filter-body {
@@ -145,14 +147,14 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .el-input {
   width: 100%;
   padding: 0.55rem 0.8rem;
   border-radius: 3px;
-  border: 1px solid rgba(255,255,255,0.09);
+  border: 1px solid rgba(255, 255, 255, 0.09);
   background: #111;
   color: #fff;
   font-size: 0.82rem;
@@ -160,8 +162,13 @@
   transition: border-color 0.15s ease;
 }
 
-.el-input::placeholder { color: rgba(255,255,255,0.22); }
-.el-input:focus { border-color: rgba(255,255,255,0.30); }
+.el-input::placeholder {
+  color: rgba(255, 255, 255, 0.22);
+}
+
+.el-input:focus {
+  border-color: rgba(255, 255, 255, 0.30);
+}
 
 .el-date-row {
   display: grid;
@@ -173,9 +180,9 @@
   width: 100%;
   padding: 0.55rem;
   border-radius: 3px;
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   background: transparent;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
@@ -183,14 +190,14 @@
 }
 
 .el-clear-btn:hover {
-  background: rgba(255,255,255,0.0);
+  background: rgba(255, 255, 255, 0.0);
   color: #fff;
 }
 
 /* ── Table card ───────────────────────────── */
 .el-table-wrap {
   background: #0a0a0a;
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -202,7 +209,7 @@
 
 .el-table thead {
   background: #111;
-  border-bottom: 1px solid rgba(255,255,255,0.07);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
 
 .el-table th {
@@ -211,20 +218,24 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   white-space: nowrap;
 }
 
 .el-table td {
   padding: 0.85rem 1rem;
   font-size: 0.83rem;
-  color: rgba(255,255,255,0.8);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.el-table tbody tr:last-child td { border-bottom: none; }
+.el-table tbody tr:last-child td {
+  border-bottom: none;
+}
 
-.el-table tbody tr:hover { background: #111; }
+.el-table tbody tr:hover {
+  background: #111;
+}
 
 .el-desc {
   display: flex;
@@ -234,18 +245,9 @@
   color: #fff;
 }
 
-.el-desc-icon { font-size: 1rem; opacity: 0.6; }
-
-.el-cat-badge {
-  display: inline-block;
-  padding: 0.15rem 0.6rem;
-  border-radius: 2px;
-  background: rgba(255,255,255,0);
-  border: 1px solid rgba(255,255,255,0.10);
-  color: rgba(255,255,255,0.55);
-  font-size: 0.72rem;
-  font-weight: 600;
-  white-space: nowrap;
+.el-desc-icon {
+  font-size: 1rem;
+  opacity: 0.6;
 }
 
 .el-amount {
@@ -256,33 +258,55 @@
   white-space: nowrap;
 }
 
-.el-date { color: rgba(255,255,255,0.4); font-size: 0.78rem; white-space: nowrap; }
+.el-date {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
 
-.el-actions { display: flex; gap: 0.4rem; justify-content: flex-end; }
+.el-actions {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: flex-end;
+}
 
 .el-btn-edit,
 .el-btn-del {
   padding: 0.3rem 0.7rem;
   border-radius: 2px;
-  border: 1px solid rgba(255,255,255,0.10);
+  border: 1px solid rgba(255, 255, 255, 0.10);
   background: transparent;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
+.el-btn-del .action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .el-btn-edit:hover {
-  background: rgba(255,255,255,0.0);
+  background: rgba(255, 255, 255, 0.0);
   color: #fff;
-  border-color: rgba(255,255,255,0.22);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .el-btn-del:hover {
-  background: rgba(255,255,255,0.0);
+  background: rgba(255, 255, 255, 0.0);
   color: #fff;
-  border-color: rgba(255,255,255,0.18);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.action-icon {
+  display: none;
+}
+
+.action-text {
+  display: inline;
 }
 
 /* ── Empty state ──────────────────────────── */
@@ -291,7 +315,11 @@
   text-align: center;
 }
 
-.el-empty-icon { font-size: 2.5rem; margin-bottom: 1rem; opacity: 0.5; }
+.el-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
 
 .el-empty h3 {
   font-size: 1rem;
@@ -302,7 +330,7 @@
 
 .el-empty p {
   font-size: 0.8rem;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255, 255, 255, 0.35);
   margin: 0;
 }
 
@@ -372,11 +400,181 @@
 
 /* ── Responsive ───────────────────────────── */
 @media (max-width: 900px) {
-  .el-body { grid-template-columns: 1fr; }
-  .el-stats { grid-template-columns: repeat(2, 1fr); }
+  .el-body {
+    grid-template-columns: 1fr;
+  }
+
+  .el-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 500px) {
-  .el-stats { grid-template-columns: repeat(2, 1fr); }
-  .el-page { padding: 1rem; }
+  .el-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .el-page {
+    padding: 1rem;
+  }
+}
+
+/* ── Mobile ───────────────────────────────── */
+@media (max-width: 700px) {
+
+  /* Hide category and location */
+  .category-column,
+  .location-column {
+    display: none;
+  }
+
+  /*
+   * Mobile table:
+   *
+   * Description | Amount | Date | Actions
+   */
+  .el-table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  .el-table th,
+  .el-table td {
+    box-sizing: border-box;
+    padding: 0.65rem 0.4rem;
+  }
+
+  .el-table th {
+    font-size: 0.6rem;
+  }
+
+  .el-table td {
+    font-size: 0.75rem;
+  }
+
+  /* Mobile column widths */
+  .expense-column {
+    width: 40%;
+  }
+
+  .amount-column {
+    width: 22%;
+  }
+
+  .date-column {
+    width: 23%;
+  }
+
+  .actions-column {
+    width: 15%;
+  }
+
+  /* Description */
+  .el-desc {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .el-desc-icon {
+    flex-shrink: 0;
+    font-size: 0.8rem;
+  }
+
+  .el-desc-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  /* Amount */
+  .el-amount {
+    font-size: 0.72rem;
+    white-space: nowrap;
+  }
+
+  /* Date */
+  .el-date {
+    font-size: 0.62rem;
+    white-space: nowrap;
+  }
+
+  /* Actions */
+  .action-text {
+    display: none;
+  }
+
+  .action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .el-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+  }
+
+  .el-btn-edit,
+  .el-btn-del {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+}
+
+
+/* ── Very small mobile ───────────────────── */
+@media (max-width: 360px) {
+
+  .el-page {
+    padding: 0.75rem;
+  }
+
+  .el-table th,
+  .el-table td {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  /*
+   * Description | Amount | Date | Actions
+   */
+  .expense-column {
+    width: 38%;
+  }
+
+  .amount-column {
+    width: 22%;
+  }
+
+  .date-column {
+    width: 24%;
+  }
+
+  .el-btn-edit,
+  .el-btn-del {
+    width: 24px;
+    height: 26px;
+    font-size: 0.7rem;
+  }
+
+  .el-actions {
+    gap: 0.15rem;
+  }
+
+  .el-amount {
+    font-size: 0.65rem;
+  }
+
+  .el-date {
+    font-size: 0.55rem;
+  }
 }

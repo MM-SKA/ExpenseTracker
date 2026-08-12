@@ -52,7 +52,8 @@
           <label class="el-filter-field-label" for="categoryFilter">
             {{'CATEGORY'|translate}}
           </label>
-          <select id="categoryFilter" class="el-input" [(ngModel)]="selectedCategory" (ngModelChange)="onFilterChange()">
+          <select id="categoryFilter" class="el-input" [(ngModel)]="selectedCategory"
+            (ngModelChange)="onFilterChange()">
             <option value="">
               {{'ALL_CATEGORIES'|translate}}
             </option>
@@ -105,57 +106,122 @@
     <div class="el-table-wrap">
       @if (expenses.length) {
       <table class="el-table">
+
         <thead>
           <tr>
-            <th>{{'DESCRIPTION'|translate}}</th>
-            <th>{{'CATEGORY'|translate}}</th>
-            <th>{{'LOCATION'|translate}}</th>
-            <th>{{'AMOUNT'|translate}}</th>
-            <th>{{'DATE'|translate}}</th>
-            <th></th>
+            <th class="expense-column">
+              {{ 'DESCRIPTION' | translate }}
+            </th>
+
+            <th class="category-column">
+              {{ 'CATEGORY' | translate }}
+            </th>
+
+            <th class="location-column">
+              {{ 'LOCATION' | translate }}
+            </th>
+
+            <th class="amount-column">
+              {{ 'AMOUNT' | translate }}
+            </th>
+
+            <th class="date-column">
+              {{ 'DATE' | translate }}
+            </th>
+
+            <th class="actions-column">
+            </th>
           </tr>
         </thead>
+
         <tbody>
+
           @for (e of expenses; track e.id) {
+
           <tr>
-            <td>
+
+            <!-- Description -->
+            <td class="expense-column">
               <div class="el-desc">
                 <span class="el-desc-icon">💳</span>
-                {{ e.description }}
+                <span class="el-desc-text">
+                  {{ e.description }}
+                </span>
               </div>
             </td>
-            <td><span class="el-cat-badge">{{ e.categoryName }}</span></td>
-            <td>{{ e.location || '—' }}</td>
-            <td><span class="el-amount">{{ e.amount | currency:'INR':'symbol':'1.2-2' }}</span></td>
-            <td><span class="el-date">{{ e.date | date:'dd MMM yyyy' }}</span></td>
-            <td>
+
+            <!-- Category -->
+            <td class="category-column">
+              <span class="el-cat-badge">
+                {{ e.categoryName }}
+              </span>
+            </td>
+
+            <!-- Location -->
+            <td class="location-column">
+              {{ e.location || '—' }}
+            </td>
+
+            <!-- Amount -->
+            <td class="amount-column">
+              <span class="el-amount">
+                {{ e.amount | currency:'INR':'symbol':'1.2-2' }}
+              </span>
+            </td>
+
+            <!-- Date -->
+            <td class="date-column">
+              <span class="el-date">
+                {{ e.date | date:'dd MMM yyyy' }}
+              </span>
+            </td>
+
+            <!-- Actions -->
+            <td class="actions-column">
               <div class="el-actions">
-                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)">{{'EDIT'|translate}}</button>
-                <button class="el-btn-del" type="button" (click)="delete(e.id)" [title]="'DELETE'|translate">✕</button>
+
+                <button class="el-btn-edit" type="button" (click)="editExpense(e.id)" [title]="'EDIT' | translate"
+                  [attr.aria-label]="'EDIT' | translate">
+                  <span class="action-text">{{ 'EDIT' | translate }}</span>
+                  <span class="action-icon">✎</span>
+                </button>
+
+                <button class="el-btn-del" type="button" (click)="delete(e.id)" [title]="'DELETE' | translate"
+                  [attr.aria-label]="'DELETE' | translate">
+                  <span class="action-icon">✕</span>
+                </button>
+
               </div>
             </td>
+
           </tr>
+
           }
+
         </tbody>
+
       </table>
 
       <!-- Pagination bar -->
       <div class="el-pagination">
         <div class="el-pagination-info">
-          {{'SHOWING'|translate}} <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> {{'OF'|translate}} <span>{{ totalRecords }}</span> {{'EXPENSES_COUNT'|translate}}
+          {{'SHOWING'|translate}} <span>{{ startIndex }}</span>–<span>{{ endIndex }}</span> {{'OF'|translate}} <span>{{
+            totalRecords }}</span> {{'EXPENSES_COUNT'|translate}}
         </div>
         <div class="el-pagination-controls">
-          <button class="el-page-btn" type="button" [disabled]="currentPage === 1" (click)="prevPage()" title="Previous Page">
+          <button class="el-page-btn" type="button" [disabled]="currentPage === 1" (click)="prevPage()"
+            title="Previous Page">
             ‹ {{'PREVIOUS'|translate}}
           </button>
 
           @for (p of pages; track p) {
-            <button class="el-page-btn" [class.active]="p === currentPage" type="button" (click)="goToPage(p)">
-              {{ p }}
-            </button>
+          <button class="el-page-btn" [class.active]="p === currentPage" type="button" (click)="goToPage(p)">
+            {{ p }}
+          </button>
           }
 
-          <button class="el-page-btn" type="button" [disabled]="currentPage === totalPagesCount" (click)="nextPage()" title="Next Page">
+          <button class="el-page-btn" type="button" [disabled]="currentPage === totalPagesCount" (click)="nextPage()"
+            title="Next Page">
             {{'NEXT'|translate}} ›
           </button>
         </div>
