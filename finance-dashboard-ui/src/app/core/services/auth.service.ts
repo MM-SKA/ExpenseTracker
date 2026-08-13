@@ -32,9 +32,23 @@ export class AuthService {
       request);
   }
 
-  getCurrentUser() {
-    return this.http.get(
+  getCurrentUser(): Observable<ApiResponse<LoginResponse>> {
+    return this.http.get<ApiResponse<LoginResponse>>(
       `${environment.apiUrl}/auth/me`
+    );
+  }
+
+  refreshToken(): Observable<ApiResponse<LoginResponse>> {
+    return this.http.post<ApiResponse<LoginResponse>>(
+      `${environment.apiUrl}/auth/refresh`,
+      {}
+    );
+  }
+
+  logout(): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(
+      `${environment.apiUrl}/auth/logout`,
+      {}
     );
   }
 }

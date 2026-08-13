@@ -1,4 +1,4 @@
-﻿using Finance.Api.Application.DTOs.Auth;
+using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
 
 namespace Finance.Api.Application.Interfaces;
@@ -17,5 +17,9 @@ public interface IAuthService
     Task<ApiResponse<AuthDto>> UpdateUserAsync(string userId, UpdateUserDto request, CancellationToken cancellationToken);
 
     Task<ApiResponse> ChangePasswordAsync(string userId, ChangePasswordDto request, CancellationToken cancellationToken);
+
+    Task<ApiResponse<LoginResponseDto>> RefreshTokenAsync(string? refreshToken, CancellationToken cancellationToken);
+
+    Task<ApiResponse> LogoutAsync(string? refreshToken, CancellationToken cancellationToken);
 
 }
