@@ -485,7 +485,6 @@
   .el-desc-text {
     min-width: 0;
     overflow-wrap: anywhere;
-    word-break: break-word;
   }
 
   /* Amount */
@@ -578,3 +577,32 @@
     font-size: 0.55rem;
   }
 }
+
+.el-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.el-export-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  border-radius: 3px;
+  background: #111;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.12);
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.15s ease, border-color 0.15s ease;
+}
+
+.el-export-btn:hover {
+  opacity: 0.9;
+  border-color: rgba(255,255,255,0.25);
+}
+
