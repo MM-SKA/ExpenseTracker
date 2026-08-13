@@ -36,4 +36,23 @@ internal sealed class RefreshTokenRepository(FinanceDbContext context) : IRefres
     {
         _ = await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
+
+    public async Task<List<RefreshToken>> GetExpiredTokensAsync(
+    CancellationToken cancellationToken)
+    {
+        return await context.RefreshTokens
+            .Where(token =>
+                token.ExpiresAt <= DateTime.UtcNow)
+            .ToListAsync(cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    public Task RemoveRangeAsync(
+    IEnumerable<RefreshToken> tokens,
+    CancellationToken cancellationToken)
+    {
+        context.RefreshTokens.RemoveRange(tokens);
+
+        return Task.CompletedTask;
+    }
 }

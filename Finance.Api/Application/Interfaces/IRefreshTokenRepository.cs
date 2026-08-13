@@ -11,4 +11,8 @@ public interface IRefreshTokenRepository
     Task<List<RefreshToken>> GetByTokenFamilyIdAsync(string tokenFamilyId, CancellationToken cancellationToken);
 
     Task SaveChangesAsync(CancellationToken cancellationToken);
+
+    Task<List<RefreshToken>> GetExpiredTokensAsync(CancellationToken cancellationToken);
+
+    Task RemoveRangeAsync(IEnumerable<RefreshToken> tokens, CancellationToken cancellationToken);
 }

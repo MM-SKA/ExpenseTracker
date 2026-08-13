@@ -1,8 +1,10 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Text.Json.Serialization;
+using Quartz;
+
 using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.Interfaces.V1;
 using Finance.Api.Application.Interfaces.V2;
@@ -15,7 +17,7 @@ using Finance.Api.Infrastructure.Data;
 using Finance.Api.Presentation.Middleware;
 using Finance.Api.Infrastructure.Options;
 using Finance.Api.Infrastructure.Repositories;
-
+using Finance.Api.Infrastructure.Jobs;
 using Asp.Versioning;
 using Asp.Versioning.Conventions;
 using Finance.Api.Application.DTOs.V1.Expenses;
@@ -42,8 +44,9 @@ builder.Services.AddScoped<IAiExpenseService, AiExpenseService>();
 builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 builder.Services.Configure<GroqOptions>(builder.Configuration.GetSection("Groq"));
 builder.Services.AddHttpClient<IGroqService, GroqService>();
-
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddAuthorization();
 
 builder.Services
     .AddAuthentication(
@@ -87,7 +90,6 @@ builder.Services
             };
     });
 
-builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
@@ -102,7 +104,26 @@ builder.Services.AddCors(options =>
                 .AllowCredentials();
         });
 });
-builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+
+builder.Services.AddQuartz(quartz =>
+{
+    var jobKey =
+        new JobKey(
+            "RefreshTokenCleanup");
+
+    _ = quartz.AddJob<RefreshTokenCleanupJob>(
+        options =>
+            options.WithIdentity(jobKey));
+
+    _ = quartz.AddTrigger(trigger =>
+        trigger
+            .ForJob(jobKey)
+            .WithIdentity(
+                "RefreshTokenCleanupTrigger")
+            .WithCronSchedule(
+                "0 0 2 * * ?"));
+});
+
 builder.Services.AddApiVersioning(options =>
 {
     options.DefaultApiVersion = new ApiVersion(1, 0);
@@ -126,6 +147,13 @@ builder.Services.AddDbContext<FinanceDbContext>(
             builder.Configuration["CosmosDb:DatabaseName"]!,
             cosmosOptions => cosmosOptions.ConnectionMode(Microsoft.Azure.Cosmos.ConnectionMode.Gateway)
             ));
+
+builder.Services.AddQuartzHostedService(
+    options =>
+    {
+        options.WaitForJobsToComplete =
+            true;
+    });
 
 var app = builder.Build();
 

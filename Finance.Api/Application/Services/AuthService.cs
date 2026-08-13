@@ -61,7 +61,7 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
         };
 
-        await authRepository.AddUserAsync(user, cancellationToken);
+        await authRepository.AddUserAsync(user, cancellationToken).ConfigureAwait(false);
 
         await authRepository.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 

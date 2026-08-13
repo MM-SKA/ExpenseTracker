@@ -208,7 +208,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         var refreshToken = Request.Cookies["refreshToken"];
 
-        await authService.LogoutAsync(refreshToken, cancellationToken).ConfigureAwait(false);
+        _ = await authService.LogoutAsync(refreshToken, cancellationToken).ConfigureAwait(false);
 
         ClearAuthCookies();
 
