@@ -150,4 +150,31 @@ public class ExpensesController(IExpenseServiceV1<ExpenseDtoV1> expenseService, 
             Data = response
         });
     }
+
+    [HttpPost("export")]
+    public async Task<IActionResult> ExportExpensesAsync(
+    FilterExpenseDto request,
+    CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        var userId =
+            User.GetUserId();
+
+        var fileBytes =
+            await expenseService
+                .ExportExpensesToExcelAsync(
+                    userId,
+                    request,
+                    cancellationToken)
+                .ConfigureAwait(false);
+
+        var fileName =
+            $"expenses-{DateTime.UtcNow:yyyyMMdd-HHmmss}.xlsx";
+
+        return File(
+            fileBytes,
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            fileName);
+    }
 }

@@ -267,4 +267,40 @@ export class ExpenseList implements OnInit {
     );
   }
 
+  downloadExcel(): void {
+
+    this.expenseService
+      .exportExpenses({
+        pageNumber: 1,
+        pageSize: 100,
+        categoryId: this.selectedCategory || null,
+        startDate: this.startDate || null,
+        endDate: this.endDate || null,
+        minAmount: null,
+        maxAmount: null,
+        notes: this.filterText || null,
+        location: null,
+        sortOrder: this.sortOrder,
+        includeAnalytics: false
+      })
+      .subscribe({
+        next: blob => {
+          const url =
+            window.URL.createObjectURL(blob);
+          const anchor =
+            document.createElement('a');
+          anchor.href = url;
+          anchor.download =
+            `expenses-${new Date()
+              .toISOString()
+              .slice(0, 10)}.xlsx`;
+          anchor.click();
+          window.URL.revokeObjectURL(url);
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
+  }
+
 }

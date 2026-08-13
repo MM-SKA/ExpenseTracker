@@ -7,7 +7,14 @@
       <h1 class="el-title">{{'EXPENSE_OVERVIEW'|translate}}</h1>
       <p class="el-subtitle">{{'EXPENSE_OVERVIEW_SUBTITLE'|translate}}</p>
     </div>
-    <a class="el-add-btn" routerLink="/expenses/create">+ {{'ADD_EXPENSE'|translate}}</a>
+    <div class="el-topbar-actions">
+      <button class="el-export-btn" type="button" (click)="downloadExcel()">
+        ⬇ Export Excel
+      </button>
+      <a class="el-add-btn" routerLink="/expenses/create">
+        + {{'ADD_EXPENSE'|translate}}
+      </a>
+    </div>
   </div>
 
   <!-- Stats -->

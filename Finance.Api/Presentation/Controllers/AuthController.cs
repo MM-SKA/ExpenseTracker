@@ -113,7 +113,7 @@ public class AuthController(IAuthService authService) : ControllerBase
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddSeconds(10)
+                Expires = DateTimeOffset.UtcNow.AddMinutes(10)
             });
 
         Response.Cookies.Append(

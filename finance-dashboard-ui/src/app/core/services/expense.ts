@@ -58,11 +58,24 @@ export class ExpenseService {
   }
 
   filterPagedExpenses(request: ExpenseFilterRequest) {
-  return this.http.post<any>(
-    `${environment.apiUrl}/expenses/filter-paged`,
-    request
-  );
-}
+    return this.http.post<any>(
+      `${environment.apiUrl}/expenses/filter-paged`,
+      request
+    );
+  }
+
+  exportExpenses(
+    request: ExpenseFilterRequest
+  ) {
+    return this.http.post(
+      `${environment.apiUrl}/expenses/export`,
+      request,
+      {
+        responseType: 'blob',
+        withCredentials: true
+      }
+    );
+  }
 
 }
 
