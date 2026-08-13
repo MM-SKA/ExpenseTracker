@@ -1,4 +1,4 @@
-using Finance.Api.Application.Interfaces;
+﻿using Finance.Api.Application.Interfaces;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Presentation.Extensions;
 
@@ -113,7 +113,7 @@ public class AuthController(IAuthService authService) : ControllerBase
                 HttpOnly = true,
                 Secure = true,
                 SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddMinutes(10)
+                Expires = DateTimeOffset.UtcNow.AddSeconds(10)
             });
 
         Response.Cookies.Append(
@@ -130,27 +130,34 @@ public class AuthController(IAuthService authService) : ControllerBase
 
     private void ClearAuthCookies()
     {
-        Response.Cookies.Append(
-            "accessToken",
-            string.Empty,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddDays(-1)
-            });
+        // Response.Cookies.Append(
+        //     "accessToken",
+        //     string.Empty,
+        //     new CookieOptions
+        //     {
+        //         HttpOnly = true,
+        //         Secure = true,
+        //         SameSite = SameSiteMode.None,
+        //         Expires = DateTimeOffset.UtcNow.AddDays(-1)
+        //     });
 
-        Response.Cookies.Append(
-            "refreshToken",
-            string.Empty,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTimeOffset.UtcNow.AddDays(-1)
-            });
+        Response.Cookies.Delete(
+        "accessToken",
+        new CookieOptions
+        {
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Path = "/"
+        });
+
+        Response.Cookies.Delete(
+        "refreshToken",
+        new CookieOptions
+        {
+            Secure = true,
+            SameSite = SameSiteMode.None,
+            Path = "/"
+        });
     }
 
     [HttpPost("refresh")]
@@ -168,7 +175,7 @@ public class AuthController(IAuthService authService) : ControllerBase
 
         if (response.Data is not null)
         {
-            SetAuthCookies(response.Data.AccessToken, response.Data.RefreshToken);
+            SetAccessTokenCookie(response.Data.AccessToken);
             response.Data.AccessToken = string.Empty;
             response.Data.RefreshToken = string.Empty;
         }
@@ -179,6 +186,21 @@ public class AuthController(IAuthService authService) : ControllerBase
             Message = "Token refreshed successfully",
             Data = response.Data?.User
         });
+    }
+
+    private void SetAccessTokenCookie(string accessToken)
+    {
+        Response.Cookies.Append(
+            "accessToken",
+            accessToken,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Expires = DateTimeOffset.UtcNow.AddSeconds(10),
+                Path = "/"
+            });
     }
 
     [HttpPost("logout")]
