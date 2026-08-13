@@ -37,9 +37,11 @@ export class LoginComponent {
         //   'token',
         //   response.data.token);
 
+        console.log(response);
+
         localStorage.setItem(
           'user',
-          JSON.stringify(response.data.user));
+          JSON.stringify(response.data));
 
         this.categoryService.getCategories(true).subscribe({
           next: () => this.router.navigate(['/expenses']),

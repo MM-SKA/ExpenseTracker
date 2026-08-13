@@ -21,7 +21,9 @@ export class AuthService {
   ): Observable<ApiResponse<LoginResponse>> {
     return this.http.post<ApiResponse<LoginResponse>>(
       `${environment.apiUrl}/auth/login`,
-      request);
+      request,{
+        withCredentials: true
+      });
   }
 
   register(
