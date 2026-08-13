@@ -1,4 +1,4 @@
-﻿using Finance.Api.Application.Interfaces;
+using Finance.Api.Application.Interfaces;
 using Finance.Api.Infrastructure.Data;
 using Finance.Api.Application.DTOs.Auth;
 using Finance.Api.Application.DTOs.Common;
@@ -348,6 +348,174 @@ internal sealed class AuthService(IAuthRepository authRepository, IJWTService _j
         {
             Success = true,
             Message = "Password updated successfully"
+        };
+    }
+
+    public async Task<ApiResponse<LoginResponseDto>> RefreshTokenAsync(string? refreshToken, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return new ApiResponse<LoginResponseDto>
+            {
+                Success = false,
+                Message = "Refresh token is required",
+                ErrorCode = ErrorCodes.InvalidCredentials
+            };
+        }
+
+        var tokenHash = _jwtService.HashToken(refreshToken);
+
+        var existingToken = await refreshTokenRepository
+            .GetByTokenHashAsync(tokenHash, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (existingToken == null)
+        {
+            return new ApiResponse<LoginResponseDto>
+            {
+                Success = false,
+                Message = "Invalid refresh token",
+                ErrorCode = ErrorCodes.InvalidCredentials
+            };
+        }
+
+        // Reuse detection: if the token is already revoked, revoke the entire family
+        if (existingToken.RevokedAt != null)
+        {
+            AppUserServiceLogs.RefreshTokenReuseDetected(_logger, existingToken.TokenFamilyId);
+
+            var familyTokens = await refreshTokenRepository
+                .GetByTokenFamilyIdAsync(existingToken.TokenFamilyId, cancellationToken)
+                .ConfigureAwait(false);
+
+            var utcNow = DateTime.UtcNow;
+            foreach (var token in familyTokens)
+            {
+                token.RevokedAt ??= utcNow;
+            }
+
+            await refreshTokenRepository
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return new ApiResponse<LoginResponseDto>
+            {
+                Success = false,
+                Message = "Refresh token reuse detected. All sessions have been revoked for security.",
+                ErrorCode = ErrorCodes.InvalidCredentials
+            };
+        }
+
+        // Check expiry
+        if (existingToken.ExpiresAt <= DateTime.UtcNow)
+        {
+            return new ApiResponse<LoginResponseDto>
+            {
+                Success = false,
+                Message = "Refresh token has expired. Please log in again.",
+                ErrorCode = ErrorCodes.InvalidCredentials
+            };
+        }
+
+        // Fetch the user
+        var user = await authRepository
+            .GetUserByIdAsync(existingToken.UserId, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (user == null)
+        {
+            return new ApiResponse<LoginResponseDto>
+            {
+                Success = false,
+                Message = "User not found",
+                ErrorCode = ErrorCodes.UserNotFound
+            };
+        }
+
+        // Revoke the old token
+        existingToken.RevokedAt = DateTime.UtcNow;
+        existingToken.ReplacedByTokenId = null; // will be set after new token is created
+
+        // Generate new tokens
+        var newAccessToken = _jwtService.GenerateAccessToken(user);
+        var newRefreshToken = _jwtService.GenerateRefreshToken();
+        var newRefreshTokenHash = _jwtService.HashToken(newRefreshToken);
+
+        var refreshTokenDays = configuration.GetValue<int>("Jwt:RefreshTokenDays");
+
+        var newRefreshTokenEntity = new RefreshToken
+        {
+            UserId = user.Id,
+            TokenHash = newRefreshTokenHash,
+            TokenFamilyId = existingToken.TokenFamilyId, // same family — token rotation
+            ExpiresAt = DateTime.UtcNow.AddDays(refreshTokenDays)
+        };
+
+        existingToken.ReplacedByTokenId = newRefreshTokenEntity.Id;
+
+        await refreshTokenRepository
+            .AddAsync(newRefreshTokenEntity, cancellationToken)
+            .ConfigureAwait(false);
+
+        await refreshTokenRepository
+            .SaveChangesAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        var authDto = new AuthDto
+        {
+            Id = user.Id,
+            FullName = user.FullName,
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber
+        };
+
+        AppUserServiceLogs.RefreshTokenRotated(_logger, user.Id);
+
+        return new ApiResponse<LoginResponseDto>
+        {
+            Success = true,
+            Message = "Token refreshed successfully",
+            Data = new LoginResponseDto
+            {
+                User = authDto,
+                AccessToken = newAccessToken,
+                RefreshToken = newRefreshToken
+            }
+        };
+    }
+
+    public async Task<ApiResponse> LogoutAsync(string? refreshToken, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(refreshToken))
+        {
+            return new ApiResponse
+            {
+                Success = true,
+                Message = "Logged out"
+            };
+        }
+
+        var tokenHash = _jwtService.HashToken(refreshToken);
+
+        var existingToken = await refreshTokenRepository
+            .GetByTokenHashAsync(tokenHash, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (existingToken != null && existingToken.RevokedAt == null)
+        {
+            existingToken.RevokedAt = DateTime.UtcNow;
+
+            await refreshTokenRepository
+                .SaveChangesAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        AppUserServiceLogs.UserLoggedOut(_logger);
+
+        return new ApiResponse
+        {
+            Success = true,
+            Message = "Logged out successfully"
         };
     }
 }
