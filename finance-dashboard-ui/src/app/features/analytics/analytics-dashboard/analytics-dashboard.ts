@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ExpenseService } from '../../../core/services/expense';
@@ -11,6 +17,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './analytics-dashboard.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './analytics-dashboard.css',
 })
 export class AnalyticsDashboard implements OnInit {
@@ -22,7 +29,7 @@ export class AnalyticsDashboard implements OnInit {
     endDate: '',
     minAmount: null as number | null,
     maxAmount: null as number | null,
-    notes: ''
+    notes: '',
   };
   categories: Category[] = [];
 
@@ -45,29 +52,31 @@ export class AnalyticsDashboard implements OnInit {
       },
       error: () => {
         this.categories = [];
-      }
+      },
     });
   }
 
   loadAnalytics(): void {
     this.isLoading = true;
-    this.expenseService.filterPagedExpenses({
-      pageNumber: 1,
-      pageSize: 10,
-      sortOrder: 'recent',
-      includeAnalytics: true
-    }).subscribe({
-      next: (response: any) => {
-        const data = response?.data ?? response;
-        this.analytics = data?.analytics ?? data?.Analytics ?? null;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.analytics = null;
-        this.isLoading = false;
-      }
-    });
+    this.expenseService
+      .filterPagedExpenses({
+        pageNumber: 1,
+        pageSize: 10,
+        sortOrder: 'recent',
+        includeAnalytics: true,
+      })
+      .subscribe({
+        next: (response: any) => {
+          const data = response?.data ?? response;
+          this.analytics = data?.analytics ?? data?.Analytics ?? null;
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.analytics = null;
+          this.isLoading = false;
+        },
+      });
   }
 
   refresh(): void {
@@ -77,35 +86,37 @@ export class AnalyticsDashboard implements OnInit {
       endDate: '',
       minAmount: null,
       maxAmount: null,
-      notes: ''
+      notes: '',
     };
     this.loadAnalytics();
   }
 
   updateAnalytics(): void {
     this.isLoading = true;
-    this.expenseService.filterPagedExpenses({
-      categoryId: this.filters.categoryId || undefined,
-      startDate: this.filters.startDate || undefined,
-      endDate: this.filters.endDate || undefined,
-      minAmount: this.filters.minAmount ?? undefined,
-      maxAmount: this.filters.maxAmount ?? undefined,
-      notes: this.filters.notes || undefined,
-      includeAnalytics: true,
-      pageNumber: 1,
-      pageSize: 10,
-      sortOrder: 'recent',
-    }).subscribe({
-      next: (response: any) => {
-        const data = response?.data ?? response;
-        this.analytics = data?.analytics ?? data?.Analytics ?? null;
-        this.isLoading = false;
-        this.cdr.detectChanges();
-      },
-      error: () => {
-        this.analytics = null;
-        this.isLoading = false;
-      }
-    });
+    this.expenseService
+      .filterPagedExpenses({
+        categoryId: this.filters.categoryId || undefined,
+        startDate: this.filters.startDate || undefined,
+        endDate: this.filters.endDate || undefined,
+        minAmount: this.filters.minAmount ?? undefined,
+        maxAmount: this.filters.maxAmount ?? undefined,
+        notes: this.filters.notes || undefined,
+        includeAnalytics: true,
+        pageNumber: 1,
+        pageSize: 10,
+        sortOrder: 'recent',
+      })
+      .subscribe({
+        next: (response: any) => {
+          const data = response?.data ?? response;
+          this.analytics = data?.analytics ?? data?.Analytics ?? null;
+          this.isLoading = false;
+          this.cdr.detectChanges();
+        },
+        error: () => {
+          this.analytics = null;
+          this.isLoading = false;
+        },
+      });
   }
 }

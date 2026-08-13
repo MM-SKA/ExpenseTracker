@@ -1,4 +1,10 @@
-import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  ChangeDetectorRef,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
@@ -12,10 +18,10 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink, TranslatePipe],
   templateUrl: './expense-list.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './expense-list.css',
 })
 export class ExpenseList implements OnInit {
-
   expenses: any[] = [];
   categories: any[] = [];
   selectedCategory = '';
@@ -40,8 +46,7 @@ export class ExpenseList implements OnInit {
   private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
-
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.selectedCategory = params['category'] ?? '';
       this.filterText = params['search'] ?? '';
       this.startDate = params['startDate'] ?? '';
@@ -51,17 +56,14 @@ export class ExpenseList implements OnInit {
       this.pageSize = Number(params['pageSize']) || 10;
       this.loadExpenses();
     });
-    this.categoryService
-      .getCategories()
-      .subscribe({
-        next: categories => {
-          this.categories = categories;
-        }
-      });
+    this.categoryService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+      },
+    });
   }
 
   loadExpenses(): void {
-
     this.expenseService
       .filterPagedExpenses({
         pageNumber: this.currentPage,
@@ -72,37 +74,29 @@ export class ExpenseList implements OnInit {
         notes: this.filterText || null,
         location: null,
         sortOrder: this.sortOrder,
-        includeAnalytics: true
+        includeAnalytics: true,
       })
       .subscribe({
         next: (response: any) => {
+          const data = response?.data ?? response;
 
-          const data =
-            response?.data ?? response;
+          this.expenses = data.items ?? [];
 
-          this.expenses =
-            data.items ?? [];
+          this.currentPage = data.pageNumber ?? 1;
 
-          this.currentPage =
-            data.pageNumber ?? 1;
+          this.pageSize = data.pageSize ?? this.pageSize;
 
-          this.pageSize =
-            data.pageSize ?? this.pageSize;
+          this.totalRecords = data.totalRecords ?? 0;
 
-          this.totalRecords =
-            data.totalRecords ?? 0;
+          this.totalPagesCount = data.totalPages ?? 1;
 
-          this.totalPagesCount =
-            data.totalPages ?? 1;
-
-          this.analytics =
-            data.analytics ?? null;
+          this.analytics = data.analytics ?? null;
 
           this.cdr.detectChanges();
         },
-        error: error => {
+        error: (error) => {
           console.error(error);
-        }
+        },
       });
   }
 
@@ -111,11 +105,10 @@ export class ExpenseList implements OnInit {
   }
 
   get startIndex(): number {
-
     if (this.totalRecords === 0) {
       return 0;
     }
-    return ((this.currentPage - 1) * this.pageSize) + 1;
+    return (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get endIndex(): number {
@@ -162,21 +155,15 @@ export class ExpenseList implements OnInit {
   }
 
   getTotalAmount(): number {
-    return this.analytics?.summary?.totalSpent
-      ?? this.analytics?.Summary?.TotalSpent
-      ?? 0;
+    return this.analytics?.summary?.totalSpent ?? this.analytics?.Summary?.TotalSpent ?? 0;
   }
 
   getAverageAmount(): number {
-    return this.analytics?.summary?.averageAmount
-      ?? this.analytics?.Summary?.AverageAmount
-      ?? 0;
+    return this.analytics?.summary?.averageAmount ?? this.analytics?.Summary?.AverageAmount ?? 0;
   }
 
   getHighestAmount(): number {
-    return this.analytics?.summary?.maxAmount
-      ?? this.analytics?.Summary?.MaxAmount
-      ?? 0;
+    return this.analytics?.summary?.maxAmount ?? this.analytics?.Summary?.MaxAmount ?? 0;
   }
 
   getAmountBadgeClass(amount: number): string {
@@ -216,34 +203,24 @@ export class ExpenseList implements OnInit {
   }
 
   delete(id: string): void {
-    const confirmed =
-      confirm(
-        'Are you sure you want to delete this expense?'
-      );
+    const confirmed = confirm('Are you sure you want to delete this expense?');
 
     if (!confirmed) {
       return;
     }
-    this.expenseService
-      .deleteExpense(id)
-      .subscribe({
-        next: () => {
-          if (
-            this.expenses.length === 1 &&
-            this.currentPage > 1
-          ) {
-            this.currentPage--;
-          }
-
-          this.loadExpenses();
-        },
-        error: (error) => {
-          console.error(error);
-          alert(
-            'Unable to delete expense.'
-          );
+    this.expenseService.deleteExpense(id).subscribe({
+      next: () => {
+        if (this.expenses.length === 1 && this.currentPage > 1) {
+          this.currentPage--;
         }
-      });
+
+        this.loadExpenses();
+      },
+      error: (error) => {
+        console.error(error);
+        alert('Unable to delete expense.');
+      },
+    });
   }
 
   public editExpense(id: string): void {
@@ -251,8 +228,7 @@ export class ExpenseList implements OnInit {
   }
 
   private updateQueryParams(): void {
-    void this.router.navigate(
-      [], {
+    void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
         category: this.selectedCategory || null,
@@ -261,14 +237,12 @@ export class ExpenseList implements OnInit {
         endDate: this.endDate || null,
         sort: this.sortOrder,
         page: this.currentPage,
-        pageSize: this.pageSize
-      }
-    }
-    );
+        pageSize: this.pageSize,
+      },
+    });
   }
 
   downloadExcel(): void {
-
     this.expenseService
       .exportExpenses({
         pageNumber: 1,
@@ -281,26 +255,20 @@ export class ExpenseList implements OnInit {
         notes: this.filterText || null,
         location: null,
         sortOrder: this.sortOrder,
-        includeAnalytics: false
+        includeAnalytics: false,
       })
       .subscribe({
-        next: blob => {
-          const url =
-            window.URL.createObjectURL(blob);
-          const anchor =
-            document.createElement('a');
+        next: (blob) => {
+          const url = window.URL.createObjectURL(blob);
+          const anchor = document.createElement('a');
           anchor.href = url;
-          anchor.download =
-            `expenses-${new Date()
-              .toISOString()
-              .slice(0, 10)}.xlsx`;
+          anchor.download = `expenses-${new Date().toISOString().slice(0, 10)}.xlsx`;
           anchor.click();
           window.URL.revokeObjectURL(url);
         },
-        error: error => {
+        error: (error) => {
           console.error(error);
-        }
+        },
       });
   }
-
 }

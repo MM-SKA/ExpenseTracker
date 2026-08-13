@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,26 +6,21 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './scroll-top.html',
-  styleUrl: './scroll-top.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './scroll-top.css',
 })
 export class ScrollTopComponent {
-
   public showButton = false;
 
   @HostListener('window:scroll')
   public onWindowScroll(): void {
-
     this.showButton = window.scrollY > 300;
-
   }
 
   public scrollToTop(): void {
-
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
-
   }
-
 }

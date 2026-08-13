@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CategoryService } from '../../../core/services/category.service';
@@ -11,6 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   imports: [FormsModule, CommonModule, TranslatePipe],
   standalone: true,
   templateUrl: './create-category.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './create-category.css',
 })
 export class CreateCategory {
@@ -21,14 +22,16 @@ export class CreateCategory {
   private readonly translate = inject(TranslateService);
 
   createCategory(): void {
-    this.categoryService.createCategory({
-      name: this.name
-    }).subscribe({
-      next: () => {
-        this.toastr.success('Category created successfully.', 'Success');
-        this.router.navigate(['/categories']);
-      },
-      error: console.error
-    })
+    this.categoryService
+      .createCategory({
+        name: this.name,
+      })
+      .subscribe({
+        next: () => {
+          this.toastr.success('Category created successfully.', 'Success');
+          this.router.navigate(['/categories']);
+        },
+        error: console.error,
+      });
   }
 }

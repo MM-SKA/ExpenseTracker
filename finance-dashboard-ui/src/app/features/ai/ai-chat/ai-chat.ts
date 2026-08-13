@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, ViewChild, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AiService } from '../../../core/services/ai';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -11,10 +11,10 @@ interface ChatMessage {
   selector: 'app-ai-chat',
   imports: [FormsModule, TranslatePipe],
   templateUrl: './ai-chat.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './ai-chat.css',
 })
 export class AiChat {
-
   @ViewChild('messagesContainer')
   private readonly messagesContainer!: ElementRef<HTMLDivElement>;
   public readonly translate = inject(TranslateService);
@@ -27,25 +27,18 @@ export class AiChat {
 
   private shouldScroll = false;
 
-  private readonly aiService =
-    inject(AiService);
+  private readonly aiService = inject(AiService);
   send(): void {
-
-    const text =
-      this.inputText.trim();
+    const text = this.inputText.trim();
 
     if (!text || this.isTyping) {
-
       return;
-
     }
 
     this.messages.push({
-
       role: 'user',
 
-      content: text
-
+      content: text,
     });
 
     this.inputText = '';
@@ -56,102 +49,62 @@ export class AiChat {
 
     this.aiService
       .askExpenses({
-
-        question: text
-
+        question: text,
       })
       .subscribe({
-
         next: (response) => {
-
           this.messages.push({
-
             role: 'ai',
 
-            content:
-              response.answer ??
-              'No answer returned.'
-
+            content: response.answer ?? 'No answer returned.',
           });
 
           this.isTyping = false;
 
           this.shouldScroll = true;
-
         },
 
         error: (error) => {
-
           console.error(error);
 
           this.messages.push({
-
             role: 'ai',
 
-            content:
-              'Sorry, I could not process your request.'
-
+            content: 'Sorry, I could not process your request.',
           });
 
           this.isTyping = false;
 
           this.shouldScroll = true;
-
-        }
-
+        },
       });
-
   }
 
-  sendChip(
-    text: string
-  ): void {
-
+  sendChip(text: string): void {
     this.inputText = text;
 
     this.send();
-
   }
 
-  onEnter(
-    event: Event
-  ): void {
-
-    const ke =
-      event as KeyboardEvent;
+  onEnter(event: Event): void {
+    const ke = event as KeyboardEvent;
 
     if (!ke.shiftKey) {
-
       ke.preventDefault();
 
       this.send();
-
     }
-
   }
 
   private scrollToBottom(): void {
-
     try {
-
-      const el =
-        this.messagesContainer
-          ?.nativeElement;
+      const el = this.messagesContainer?.nativeElement;
 
       if (el) {
-
-        el.scrollTop =
-          el.scrollHeight;
-
+        el.scrollTop = el.scrollHeight;
       }
-
-    }
-    catch {
-
+    } catch {
       // ignore
-
     }
-
   }
-
 }

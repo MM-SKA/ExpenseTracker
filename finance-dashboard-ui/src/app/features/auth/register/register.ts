@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -11,6 +11,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [FormsModule, RouterLink, TranslatePipe],
   templateUrl: './register.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register.css',
 })
 export class Register {
@@ -38,10 +39,10 @@ export class Register {
         localStorage.setItem('user', JSON.stringify(response.data.user));
         this.categoryService.getCategories(true).subscribe({
           next: () => this.router.navigate(['/expenses']),
-          error: () => this.router.navigate(['/expenses'])
+          error: () => this.router.navigate(['/expenses']),
         });
       },
-      error: (error) => console.error(error)
+      error: (error) => console.error(error),
     });
   }
 }

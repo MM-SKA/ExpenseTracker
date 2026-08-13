@@ -1,4 +1,10 @@
-import { Component, inject, ChangeDetectorRef, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  ChangeDetectorRef,
+  OnInit,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../core/services/category.service';
@@ -10,10 +16,10 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   standalone: true,
   imports: [CommonModule, RouterLink, TranslatePipe],
   templateUrl: './category-list.html',
-  styleUrl: './category-list.css'
+  changeDetection: ChangeDetectionStrategy.Eager,
+  styleUrl: './category-list.css',
 })
 export class CategoryList implements OnInit {
-
   categories: Category[] = [];
   isLoading = true;
   readonly router = inject(Router);
@@ -22,42 +28,29 @@ export class CategoryList implements OnInit {
   private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
-
     console.log('Category API starting');
 
-    this.categoryService
-      .getCategories()
-      .subscribe({
+    this.categoryService.getCategories().subscribe({
+      next: (response: Category[]) => {
+        console.log('Category API success');
 
-        next: (response: Category[]) => {
+        this.categories = response;
 
-          console.log('Category API success');
+        this.isLoading = false;
 
-          this.categories = response;
+        console.log('Assigned count:', this.categories.length);
 
-          this.isLoading = false;
+        this.cdr.detectChanges();
+      },
 
-          console.log(
-            'Assigned count:',
-            this.categories.length
-          );
+      error: (error) => {
+        console.error(error);
 
-          this.cdr.detectChanges();
+        this.isLoading = false;
 
-        },
-
-        error: (error) => {
-
-          console.error(error);
-
-          this.isLoading = false;
-
-          this.cdr.detectChanges();
-
-        }
-
-      });
-
+        this.cdr.detectChanges();
+      },
+    });
   }
 
   viewCategoryExpenses(categoryName?: string): void {
@@ -66,40 +59,27 @@ export class CategoryList implements OnInit {
   }
 
   editCategory(id: string): void {
-    this.router.navigate([
-      '/categories/edit',
-      id
-    ]);
+    this.router.navigate(['/categories/edit', id]);
   }
 
   deleteCategory(id: string): void {
-
-    if (!confirm(
-      'Are you sure you want to delete this category?'
-    )) {
+    if (!confirm('Are you sure you want to delete this category?')) {
       return;
     }
-    this.categoryService
-      .deleteCategory(id)
-      .subscribe({
-        next: () => {
-          this.categoryService
-            .getCategories(true)
-            .subscribe({
-              next: (categories) => {
-                this.categories = categories;
-                this.cdr.detectChanges();
-              }
-            });
-        },
+    this.categoryService.deleteCategory(id).subscribe({
+      next: () => {
+        this.categoryService.getCategories(true).subscribe({
+          next: (categories) => {
+            this.categories = categories;
+            this.cdr.detectChanges();
+          },
+        });
+      },
 
-        error: (error) => {
-          console.error(error);
-          alert(
-            'Unable to delete category.'
-          );
-        }
-      });
+      error: (error) => {
+        console.error(error);
+        alert('Unable to delete category.');
+      },
+    });
   }
-
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
   imports: [FormsModule, TranslatePipe],
   templateUrl: './update-category.html',
   styleUrl: './update-category.css',
-  standalone: true
+  changeDetection: ChangeDetectionStrategy.Eager,
+  standalone: true,
 })
 export class UpdateCategory implements OnInit {
   id = '';
@@ -23,44 +24,28 @@ export class UpdateCategory implements OnInit {
   private readonly translate = inject(TranslateService);
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.params['id'];
 
-    this.id =
-      this.route.snapshot.params['id'];
+    this.categoryService.getCategoryById(this.id).subscribe({
+      next: (response: any) => {
+        this.name = response.name;
+      },
 
-    this.categoryService
-      .getCategoryById(this.id)
-      .subscribe({
-
-        next: (response: any) => {
-
-          this.name =
-            response.name;
-
-        },
-
-        error: console.error
-
-      });
-
+      error: console.error,
+    });
   }
 
   updateCategory(): void {
     this.categoryService
-      .updateCategory(
-        this.id,
-        {
-          name: this.name
-        }
-      )
+      .updateCategory(this.id, {
+        name: this.name,
+      })
       .subscribe({
         next: () => {
           this.toastr.success('Category edited successfully.', 'Success');
-          this.router.navigate(
-            ['/categories']
-          );
+          this.router.navigate(['/categories']);
         },
-        error: console.error
+        error: console.error,
       });
-
   }
 }
