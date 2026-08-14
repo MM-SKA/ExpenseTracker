@@ -25,14 +25,8 @@
           <label for="email-input" class="form-label">{{'EMAIL_ADDRESS'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">✉</span>
-            <input
-              id="email-input"
-              class="field-input"
-              name="email"
-              type="email"
-              autocomplete="email"
-              [placeholder]="'EMAIL_PLACEHOLDER'|translate"
-              [(ngModel)]="email">
+            <input id="email-input" class="field-input" name="email" type="email" autocomplete="email"
+              [placeholder]="'EMAIL_PLACEHOLDER'|translate" [(ngModel)]="email">
           </div>
         </div>
 
@@ -40,21 +34,16 @@
           <label for="password-input" class="form-label">{{'PASSWORD'|translate}}</label>
           <div class="input-wrap">
             <span class="input-icon-el">🔒</span>
-            <input
-              id="password-input"
-              class="field-input"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              [placeholder]="'PASSWORD_PLACEHOLDER'|translate"
-              [(ngModel)]="password">
+            <input id="password-input" class="field-input" name="password" type="password"
+              autocomplete="current-password" [placeholder]="'PASSWORD_PLACEHOLDER'|translate" [(ngModel)]="password">
           </div>
         </div>
 
         <button class="btn-submit" type="submit">{{'CONTINUE'|translate}} →</button>
       </form>
 
-      <p class="auth-footer-link">{{'NO_ACCOUNT'|translate}} <a routerLink="/register">{{'CREATE_ONE_FREE'|translate}}</a></p>
+      <p class="auth-footer-link">{{'NO_ACCOUNT'|translate}} <a
+          routerLink="/register">{{'CREATE_ONE_FREE'|translate}}</a></p>
     </div>
   </div>
 </div>

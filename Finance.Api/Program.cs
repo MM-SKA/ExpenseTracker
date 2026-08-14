@@ -121,7 +121,7 @@ builder.Services.AddQuartz(quartz =>
             .WithIdentity(
                 "RefreshTokenCleanupTrigger")
             .WithCronSchedule(
-                "0 0 2 * * ?"));
+                "0 0 10 * * ?"));
 });
 
 builder.Services.AddApiVersioning(options =>
