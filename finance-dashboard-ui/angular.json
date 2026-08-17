@@ -67,7 +67,13 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "coverage": true,
+            "coverageExclude": [
+              "**/*.html"
+            ]
+          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",

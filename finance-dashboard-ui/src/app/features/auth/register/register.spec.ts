@@ -166,122 +166,62 @@ describe('Register', () => {
       });
 
   });
+  it.each([
+    {
+      scenario: 'full name is empty',
+      fullName: '',
+      email: 'test@test.com',
+      password: 'Test@123',
+      phoneNumber: '9999999999',
+      expectedError: 'Full name is required'
+    },
+    {
+      scenario: 'email format is invalid',
+      fullName: 'Test User',
+      email: 'invalid-email',
+      password: 'Test@123',
+      phoneNumber: '9999999999',
+      expectedError: 'Invalid email format'
+    },
+    {
+      scenario: 'password is empty',
+      fullName: 'Test User',
+      email: 'test@test.com',
+      password: '',
+      phoneNumber: '9999999999',
+      expectedError: 'Password is required'
+    }
+  ])(
+    'should not call register API when $scenario',
+    ({
+      fullName,
+      email,
+      password,
+      phoneNumber,
+      expectedError
+    }) => {
 
-  it('should not call register API when full name is empty', () => {
+      component.fullName = fullName;
+      component.email = email;
+      component.password = password;
+      component.phoneNumber = phoneNumber;
 
-    component.fullName =
-      '';
+      component.register();
 
-    component.email =
-      'test@test.com';
+      expect(authServiceMock.register)
+        .not
+        .toHaveBeenCalled();
 
-    component.password =
-      'Test@123';
+      expect(navigateSpy)
+        .not
+        .toHaveBeenCalled();
 
-    component.phoneNumber =
-      '9999999999';
+      expect(component.errorMessage)
+        .toBe(expectedError);
+    }
+  );
 
-    component.register();
 
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Full name is required');
-
-  });
-
-  it('should not call register API when email format is invalid', () => {
-
-    component.fullName =
-      'Test User';
-
-    component.email =
-      'invalid-email';
-
-    component.password =
-      'Test@123';
-
-    component.phoneNumber =
-      '9999999999';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Invalid email format');
-
-  });
-
-  it('should not call register API when password is empty', () => {
-
-    component.fullName =
-      'Test User';
-
-    component.email =
-      'test@test.com';
-
-    component.password =
-      '';
-
-    component.phoneNumber =
-      '9999999999';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Password is required');
-
-  });
-
-  it('should not call register API when phone number is invalid', () => {
-
-    component.fullName =
-      'Test User';
-
-    component.email =
-      'test@test.com';
-
-    component.password =
-      'Test@123';
-
-    component.phoneNumber =
-      '12345';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Phone number must contain exactly 10 digits');
-
-  });
 
   it('should not navigate when email already exists', () => {
 
@@ -491,27 +431,6 @@ describe('Register', () => {
 
   });
 
-  it('should not call register API when full name contains only spaces', () => {
-
-    component.fullName = '     ';
-    component.email = 'test@test.com';
-    component.password = 'Test@123';
-    component.phoneNumber = '9999999999';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Full name is required');
-
-  });
 
   it('should lowercase and trim email before register API call', () => {
 
@@ -549,71 +468,60 @@ describe('Register', () => {
 
   });
 
-  it('should not call register API when phone number contains letters', () => {
 
-    component.fullName = 'Test User';
-    component.email = 'test@test.com';
-    component.password = 'Test@123';
-    component.phoneNumber = '99999abcde';
+  it.each([
+    {
+      scenario: 'phone number contains letters',
+      phoneNumber: '99999abcde',
+      password: 'Test@123',
+      expectedError: 'Phone number must contain exactly 10 digits'
+    },
+    {
+      scenario: 'phone number has more than 10 digits',
+      phoneNumber: '99999999999',
+      password: 'Test@123',
+      expectedError: 'Phone number must contain exactly 10 digits'
+    },
+    {
+      scenario: 'phone number has less than 10 digits',
+      phoneNumber: '999999999',
+      password: 'Test@123',
+      expectedError: 'Phone number must contain exactly 10 digits'
+    },
+    {
+      scenario: 'password contains only spaces',
+      phoneNumber: '9999999999',
+      password: '     ',
+      expectedError: 'Password is required'
+    }
+  ])(
+    'should not call register API when $scenario',
+    ({
+      phoneNumber,
+      password,
+      expectedError
+    }) => {
 
-    component.register();
+      component.fullName = 'Test User';
+      component.email = 'test@test.com';
+      component.password = password;
+      component.phoneNumber = phoneNumber;
 
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
+      component.register();
 
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
+      expect(authServiceMock.register)
+        .not
+        .toHaveBeenCalled();
 
-    expect(component.errorMessage)
-      .toBe('Phone number must contain exactly 10 digits');
+      expect(navigateSpy)
+        .not
+        .toHaveBeenCalled();
 
-  });
+      expect(component.errorMessage)
+        .toBe(expectedError);
+    }
+  );
 
-  it('should not call register API when phone number has more than 10 digits', () => {
-
-    component.fullName = 'Test User';
-    component.email = 'test@test.com';
-    component.password = 'Test@123';
-    component.phoneNumber = '99999999999';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Phone number must contain exactly 10 digits');
-
-  });
-
-  it('should not call register API when phone number has less than 10 digits', () => {
-
-    component.fullName = 'Test User';
-    component.email = 'test@test.com';
-    component.password = 'Test@123';
-    component.phoneNumber = '999999999';
-
-    component.register();
-
-    expect(authServiceMock.register)
-      .not
-      .toHaveBeenCalled();
-
-    expect(navigateSpy)
-      .not
-      .toHaveBeenCalled();
-
-    expect(component.errorMessage)
-      .toBe('Phone number must contain exactly 10 digits');
-
-  });
 
   it('should not call register API when password contains only spaces', () => {
 
