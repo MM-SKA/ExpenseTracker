@@ -64,7 +64,7 @@ describe('LoginComponent', () => {
           LoginComponent
         ],
         providers: [
-
+          ...TEST_PROVIDERS,
           {
             provide: AuthService,
             useValue: authServiceMock
@@ -354,6 +354,15 @@ describe('LoginComponent', () => {
     expect(component.errorMessage)
       .toBe('Password is required');
 
+  });
+
+  it('should not call login api when email is empty',()=>{
+    component.email="";
+    component.password="doesntMatter";
+    component.login();
+    expect(authServiceMock.login).not.toHaveBeenCalled();
+    expect(navigateSpy).not.toHaveBeenCalled();
+    expect(component.errorMessage).toBe('Email is required');
   });
 
 });

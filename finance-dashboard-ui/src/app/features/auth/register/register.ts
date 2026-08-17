@@ -70,7 +70,7 @@ export class Register {
       return;
     }
 
-    if (!this.password) {
+    if (!this.password.trim()) {
       this.errorMessage = 'Password is required';
       return;
     }
@@ -83,7 +83,7 @@ export class Register {
     const request: RegisterRequest = {
       fullName: this.fullName.trim(),
       email: this.email.trim().toLowerCase(),
-      password: this.password,
+      password: this.password.trim(),
       phoneNumber: this.phoneNumber.trim(),
     };
 

@@ -27,12 +27,17 @@ export class LoginComponent {
   login(): void {
     this.errorMessage = '';
 
+    if (!this.email.trim()) {
+      this.errorMessage = 'Email is required';
+      return;
+    }
+
     if (!this.isValidEmail(this.email)) {
       this.errorMessage = 'Invalid email format';
       return;
     }
 
-    if (!this.password) {
+    if (!this.password.trim()) {
       this.errorMessage = 'Password is required';
       return;
     }
