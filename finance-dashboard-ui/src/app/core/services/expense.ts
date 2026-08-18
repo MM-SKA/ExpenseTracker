@@ -4,6 +4,9 @@ import { environment } from '../../../environment/environment';
 import { CreateExpenseRequest } from '../../shared/models/expense/create-expense-request';
 import { UpdateExpenseRequest } from '../../shared/models/expense/update-expense-request';
 import { PaginationResponse } from '../../shared/models/expense/pagination-response';
+import { ExpenseDto } from '../../shared/models/expense/expense-generic';
+import { Observable } from 'rxjs';
+import { ApiResponse } from '../../shared/models/api-response';
 
 @Injectable({
   providedIn: 'root'
@@ -17,23 +20,37 @@ export class ExpenseService {
     );
   }
 
-  getExpenses() {
-    return this.http.get(`${environment.apiUrl}/expenses/get`);
+  getExpenses(): Observable<ExpenseDto[]> {
+    return this.http.get<ExpenseDto[]>(
+      `${environment.apiUrl}/expenses/get`
+    );
   }
+
 
   filterExpenses(filter: any) {
     return this.http.post(`${environment.apiUrl}/expenses/filter`, filter);
   }
 
-  getExpenseById(id: string) {
-    return this.http.get(`${environment.apiUrl}/expenses/get/${id}`);
+  getExpenseById(
+    id: string
+  ): Observable<ApiResponse<ExpenseDto>> {
+
+    return this.http.get<ApiResponse<ExpenseDto>>(
+      `${environment.apiUrl}/expenses/get/${id}`
+    );
+
   }
 
-  updateExpense(id: string, request: UpdateExpenseRequest) {
-    return this.http.put(
+  updateExpense(
+    id: string,
+    request: UpdateExpenseRequest
+  ): Observable<ApiResponse<ExpenseDto>> {
+
+    return this.http.put<ApiResponse<ExpenseDto>>(
       `${environment.apiUrl}/expenses/update/${id}`,
       request
     );
+
   }
 
   deleteExpense(id: string) {
