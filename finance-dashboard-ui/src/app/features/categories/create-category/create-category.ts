@@ -22,6 +22,10 @@ export class CreateCategory {
   private readonly translate = inject(TranslateService);
 
   createCategory(): void {
+    if (!this.name.trim()) {
+      this.toastr.error('Category name is required.');
+      return;
+    }
     this.categoryService
       .createCategory({
         name: this.name,
