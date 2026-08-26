@@ -1,0 +1,23 @@
+{
+  "name": "personalfinancedashboard",
+  "version": "1.0.0",
+  "description": "A full-stack personal finance tracker consisting of an ASP.NET Core API and an Angular frontend.",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MM-SKA/ExpenseTracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/MM-SKA/ExpenseTracker/issues"
+  },
+  "homepage": "https://github.com/MM-SKA/ExpenseTracker#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0"
+  }
+}
