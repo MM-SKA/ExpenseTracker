@@ -10,6 +10,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CategoryService } from '../../../core/services/category.service';
 import { Category } from '../../../shared/models/category/category';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-category-list',
@@ -26,6 +27,7 @@ export class CategoryList implements OnInit {
   readonly categoryService = inject(CategoryService);
   readonly cdr = inject(ChangeDetectorRef);
   private readonly translate = inject(TranslateService);
+  private readonly toastr = inject(ToastrService);
 
   ngOnInit(): void {
     console.log('Category API starting');
@@ -66,11 +68,15 @@ export class CategoryList implements OnInit {
     if (!confirm('Are you sure you want to delete this category?')) {
       return;
     }
+
     this.categoryService.deleteCategory(id).subscribe({
       next: () => {
+        this.toastr.success('Category deleted successfully.', 'Success');
+
         this.categoryService.getCategories(true).subscribe({
           next: (categories) => {
             this.categories = categories;
+
             this.cdr.detectChanges();
           },
         });
@@ -78,7 +84,8 @@ export class CategoryList implements OnInit {
 
       error: (error) => {
         console.error(error);
-        alert('Unable to delete category.');
+
+        this.toastr.error('Unable to delete category.', 'Delete Failed');
       },
     });
   }

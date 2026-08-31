@@ -36,6 +36,10 @@ export class UpdateCategory implements OnInit {
   }
 
   updateCategory(): void {
+    if (!this.name?.trim()) {
+      this.toastr.warning('Category name is required', 'Validation');
+      return;
+    }
     this.categoryService
       .updateCategory(this.id, {
         name: this.name,

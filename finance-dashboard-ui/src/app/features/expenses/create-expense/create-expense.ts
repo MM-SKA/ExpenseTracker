@@ -54,6 +54,27 @@ export class CreateExpense implements OnInit {
   }
 
   save(): void {
+    //empty expense date
+    if (!this.date) {
+      this.toastr.warning('Expense date is required', 'Validation');
+      return;
+    }
+    //check expense date is not in future
+    const expenseDate = new Date(this.date);
+    const today = new Date();
+    if (expenseDate > today) {
+      this.toastr.warning('Expense date cannot be in the future', 'Validation');
+      return;
+    }
+    if (!this.description?.trim()) {
+      this.toastr.warning('Description is required', 'Validation');
+      return;
+    }
+    const amount = Number.parseFloat(this.amount);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      this.toastr.warning('Amount must be greater than zero', 'Validation');
+      return;
+    }
     this.expenseService
       .createExpense({
         categoryId: this.categoryId,

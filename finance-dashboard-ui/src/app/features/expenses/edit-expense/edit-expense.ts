@@ -74,6 +74,25 @@ export class EditExpense implements OnInit {
   }
 
   updateExpense(): void {
+    if (!this.date) {
+      this.toastr.warning('Expense date is required', 'Validation');
+      return;
+    }
+    //check expense date is not in future
+    const expenseDate = new Date(this.date);
+    const today = new Date();
+    if (expenseDate > today) {
+      this.toastr.warning('Expense date cannot be in the future', 'Validation');
+      return;
+    }
+    if (!this.notes?.trim()) {
+      this.toastr.warning('Description is required', 'Validation');
+      return;
+    }
+    if (!this.amount) {
+      this.toastr.warning('Amount is required', 'Validation');
+      return;
+    }
     this.expenseService
       .updateExpense(this.id, {
         notes: this.notes,

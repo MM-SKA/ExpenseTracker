@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CategoryService } from '../../../core/services/category.service';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -23,22 +24,23 @@ export class LoginComponent {
   readonly authService = inject(AuthService);
   readonly categoryService = inject(CategoryService);
   public readonly translate = inject(TranslateService);
+  private readonly toastr = inject(ToastrService);
 
   login(): void {
     this.errorMessage = '';
 
     if (!this.email.trim()) {
-      this.errorMessage = 'Email is required';
+      this.toastr.warning('Email is required', 'Validation');
       return;
     }
 
     if (!this.isValidEmail(this.email)) {
-      this.errorMessage = 'Invalid email format';
+      this.toastr.warning('Please enter a valid email address', 'Validation');
       return;
     }
 
     if (!this.password.trim()) {
-      this.errorMessage = 'Password is required';
+      this.toastr.warning('Email is required', 'Validation');
       return;
     }
 
@@ -49,10 +51,7 @@ export class LoginComponent {
       })
       .subscribe({
         next: (response) => {
-          localStorage.setItem(
-            'user',
-            JSON.stringify(response.data)
-          );
+          localStorage.setItem('user', JSON.stringify(response.data));
 
           this.categoryService.getCategories(true).subscribe({
             next: () => this.router.navigate(['/expenses']),
@@ -61,11 +60,15 @@ export class LoginComponent {
         },
 
         error: (error) => {
-          this.errorMessage =
-            error?.error?.message ??
-            'Unable to login';
+          this.errorMessage = error?.error?.message ?? 'Unable to login';
 
-          console.error(error);
+          if (this.errorMessage === "Invalid password") {
+            this.toastr.error('Invalid password', 'Login Failed');
+            return;
+          }
+          this.toastr.error('Unable to login', 'Error');
+
+          console.error(this.errorMessage);
         },
       });
   }
