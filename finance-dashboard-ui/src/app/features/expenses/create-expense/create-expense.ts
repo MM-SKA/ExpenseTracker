@@ -54,6 +54,10 @@ export class CreateExpense implements OnInit {
   }
 
   save(): void {
+    if (!this.categoryId) {
+      this.toastr.warning('Category is required', 'Validation');
+      return;
+    }
     //empty expense date
     if (!this.date) {
       this.toastr.warning('Expense date is required', 'Validation');
